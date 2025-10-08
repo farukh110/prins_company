@@ -1,0 +1,53 @@
+.embla-wrapper {
+  position: relative;
+  max-width: 100%;
+}
+
+.embla {
+  position: relative;
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  will-change: transform;
+  gap: 0.25rem; /* Reduced gap between slides (4px) */
+}
+
+.embla__slide {
+  flex: 0 0 calc(100% / 4); /* 4 slides on small screens */
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .embla__slide {
+    flex: 0 0 calc(100% / 5); /* 5 slides on sm */
+  }
+}
+
+@media (min-width: 768px) {
+  .embla__slide {
+    flex: 0 0 calc(100% / 6); /* 6 slides on md */
+  }
+}
+
+@media (min-width: 1024px) {
+  .embla__slide {
+    flex: 0 0 calc(100% / 8); /* 8 slides on large screens */
+  }
+}
+
+.decoration-secondary {
+  text-decoration-color: #f59e0b; /* Replace with your brand's secondary color */
+}
+
+/* Hide buttons on very small screens to avoid overflow */
+@media (max-width: 639px) {
+  button[aria-label="Previous slide"],
+  button[aria-label="Next slide"] {
+    display: none;
+  }
+}
