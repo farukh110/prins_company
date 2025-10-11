@@ -11,7 +11,7 @@ const CuratedCollections: React.FC = () => {
         Curated by Our Master Jewelers
       </h2>
       <div className="basis-full w-full order-2">
-        <div className="flex md:grid lg:grid-cols-3 gap-0.5 overflow-x-auto tab:overflow-x-hidden no-scrollbar">
+        <div className="flex grid grid-cols-1 md:grid lg:grid-cols-3 gap-0.5 overflow-x-auto overflow-x-hidden no-scrollbar">
           <Link
             href="/c/celestial-jewelry"
             className="cursor-pointer no-underline block hover:no-underline s1 text-center relative group overflow-hidden min-w-64"

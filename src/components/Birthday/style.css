@@ -11,11 +11,13 @@
 .embla__container {
   display: flex;
   will-change: transform;
-  gap: 0.25rem; /* Reduced gap between slides (4px) */
+  gap: 0.25rem;
+  /* Reduced gap between slides (4px) */
 }
 
 .embla__slide {
-  flex: 0 0 calc(100% / 4); /* 4 slides on small screens */
+  flex: 0 0 calc(100% / 2);
+  /* 4 slides on small screens */
   min-width: 0;
   display: flex;
   justify-content: center;
@@ -24,30 +26,39 @@
 
 @media (min-width: 640px) {
   .embla__slide {
-    flex: 0 0 calc(100% / 5); /* 5 slides on sm */
+    flex: 0 0 calc(100% / 5);
+    /* 5 slides on sm */
   }
 }
 
 @media (min-width: 768px) {
   .embla__slide {
-    flex: 0 0 calc(100% / 6); /* 6 slides on md */
+    flex: 0 0 calc(100% / 6);
+    /* 6 slides on md */
   }
 }
 
 @media (min-width: 1024px) {
   .embla__slide {
-    flex: 0 0 calc(100% / 8); /* 8 slides on large screens */
+    flex: 0 0 calc(100% / 8);
+    /* 8 slides on large screens */
   }
 }
 
 .decoration-secondary {
-  text-decoration-color: #f59e0b; /* Replace with your brand's secondary color */
+  text-decoration-color: #f59e0b;
+  /* Replace with your brand's secondary color */
 }
 
 /* Hide buttons on very small screens to avoid overflow */
 @media (max-width: 639px) {
+
   button[aria-label="Previous slide"],
   button[aria-label="Next slide"] {
     display: none;
+  }
+
+  .embla__slide {
+    flex: 0 0 calc(100% / 3);
   }
 }

@@ -22,29 +22,27 @@ const birthstones = [
 ];
 
 export const BirthdaySlider = () => {
-  const [slidesInView, setSlidesInView] = useState(4); // Default to 4 slides
+  const [slidesInView, setSlidesInView] = useState(2); // Default to 2 slides for mobile
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-      align: "center",
-      slidesToScroll: 1,
-      containScroll: "trimSnaps",
-    }
-  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "center",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps",
+  });
 
   // Update slidesInView based on window width
   useEffect(() => {
     const updateSlides = () => {
       const width = window.innerWidth;
-      if (width >= 1024) {
-        setSlidesInView(7); // 8 slides on large screens
-      } else if (width >= 768) {
-        setSlidesInView(6); // 6 slides on medium screens
+      if (width >= 1280) {
+        setSlidesInView(7); // 7 slides on xl screens
+      } else if (width >= 1024) {
+        setSlidesInView(6); // 6 slides on lg screens
       } else if (width >= 640) {
-        setSlidesInView(5); // 5 slides on small-medium screens
+        setSlidesInView(4); // 4 slides on sm screens
       } else {
-        setSlidesInView(4); // 4 slides on small screens
+        setSlidesInView(2); // 2 slides on mobile
       }
     };
 
@@ -66,18 +64,17 @@ export const BirthdaySlider = () => {
   }, [slidesInView, emblaApi]);
 
   return (
-    <section className="mb-12 lg:mb-14 px-4 sm:px-8 lg:px-8 max-w-[1288px] mx-auto relative">
-      
-      <div className="relative w-full">
-        <h2 className="text-[22px] poppins-medium leading-8 lg:leading-12 text-center">
+    <section className="mb-8 sm:mb-10 lg:mb-14 px-4 sm:px-6 lg:px-8 max-w-[1288px] mx-auto relative">
+      <div className="relative w-full flex flex-col items-center sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl lg:text-[22px] font-medium leading-7 sm:leading-8 lg:leading-12 text-center sm:text-left">
           Bring More Color to the Party
         </h2>
-        <a
+        <Link
           href="/b/customer-reviews"
-          className="absolute right-0 top-1/2 -translate-y-1/2 text-sm text-gray-700 hover:text-gray-800 underline md:right-8 lg:right-18"
+          className="text-sm text-gray-700 hover:text-gray-800 underline mt-3 sm:mt-0 sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2"
         >
           View All Rings
-        </a>
+        </Link>
       </div>
 
       <div className="relative embla-wrapper">
@@ -86,7 +83,7 @@ export const BirthdaySlider = () => {
             {birthstones.map((item, i) => (
               <div
                 key={i}
-                className="embla__slide"
+                className="embla__slide px-2 sm:px-3"
                 style={{ flex: `0 0 ${100 / slidesInView}%` }} // Dynamic slide width
               >
                 <Link
@@ -99,13 +96,14 @@ export const BirthdaySlider = () => {
                     alt={`${item.month} ${item.stone}`}
                     width={120}
                     height={120}
-                    className="object-contain h-20 lg:h-[120px] w-20 lg:w-[120px] group-hover:scale-110 transition-transform ease-in-out duration-500"
+                    className="object-contain h-24 sm:h-28 lg:h-[120px] w-24 sm:w-28 lg:w-[120px] group-hover:scale-105 transition-transform ease-in-out duration-300"
+                    sizes="(max-width: 640px) 40vw, (max-width: 1024px) 25vw, 15vw"
                   />
-                  <span className="flex flex-col items-center no-underline">
-                    <span className="group-hover:underline underline-offset-8 decoration-2 decoration-secondary my-3 text-base font-semibold text-gray-700 group-hover:text-gray-800">
+                  <span className="flex flex-col items-center no-underline mt-3 sm:mt-4">
+                    <span className="group-hover:underline underline-offset-4 decoration-2 decoration-secondary text-sm sm:text-base font-semibold text-gray-700 group-hover:text-gray-800">
                       {item.month}
                     </span>
-                    <span className="text-sm text-gray-700 group-hover:visible lg:invisible">
+                    <span className="text-xs sm:text-sm text-gray-700 group-hover:visible lg:invisible mt-1">
                       {item.stone}
                     </span>
                   </span>
@@ -116,15 +114,14 @@ export const BirthdaySlider = () => {
         </div>
 
         <button
-          className="absolute left-[-40px] top-1/2 -translate-y-1/2 bg-white p-1.5 border border-grayscale-800 outline-none focus:outline-none 
-             slick-prev shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] border-0"
+          className="hidden sm:block absolute left-0 sm:left-[-24px] lg:left-[-40px] top-1/2 -translate-y-1/2 bg-white p-2 sm:p-3 border border-gray-300 rounded-full shadow-md outline-none focus:outline-none hover:bg-gray-100 transition-colors"
           onClick={() => emblaApi?.scrollPrev()}
           type="button"
           aria-label="Previous slide"
         >
           <svg
             viewBox="0 0 24 24"
-            className="w-6 h-6"
+            className="w-5 h-5 sm:w-6 sm:h-6"
             stroke="currentColor"
             fill="none"
             strokeWidth={2}
@@ -133,15 +130,14 @@ export const BirthdaySlider = () => {
           </svg>
         </button>
         <button
-          className="absolute right-[-40px] top-1/2 -translate-y-1/2 bg-white p-1.5 border border-grayscale-800 outline-none focus:outline-none 
-             slick-prev shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] border-0"
+          className="hidden sm:block absolute right-0 sm:right-[-24px] lg:right-[-40px] top-1/2 -translate-y-1/2 bg-white p-2 sm:p-3 border border-gray-300 rounded-full shadow-md outline-none focus:outline-none hover:bg-gray-100 transition-colors"
           onClick={() => emblaApi?.scrollNext()}
           type="button"
           aria-label="Next slide"
         >
           <svg
             viewBox="0 0 24 24"
-            className="w-6 h-6"
+            className="w-5 h-5 sm:w-6 sm:h-6"
             stroke="currentColor"
             fill="none"
             strokeWidth={2}
@@ -153,3 +149,5 @@ export const BirthdaySlider = () => {
     </section>
   );
 };
+
+export default BirthdaySlider;

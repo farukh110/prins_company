@@ -77,7 +77,17 @@ const reviews: Review[] = [
 
 const ReviewSlider: React.FC = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel(
-        { loop: true, align: 'start' },
+        {
+            loop: true,
+            align: 'start',
+            slidesToScroll: 3, // Default: show 3 slides
+            breakpoints: {
+                '(max-width: 767px)': {
+                    slidesToScroll: 1, // Show 1 slide on mobile
+                    align: 'center', // Center the single slide
+                },
+            },
+        },
         [Autoplay({ delay: 3000, stopOnInteraction: true })]
     );
 
@@ -93,13 +103,13 @@ const ReviewSlider: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-center gap-6 max-w-[1288px] mx-auto mb-12 md:mb-14 relative">
 
-            <div className="relative w-full">
-                <h2 className="text-3xl font-bold text-center whitespace-nowrap">
-                    What Customers Are Saying
+            <div className="relative w-full flex flex-col md:flex-row md:items-center md:justify-center">
+                <h2 className="text-[22px] poppins-medium leading-8 lg:leading-12 text-center md:text-left">
+                    Customers Feedback
                 </h2>
                 <a
                     href="/b/customer-reviews"
-                    className="absolute right-0 top-1/2 -translate-y-1/2 text-sm text-gray-700 hover:text-gray-800 underline md:right-8 lg:right-18"
+                    className="text-sm text-gray-700 hover:text-gray-800 underline text-center md:text-right mt-2 md:mt-0 md:absolute md:right-8 md:top-1/2 md:-translate-y-1/2"
                 >
                     View All Reviews
                 </a>
@@ -111,7 +121,7 @@ const ReviewSlider: React.FC = () => {
                         {reviews.map((review) => (
                             <div
                                 key={review.id}
-                                className="flex-[0_0_calc(100%/3)] px-2 min-w-0"
+                                className="flex-[0_0_calc(100%/3)] max-[767px]:flex-[0_0_100%] px-2 min-w-0"
                             >
                                 <div className="flex flex-col items-center bg-[#FAFAFB] p-4 min-h-[372px]">
                                     <a href={review.link} className="no-underline">
@@ -120,8 +130,9 @@ const ReviewSlider: React.FC = () => {
                                             alt={review.alt}
                                             width={100}
                                             height={100}
-                                            className="border border-gray-400 object-cover"
+                                            className="border border-gray-400 object-cover max-[767px]:max-w-full"
                                             loading="lazy"
+                                            sizes="(max-width: 767px) 100vw, 100px"
                                         />
                                     </a>
                                     <a
@@ -161,7 +172,7 @@ const ReviewSlider: React.FC = () => {
                 </div>
                 <button
                     className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-1.5 border border-grayscale-800 outline-none focus:outline-none 
-             slick-prev shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] border-0"
+                    slick-prev shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] border-0"
                     onClick={scrollPrev}
                     aria-label="Previous slide"
                 >
@@ -169,7 +180,7 @@ const ReviewSlider: React.FC = () => {
                 </button>
                 <button
                     className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-1.5 border border-grayscale-800 outline-none focus:outline-none 
-             slick-prev shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] border-0"
+                    slick-prev shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] border-0"
                     onClick={scrollNext}
                     aria-label="Next slide"
                 >

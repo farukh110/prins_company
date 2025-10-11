@@ -93,9 +93,17 @@ const blogPosts: BlogPost[] = [
 ];
 
 const TheEditSlider: React.FC = () => {
-    const [emblaRef, emblaApi] = useEmblaCarousel(
-        { loop: true, align: 'start' }
-    );
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+        loop: true,
+        align: 'start',
+        slidesToScroll: 3, // Default: show 3 slides
+        breakpoints: {
+            '(max-width: 767px)': {
+                slidesToScroll: 1, // Show 1 slide on mobile
+                align: 'center', // Center the single slide
+            },
+        },
+    });
 
     const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
     const scrollNext = () => emblaApi && emblaApi.scrollNext();
@@ -134,7 +142,7 @@ const TheEditSlider: React.FC = () => {
                         {blogPosts.map((post) => (
                             <div
                                 key={post.id}
-                                className="flex-[0_0_calc(100%/3)] px-1 min-w-0"
+                                className="flex-[0_0_calc(100%/3)] md:flex-[0_0_calc(100%/3)] max-[767px]:flex-[0_0_100%] px-1 min-w-0"
                             >
                                 <a
                                     href={post.link}
@@ -151,9 +159,9 @@ const TheEditSlider: React.FC = () => {
                                             alt={post.alt}
                                             width={370}
                                             height={370}
-                                            className="max-w-[258px] min-h-[258px] lg:min-w-[390px] lg:min-h-[370px] object-cover"
+                                            className="max-w-[258px] min-h-[258px] lg:min-w-[390px] lg:min-h-[370px] object-cover max-[767px]:max-w-full"
                                             loading="lazy"
-                                            sizes="(max-width: 768px) 258px, 370px"
+                                            sizes="(max-width: 767px) 100vw, (max-width: 768px) 258px, 370px"
                                         />
                                     </span>
                                     <span className="pt-4 pb-4 pl-2 pr-2 inline-block">

@@ -54,13 +54,13 @@ const GiftSection: FC = () => {
             className="flex justify-center gap-6 items-baseline flex-wrap relative container mt-10 mb-12 max-w-[1288px] mx-auto px-4 md:px-8"
             style={{ minHeight: 0 }}
         >
-            <div className="relative w-full">
-                <h2 className="text-[22px] poppins-medium leading-8 lg:leading-12 text-center">
+            <div className="relative w-full flex flex-col md:flex-row md:items-center md:justify-center">
+                <h2 className="text-[22px] poppins-medium leading-8 lg:leading-12 text-center md:text-left">
                     Gifts That Say It All
                 </h2>
                 <a
                     href="/b/customer-reviews"
-                    className="absolute right-0 top-1/2 -translate-y-1/2 text-sm text-gray-700 hover:text-gray-800 underline md:right-8 lg:right-18"
+                    className="text-sm text-gray-700 hover:text-gray-800 underline text-center md:text-right mt-2 md:mt-0 md:absolute md:right-8 md:top-1/2 md:-translate-y-1/2"
                 >
                     View All Gifts
                 </a>

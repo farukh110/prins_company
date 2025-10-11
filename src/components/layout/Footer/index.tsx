@@ -30,48 +30,47 @@ const Footer: React.FC = () => {
     <footer className="bg-[#00345D] text-white pt-6">
       <div className="max-w-[1400px] mx-auto px-4 md:px-4">
         {/* Main Footer Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 py-4 justify-between border-b border-gray-200 md:border-none">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-b border-gray-200 lg:border-none">
           {/* Assistance */}
-          <div className="md:min-w-[170px] mx-auto">
-            <div className="md:block">
-              <h3 className="text-sm md:text-base poppins-medium uppercase py-2 px-4 md:mb-2 md:p-0">
+          <div className="mx-auto w-full max-w-[200px]">
+            <div className="lg:block">
+              <h3 className="text-base poppins-medium uppercase mb-3">
                 HELP CENTER
               </h3>
-              <ul className="text-left poppins-regular px-4 md:p-0 md:bg-transparent">
-
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+              <ul className="text-left text-sm">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/track-your-order" className="flex items-center gap-2">
                     Track Your Order
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/returns/guest/new" className="flex items-center gap-2">
-                    Returns &amp; Exchange
+                    Returns & Exchange
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/returns/guest/new" className="flex items-center gap-2">
-                    Resize &amp; Repair
+                    Resize & Repair
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/b/faq" className="flex items-center gap-2">
                     FAQs
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/b/accessibility" className="flex items-center gap-2">
                     Accessibility
                   </Link>
                 </li>
               </ul>
             </div>
-            <details className="group transition-all duration-300 md:hidden">
-              <summary className="list-none marker:hidden [&::-webkit-details-marker]:hidden flex justify-between items-center uppercase py-2 px-4">
+            <details className="group lg:hidden">
+              <summary className="flex justify-between items-center uppercase py-3 px-0 lg:px-4 cursor-pointer">
                 <span className="text-sm poppins-medium">ASSISTANCE</span>
                 <span className="transition-transform group-open:rotate-180">
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -85,13 +84,13 @@ const Footer: React.FC = () => {
                   </svg>
                 </span>
               </summary>
-              <ul className="text-left bg-gray-200 poppins-regular px-4 overflow-hidden transition-all duration-500 max-h-0 group-open:max-h-[500px]">
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+              <ul className="text-left text-white px-4 py-2 transition-all duration-300 max-h-0 group-open:max-h-[600px] overflow-hidden">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/b/contact-us" className="flex items-center gap-2">
                     <span>📞</span> +1-844-527-4367
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link
                     href="mailto:customer.service@angara.com"
                     className="flex items-center gap-2"
@@ -99,32 +98,32 @@ const Footer: React.FC = () => {
                     <span>📧</span> Email Us
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <div className="flex items-center gap-2">
                     <span>💬</span> Chat With Us
                   </div>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/track-your-order" className="flex items-center gap-2">
                     Track Your Order
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/returns/guest/new" className="flex items-center gap-2">
-                    Returns &amp; Exchange
+                    Returns & Exchange
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/returns/guest/new" className="flex items-center gap-2">
-                    Resize &amp; Repair
+                    Resize & Repair
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/b/faq" className="flex items-center gap-2">
                     FAQs
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/b/accessibility" className="flex items-center gap-2">
                     Accessibility
                   </Link>
@@ -133,45 +132,45 @@ const Footer: React.FC = () => {
             </details>
           </div>
           {/* Shop */}
-          <div className="md:min-w-[170px] mx-auto">
-            <div className="md:block">
-              <h3 className="text-sm md:text-base poppins-medium uppercase py-2 px-4 md:mb-2 md:p-0">
+          <div className="mx-auto w-full max-w-[200px]">
+            <div className="hidden lg:block">
+              <h3 className="text-base poppins-medium uppercase mb-3">
                 SHOP
               </h3>
-              <ul className="text-left poppins-regular px-4 md:p-0 md:bg-transparent">
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+              <ul className="text-left text-sm">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/c/lab+grown-jewelry" className="flex items-center gap-2">
                     Diamond
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/c/diamond-jewelry" className="flex items-center gap-2">
                     Prec Color
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/c/sapphire-jewelry" className="flex items-center gap-2">
                     Sem Prec Color
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/c/emerald-jewelry" className="flex items-center gap-2">
                     Plain Gold
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/c/ruby-jewelry" className="flex items-center gap-2">
                     Pearl
                   </Link>
                 </li>
               </ul>
             </div>
-            <details className="group transition-all duration-300 md:hidden">
-              <summary className="list-none marker:hidden [&::-webkit-details-marker]:hidden flex justify-between items-center uppercase py-2 px-4">
+            <details className="group lg:hidden">
+              <summary className="flex justify-between items-center uppercase py-3 px-0 lg:px-4 cursor-pointer">
                 <span className="text-sm poppins-medium">SHOP</span>
                 <span className="transition-transform group-open:rotate-180">
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -185,28 +184,28 @@ const Footer: React.FC = () => {
                   </svg>
                 </span>
               </summary>
-              <ul className="text-left bg-gray-200 poppins-regular px-4 overflow-hidden transition-all duration-500 max-h-0 group-open:max-h-[500px]">
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+              <ul className="text-left text-white px-4 py-2 transition-all duration-300 max-h-0 group-open:max-h-[600px] overflow-hidden">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/c/lab+grown-jewelry" className="flex items-center gap-2">
                     Diamond
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/c/diamond-jewelry" className="flex items-center gap-2">
                     Prec Color
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/c/sapphire-jewelry" className="flex items-center gap-2">
                     Sem Prec Color
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/c/emerald-jewelry" className="flex items-center gap-2">
                     Plain Gold
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/c/ruby-jewelry" className="flex items-center gap-2">
                     Pearl
                   </Link>
@@ -215,30 +214,31 @@ const Footer: React.FC = () => {
             </details>
           </div>
           {/* About Us */}
-          <div className="md:min-w-[170px] mx-auto">
-            <div className="md:block">
-              <h3 className="text-sm md:text-base poppins-medium uppercase py-2 px-4 md:mb-2 md:p-0">
+          <div className="mx-auto w-full max-w-[200px]">
+            <div className="hidden lg:block">
+
+              <h3 className="text-base poppins-medium uppercase mb-3">
                 ABOUT US
               </h3>
-              <ul className="text-left poppins-regular px-4 md:p-0 md:bg-transparent">
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
-                  <Link href="/b/about-us" className="flex items-center gap-2">
+              <ul className="text-left text-sm">
+                <li className="my-2 hover:text-blue-600">
+                  <Link href="/about-us" className="flex items-center gap-2">
                     Our Story
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/b/customer-reviews" className="flex items-center gap-2">
                     Customer Reviews
                   </Link>
                 </li>
               </ul>
             </div>
-            <details className="group transition-all duration-300 md:hidden">
-              <summary className="list-none marker:hidden [&::-webkit-details-marker]:hidden flex justify-between items-center uppercase py-2 px-4">
-                <span className="text-sm poppins-medium">ABOUT US</span>
+            <details className="group lg:hidden">
+              <summary className="flex justify-between items-center uppercase py-3 px-0 lg:px-4 cursor-pointer">
+                <span className="text-sm font-medium">ABOUT US</span>
                 <span className="transition-transform group-open:rotate-180">
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -252,13 +252,13 @@ const Footer: React.FC = () => {
                   </svg>
                 </span>
               </summary>
-              <ul className="text-left bg-gray-200 poppins-regular px-4 overflow-hidden transition-all duration-500 max-h-0 group-open:max-h-[500px]">
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+              <ul className="text-left text-white px-4 py-2 transition-all duration-300 max-h-0 group-open:max-h-[600px] overflow-hidden">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/b/about-us" className="flex items-center gap-2">
                     Our Story
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/b/customer-reviews" className="flex items-center gap-2">
                     Customer Reviews
                   </Link>
@@ -267,13 +267,14 @@ const Footer: React.FC = () => {
             </details>
           </div>
           {/* Partner With Us */}
-          <div className="md:min-w-[170px] mx-auto">
-            <div className="md:block">
-              <h3 className="text-sm md:text-base poppins-medium uppercase py-2 px-4 md:mb-2 md:p-0">
+          <div className="mx-auto w-full max-w-[200px]">
+            <div className="lg:block">
+
+              <h3 className="text-base poppins-medium uppercase mb-3">
                 PARTNER WITH US
               </h3>
-              <ul className="text-left poppins-regular px-4 md:p-0 md:bg-transparent">
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+              <ul className="text-left text-sm">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/b/ls-index" className="flex items-center gap-2">
                     Be a Reseller
                   </Link>
@@ -281,16 +282,16 @@ const Footer: React.FC = () => {
               </ul>
             </div>
             <div className="md:block mt-3">
-              <h3 className="text-sm md:text-base poppins-medium uppercase py-2 px-4 md:mb-2 md:p-0">
+              <h3 className="text-sm md:text-base poppins-medium uppercase py-2 px-0 lg:px-0 md:mb-2 md:p-0">
                 ASSISTANCE
               </h3>
-              <ul className="text-left poppins-regular px-4 md:p-0 md:bg-transparent">
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+              <ul className="text-left poppins-regular text-sm">
+                <li className="my-2 hover:text-blue-600">
                   <Link href="/b/contact-us" className="flex items-center gap-2">
                     <span>📞</span> +1-844-527-4367
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <Link
                     href="mailto:customer.service@angara.com"
                     className="flex items-center gap-2"
@@ -298,20 +299,19 @@ const Footer: React.FC = () => {
                     <span>📧</span> info@prinscompany.com
                   </Link>
                 </li>
-                <li className="flex justify-start my-2 md:my-1 text-sm hover:text-blue-600">
+                <li className="my-2 hover:text-blue-600">
                   <div className="flex items-center gap-2">
                     <span>💬</span> Chat With Us
                   </div>
                 </li>
-
               </ul>
             </div>
-            <details className="group transition-all duration-300 md:hidden">
-              <summary className="list-none marker:hidden [&::-webkit-details-marker]:hidden flex justify-between items-center uppercase py-2 px-4">
-                <span className="text-sm poppins-medium">PARTNER WITH US</span>
+            <details className="group lg:hidden">
+              <summary className="flex justify-between items-center uppercase py-3 px-4 cursor-pointer">
+                <span className="text-sm font-medium">PARTNER WITH US</span>
                 <span className="transition-transform group-open:rotate-180">
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -325,8 +325,8 @@ const Footer: React.FC = () => {
                   </svg>
                 </span>
               </summary>
-              <ul className="text-left bg-gray-200 poppins-regular px-4 overflow-hidden transition-all duration-500 max-h-0 group-open:max-h-[500px]">
-                <li className="flex justify-start my-2 text-sm hover:text-blue-600">
+              <ul className="text-left bg-gray-200 text-gray-800 px-4 py-2 transition-all duration-300 max-h-0 group-open:max-h-[600px] overflow-hidden">
+                <li className="my-2 text-sm hover:text-blue-600">
                   <Link href="/b/ls-index" className="flex items-center gap-2">
                     Be a Reseller
                   </Link>

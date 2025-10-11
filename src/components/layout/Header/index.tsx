@@ -10,10 +10,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        userMenuRef.current &&
-        !userMenuRef.current.contains(event.target as Node)
-      ) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
       }
     };
@@ -24,40 +21,39 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // Toggle user menu
-  const toggleUserMenu = () => {
-    setUserMenuOpen((prev) => !prev);
-  };
-
-  // Toggle mobile menu
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen((prev) => !prev);
-  };
+  const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
+  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
 
   return (
     <header className="border-b">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-0 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between">
         {/* Left: Customer Support (hidden on mobile) */}
-        <div className="hidden md:flex items-center space-x-2 text-sm text-gray-700">
-          <span className="poppins-regular text-[13px]">24/7 Customer Support</span>
-          <span className="border-l h-4 border-gray-400" />
-          <Link
-            href="tel:+18445274367"
-            className="poppins-regular text-[13px] text-black"
-          >
-            +1-844-527-4367
+        <div className="w-full md:w-auto mb-2 md:mb-0 hidden md:block">
+          <div className="md:flex items-center space-x-2 text-sm text-gray-700">
+            <span className="poppins-regular text-[13px]">24/7 Customer Support</span>
+            <span className="border-l h-4 border-gray-400" />
+            <Link
+              href="tel:+18445274367"
+              className="poppins-regular text-[13px] text-black"
+            >
+              +1-844-527-4367
+            </Link>
+          </div>
+        </div>
+
+        {/* Logo */}
+        <div className="flex-shrink-0">
+          <Link href="/">
+            <Image
+              className="logo object-contain"
+              src="/images/logo/prins_company_logo.jpg"
+              alt="Prins Company Logo"
+              width={200}
+              height={70}
+            />
           </Link>
         </div>
-        {/* Logo */}
-        <div className="text-2xl font-light tracking-widest">
-          <Image
-            className="logo object-contain"
-            src="/images/logo/prins_company_logo.jpg"
-            alt="Prins Company Logo"
-            width={200} // Adjust width as needed
-            height={70} // Adjust height as needed
-          />
-        </div>
+
         {/* Right: Search + Icons */}
         <div className="flex items-center space-x-4">
           {/* Search (hidden on mobile) */}
@@ -79,11 +75,11 @@ const Header: React.FC = () => {
             <input
               type="text"
               placeholder="Search"
-              className="ml-2 outline-none text-sm"
+              className="ml-2 outline-none text-sm w-32"
             />
           </div>
-          {/* Icons */}
-          {/* User Icon with Dropdown */}
+
+          {/* User Icon */}
           <div className="relative" ref={userMenuRef}>
             <button
               id="user-btn"
@@ -96,7 +92,7 @@ const Header: React.FC = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6 md:h-7 md:w-7"
+                className="h-6 w-6"
               >
                 <path
                   strokeLinecap="round"
@@ -107,9 +103,8 @@ const Header: React.FC = () => {
             </button>
             <div
               id="user-menu"
-              className={`absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${
-                userMenuOpen ? "block" : "hidden"
-              }`}
+              className={`absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${userMenuOpen ? "block" : "hidden"
+                }`}
             >
               <ul className="py-2 text-sm text-gray-700">
                 <li>
@@ -130,6 +125,8 @@ const Header: React.FC = () => {
               </ul>
             </div>
           </div>
+
+          {/* Heart Icon */}
           <button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -146,6 +143,8 @@ const Header: React.FC = () => {
               />
             </svg>
           </button>
+
+          {/* Cart Icon */}
           <button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -162,6 +161,7 @@ const Header: React.FC = () => {
               />
             </svg>
           </button>
+
           {/* Mobile Menu Button */}
           <button
             id="menu-btn"
@@ -184,170 +184,115 @@ const Header: React.FC = () => {
           </button>
         </div>
       </div>
-      {/* Navigation Menu with Mega Menu */}
+
+      {/* Navigation Menu - WRAPPING VERSION */}
       <nav className="border-t hidden md:block relative">
-        <ul className="flex justify-center space-x-16 py-3 text-sm poppins-regular tracking-wide text-gray-700">
-          <li className="group">
-            <Link href="#" className="mega-menu-trigger">
-              RINGS
-            </Link>
-            {/* Full-Width Mega Menu */}
-            <div className="mega-menu hidden group-hover:block absolute left-0 top-full w-full bg-white shadow-lg border-t z-50">
-              <div className="max-w-7xl mx-auto grid grid-cols-4 gap-8 p-8 text-gray-700 text-sm">
-                <div>
-                  <h3 className="font-bold mb-2">Natural Gemstone Rings</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link href="#">Emerald Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Blue Sapphire Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Ruby Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Amethyst Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Opal Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Aquamarine Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Swiss Blue Topaz Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Garnet Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Tanzanite Rings</Link>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-2">Natural Diamond Rings</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link href="#">Diamond Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Colored Diamond Rings</Link>
-                    </li>
-                  </ul>
-                  <h3 className="font-bold mt-4 mb-2">Lab-Grown Rings</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link href="#">Lab Diamond Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Lab Colored Diamond Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Lab Emerald Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Lab Blue Sapphire Rings</Link>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-2">Rings by Metal</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link href="#">Platinum Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Yellow Gold Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Rose Gold Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">White Gold Rings</Link>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-2">Featured</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link href="#">Best Selling Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">GIA Certified Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Initial Rings</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Anniversary Gifts</Link>
-                    </li>
-                  </ul>
+        <div className="max-w-7xl mx-auto px-4">
+          <ul className="flex flex-wrap justify-center items-center gap-4 md:gap-6 lg:gap-8 py-3 text-sm poppins-regular tracking-wide text-gray-700">
+            {/* RINGS with Mega Menu */}
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="/">HOME</Link>
+            </li>
+            <li className="group">
+              <Link href="#" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
+                RINGS
+              </Link>
+              <div className="mega-menu hidden group-hover:block absolute left-0 top-full w-full bg-white shadow-lg border-t z-50">
+                <div className="max-w-7xl mx-auto grid grid-cols-4 gap-8 p-8 text-gray-700 text-sm">
+                  <div>
+                    <h3 className="font-bold mb-2">Natural Gemstone Rings</h3>
+                    <ul className="space-y-2">
+                      <li><Link href="#">Emerald Rings</Link></li>
+                      <li><Link href="#">Blue Sapphire Rings</Link></li>
+                      <li><Link href="#">Ruby Rings</Link></li>
+                      <li><Link href="#">Amethyst Rings</Link></li>
+                      <li><Link href="#">Opal Rings</Link></li>
+                      <li><Link href="#">Aquamarine Rings</Link></li>
+                      <li><Link href="#">Swiss Blue Topaz Rings</Link></li>
+                      <li><Link href="#">Garnet Rings</Link></li>
+                      <li><Link href="#">Tanzanite Rings</Link></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-2">Natural Diamond Rings</h3>
+                    <ul className="space-y-2">
+                      <li><Link href="#">Diamond Rings</Link></li>
+                      <li><Link href="#">Colored Diamond Rings</Link></li>
+                    </ul>
+                    <h3 className="font-bold mt-4 mb-2">Lab-Grown Rings</h3>
+                    <ul className="space-y-2">
+                      <li><Link href="#">Lab Diamond Rings</Link></li>
+                      <li><Link href="#">Lab Colored Diamond Rings</Link></li>
+                      <li><Link href="#">Lab Emerald Rings</Link></li>
+                      <li><Link href="#">Lab Blue Sapphire Rings</Link></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-2">Rings by Metal</h3>
+                    <ul className="space-y-2">
+                      <li><Link href="#">Platinum Rings</Link></li>
+                      <li><Link href="#">Yellow Gold Rings</Link></li>
+                      <li><Link href="#">Rose Gold Rings</Link></li>
+                      <li><Link href="#">White Gold Rings</Link></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-bold mb-2">Featured</h3>
+                    <ul className="space-y-2">
+                      <li><Link href="#">Best Selling Rings</Link></li>
+                      <li><Link href="#">GIA Certified Rings</Link></li>
+                      <li><Link href="#">Initial Rings</Link></li>
+                      <li><Link href="#">Anniversary Gifts</Link></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <Link href="#">NECKLACES</Link>
-          </li>
-          <li>
-            <Link href="#">EARRINGS</Link>
-          </li>
-          <li>
-            <Link href="#">PENDANTS</Link>
-          </li>
-          <li>
-            <Link href="#">PINS</Link>
-          </li>
-          <li>
-            <Link href="#">BRACELETS</Link>
-          </li>
-          <li>
-            <Link href="#">COLLECTIONS</Link>
-          </li>
-          <li>
-            <Link href="#">GIFTS</Link>
-          </li>
-          <li>
-            <Link href="#">THE EDIT</Link>
-          </li>
-        </ul>
+            </li>
+
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">NECKLACES</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">EARRINGS</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">PENDANTS</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">PINS</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">BRACELETS</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">COLLECTIONS</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">GIFTS</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="#">THE EDIT</Link>
+            </li>
+          </ul>
+        </div>
       </nav>
+
       {/* Mobile Dropdown Menu */}
       <div
         id="mobile-menu"
         className={`border-t md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}
       >
         <ul className="flex flex-col space-y-2 p-4 text-gray-700 text-sm">
-          <li>
-            <Link href="#">RINGS</Link>
-          </li>
-          <li>
-            <Link href="#">NECKLACES</Link>
-          </li>
-          <li>
-            <Link href="#">EARRINGS</Link>
-          </li>
-          <li>
-            <Link href="#">ENGAGEMENT RINGS</Link>
-          </li>
-          <li>
-            <Link href="#">WEDDING RINGS</Link>
-          </li>
-          <li>
-            <Link href="#">BRACELETS</Link>
-          </li>
-          <li>
-            <Link href="#">COLLECTIONS</Link>
-          </li>
-          <li>
-            <Link href="#">GIFTS</Link>
-          </li>
-          <li>
-            <Link href="#">THE EDIT</Link>
-          </li>
+          <li><Link href="/">HOME</Link></li>
+          <li><Link href="#">RINGS</Link></li>
+          <li><Link href="#">NECKLACES</Link></li>
+          <li><Link href="#">EARRINGS</Link></li>
+          <li><Link href="#">ENGAGEMENT RINGS</Link></li>
+          <li><Link href="#">WEDDING RINGS</Link></li>
+          <li><Link href="#">BRACELETS</Link></li>
+          <li><Link href="#">COLLECTIONS</Link></li>
+          <li><Link href="#">GIFTS</Link></li>
+          <li><Link href="#">THE EDIT</Link></li>
         </ul>
       </div>
     </header>
