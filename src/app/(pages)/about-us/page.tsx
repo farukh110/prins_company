@@ -105,13 +105,13 @@ const AboutUS: React.FC = () => {
             Our dedication to excellence has earned us accolades from industry leaders, recognizing Prins Company as a trusted name in fine jewelry, celebrated for both quality and customer care.
           </p>
           <p className="mb-4">
-            The name Prins Company reflects our heritage. Inspired by the word "prince," it symbolizes nobility, elegance, and the enduring brilliance of our gemstones. It embodies the spark of creativity that drives us to craft jewelry that resonates with your individuality.
+            The name Prins Company reflects our heritage. Inspired by the word &quot;prince,&quot; it symbolizes nobility, elegance, and the enduring brilliance of our gemstones. It embodies the spark of creativity that drives us to craft jewelry that resonates with your individuality.
           </p>
           <p className="mb-4">
             We believe in the power of color to inspire and uplift. Our mission is to bring vibrant, sustainable beauty to the world, one piece at a time.
           </p>
           <p className="mb-4">
-            Celebrate life’s moments with jewelry that shines as brightly as you do.
+            Celebrate life &quot;s moments with jewelry that shines as brightly as you do.
           </p>
           <div>
             <p className="mb-6 lg:mb-2.5 flex flex-col md:items-center text-base font-normal leading-6 tracking-[0.3px] text-gray-800">

@@ -1,7 +1,4 @@
-import AwardsSection from "@/components/Awards/Awards";
-import ClientSection from "@/components/Clients";
 import CuratedCollections from "@/components/CuratedCollections";
-import NewsletterSection from "@/components/NewsLetter";
 import ReasonSection from "@/components/Reasons";
 import Image from "next/image";
 import Link from "next/link";
