@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
         {/* Main Footer Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-b border-gray-200 lg:border-none">
           {/* Assistance */}
-          <div className="mx-auto w-full max-w-[200px]">
+          <div className="mx-auto w-full max-w-full sm:max-w-[200px] lg:max-w-[200px]">
             <div className="lg:block">
               <h3 className="text-base poppins-medium uppercase mb-3">
                 HELP CENTER
@@ -132,7 +132,7 @@ const Footer: React.FC = () => {
             </details>
           </div>
           {/* Shop */}
-          <div className="mx-auto w-full max-w-[200px]">
+          <div className="mx-auto w-full max-w-full sm:max-w-[200px] lg:max-w-[200px]">
             <div className="hidden lg:block">
               <h3 className="text-base poppins-medium uppercase mb-3">
                 SHOP
@@ -214,7 +214,7 @@ const Footer: React.FC = () => {
             </details>
           </div>
           {/* About Us */}
-          <div className="mx-auto w-full max-w-[200px]">
+          <div className="mx-auto w-full max-w-full sm:max-w-[200px] lg:max-w-[200px]">
             <div className="hidden lg:block">
 
               <h3 className="text-base poppins-medium uppercase mb-3">
@@ -267,7 +267,7 @@ const Footer: React.FC = () => {
             </details>
           </div>
           {/* Partner With Us */}
-          <div className="mx-auto w-full max-w-[200px]">
+          <div className="mx-auto w-full max-w-full sm:max-w-[200px] lg:max-w-[200px]">
             <div className="lg:block">
 
               <h3 className="text-base poppins-medium uppercase mb-3">
