@@ -2,16 +2,22 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import './style.css';
 
 const Header: React.FC = () => {
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setUserMenuOpen(false);
+      }
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
       }
     };
 
@@ -23,41 +29,103 @@ const Header: React.FC = () => {
 
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
+  const toggleProfileMenu = () => setProfileMenuOpen((prev) => !prev);
 
   return (
     <header className="border-b">
-      <div className="max-w-7xl mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between">
-        {/* Left: Customer Support (hidden on mobile) */}
-        <div className="w-full md:w-auto mb-2 md:mb-0 hidden md:block">
-          <div className="md:flex items-center space-x-2 text-sm text-gray-700">
-            <span className="poppins-regular text-[13px]">24/7 Customer Support</span>
-            <span className="border-l h-4 border-gray-400" />
-            <Link
-              href="tel:+18445274367"
-              className="poppins-regular text-[13px] text-black"
-            >
-              +1-844-527-4367
-            </Link>
-          </div>
-        </div>
-
-        {/* Logo */}
-        <div className="flex-shrink-0">
-          <Link href="/">
-            <Image
-              className="logo object-contain"
-              src="/images/logo/prins_company_logo.jpg"
-              alt="Prins Company Logo"
-              width={200}
-              height={70}
-            />
+      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+        
+        {/* Customer Support (hidden on mobile) */}
+        <div className="hidden md:flex items-center space-x-2 text-sm text-gray-700">
+          <span className="poppins-regular text-[13px]">24/7 Customer Support</span>
+          <span className="border-l h-4 border-gray-400" />
+          <Link
+            href="tel:+18445274367"
+            className="poppins-regular text-[13px] text-black"
+          >
+            +1-844-527-4367
           </Link>
         </div>
 
-        {/* Right: Search + Icons */}
-        <div className="flex items-center space-x-4">
-          {/* Search (hidden on mobile) */}
-          <div className="hidden md:flex items-center border px-3 py-1 rounded">
+        
+        {/* Logo and Right-Aligned Hamburger for Mobile */}
+        <div className="flex items-center w-full md:w-auto">
+          <div className="flex-shrink-0">
+            <Link href="/">
+              <Image
+                className="logo object-contain"
+                src="/images/logo/prins_company_logo.jpg"
+                alt="Prins Company Logo"
+                width={250} 
+                height={60}
+                sizes="(max-width: 480px) 100px, (min-width: 768px) 200px, 100px"
+              />
+            </Link>
+          </div>
+          <div className="flex items-center space-x-4 ml-auto md:hidden">
+            {/* Heart Icon */}
+            <button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+            </button>
+
+            {/* Cart Icon */}
+            <button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                />
+              </svg>
+            </button>
+
+            {/* Hamburger Icon */}
+            <button
+              id="menu-btn"
+              className="focus:outline-none"
+              onClick={toggleMobileMenu}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Right: Search + Icons (Desktop) */}
+        <div className="hidden md:flex items-center space-x-4">
+          {/* Search */}
+          <div className="flex items-center border px-3 py-1 rounded">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 text-gray-500"
@@ -103,21 +171,64 @@ const Header: React.FC = () => {
             </button>
             <div
               id="user-menu"
-              className={`absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${userMenuOpen ? "block" : "hidden"
-                }`}
+              className={`absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${
+                userMenuOpen ? "block" : "hidden"
+              }`}
             >
               <ul className="py-2 text-sm text-gray-700">
-                <li>
+                <li className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.5-1.632z"
+                    />
+                  </svg>
                   <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
                     Log In
                   </Link>
                 </li>
-                <li>
+                <li className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.5-1.632z"
+                    />
+                  </svg>
                   <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
                     Sign Up
                   </Link>
                 </li>
-                <li>
+                <li className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.5-1.632z"
+                    />
+                  </svg>
                   <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
                     My Account
                   </Link>
@@ -126,8 +237,8 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          {/* Heart Icon */}
-          <button>
+          {/* Heart Icon (Desktop) */}
+          <button className="hidden md:block">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -144,8 +255,8 @@ const Header: React.FC = () => {
             </svg>
           </button>
 
-          {/* Cart Icon */}
-          <button>
+          {/* Cart Icon (Desktop) */}
+          <button className="hidden md:block">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -158,27 +269,6 @@ const Header: React.FC = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-              />
-            </svg>
-          </button>
-
-          {/* Mobile Menu Button */}
-          <button
-            id="menu-btn"
-            className="md:hidden focus:outline-none"
-            onClick={toggleMobileMenu}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
           </button>
@@ -283,6 +373,47 @@ const Header: React.FC = () => {
         className={`border-t md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}
       >
         <ul className="flex flex-col space-y-2 p-4 text-gray-700 text-sm">
+          <li className="relative">
+            <button
+              className="flex items-center w-full focus:outline-none"
+              onClick={toggleProfileMenu}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.5-1.632z"
+                />
+              </svg>
+              <span>Profile</span>
+            </button>
+            <div
+              ref={profileMenuRef}
+              className={`absolute left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${
+                profileMenuOpen ? "block" : "hidden"
+              }`}
+            >
+              <ul className="py-2 text-sm text-gray-700">
+                <li>
+                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
+                    Log In
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
+                    Register
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </li>
           <li><Link href="/">HOME</Link></li>
           <li><Link href="#">RINGS</Link></li>
           <li><Link href="#">NECKLACES</Link></li>
