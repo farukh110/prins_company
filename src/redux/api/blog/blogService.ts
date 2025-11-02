@@ -1,13 +1,12 @@
-import { TestimonialsResponse } from "@/types/testimonials";
+import { BlogsResponse } from "@/types/blog";
 import { BACKEND } from "@/util/base_url";
 import axios, { AxiosError } from "axios";
 
-const getAllTestimonials = async (): Promise<TestimonialsResponse> => {
+const getAllBlogs = async (): Promise<BlogsResponse> => {
 
     try {
 
-        const response = await axios.get<TestimonialsResponse>(`${BACKEND}/testimonials`);
-
+        const response = await axios.get<BlogsResponse>(`${BACKEND}/blogs`);
         return response.data;
 
     } catch (error: unknown) {
@@ -19,8 +18,9 @@ const getAllTestimonials = async (): Promise<TestimonialsResponse> => {
 
         throw new Error('Error: An unexpected error occurred');
     }
+
 };
 
-export const testimonialService = {
-    getAllTestimonials
+export const blogService = {
+    getAllBlogs
 };

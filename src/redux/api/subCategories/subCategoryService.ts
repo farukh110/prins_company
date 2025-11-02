@@ -1,12 +1,13 @@
 import { CategoryResponse } from "@/types/category";
+import { SubCategoryResponse } from "@/types/subCategory";
 import { BACKEND } from "@/util/base_url";
 import axios, { AxiosError } from "axios";
 
-const getAllCategories = async (): Promise<CategoryResponse> => {
+const getAllSubCategories = async (): Promise<SubCategoryResponse> => {
 
     try {
 
-        const response = await axios.get<CategoryResponse>(`${BACKEND}/categories`);
+        const response = await axios.get<SubCategoryResponse>(`${BACKEND}/categories/rings/subcategories`);
         return response.data;
 
     } catch (error: unknown) {
@@ -19,6 +20,6 @@ const getAllCategories = async (): Promise<CategoryResponse> => {
     }
 };
 
-export const categoryService = {
-    getAllCategories
+export const subCategoryService = {
+    getAllSubCategories
 };
