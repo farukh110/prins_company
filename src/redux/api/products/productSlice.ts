@@ -2,6 +2,7 @@ import {
     createSlice,
     createAsyncThunk,
     PayloadAction,
+    createSelector,
 } from "@reduxjs/toolkit";
 import { productService } from "./productService";
 import {
@@ -12,6 +13,7 @@ import {
     SingleProductResponse,
 } from "@/types/product";
 import { GET_PRODUCT, GET_PRODUCT_TYPE } from "@/constants";
+import type { RootState } from "@/redux/store";
 
 const initialState: ProductState = {
     data: null,
@@ -89,7 +91,12 @@ const productSlice = createSlice({
                 state.loading = false;
                 state.single = {
                     ...raw,
-                    image: parseProductImages(raw.image),
+                    image: parseProductImages(raw.image), // <-- parses the JSON string
+                    // optional fields (safe defaults)
+                    video: raw.video ?? null,
+                    isLabGrown: raw.is_lab_grown ?? false,
+                    skinToneHand: raw.skin_tone_hand ?? null,
+                    customerImages: raw.customer_images ?? null,
                     dia_1_shape: raw.dia_1_shape ?? null,
                     dia_1_pcs: raw.dia_1_pcs ?? null,
                     dia_1_wt: raw.dia_1_wt ?? null,
@@ -107,4 +114,28 @@ const productSlice = createSlice({
 });
 
 export const { clearProductData } = productSlice.actions;
+
+export const selectProductState = (state: RootState) => state.products;
+
+// Then memoize
+export const selectProduct = createSelector(
+    selectProductState,
+    (state) => state.single
+);
+
+export const selectProductLoading = createSelector(
+    selectProductState,
+    (state) => state.loading
+);
+
+export const selectProductError = createSelector(
+    selectProductState,
+    (state) => state.error
+);
+
+export const selectProductCount = createSelector(
+    selectProductState,
+    (state) => state.count
+);
+
 export default productSlice.reducer;
