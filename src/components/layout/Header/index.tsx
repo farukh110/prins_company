@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import './style.css';
+import { useRouter } from "next/navigation";
 
 const Header: React.FC = () => {
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
@@ -10,6 +11,8 @@ const Header: React.FC = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,6 +33,14 @@ const Header: React.FC = () => {
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
   const toggleProfileMenu = () => setProfileMenuOpen((prev) => !prev);
+
+  const goToCart = () => {
+    router.push('/cart');
+  };
+
+  const goToWishlist = () => {
+    router.push('/wishlist');
+  };
 
   return (
     <header className="border-b">
@@ -64,7 +75,7 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center space-x-4 ml-auto md:hidden">
             {/* Heart Icon */}
-            <button>
+            <button className="cursor-pointer" onClick={goToWishlist}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -82,7 +93,7 @@ const Header: React.FC = () => {
             </button>
 
             {/* Cart Icon */}
-            <button>
+            <button className="cursor-pointer" onClick={goToCart}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -148,7 +159,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* User Icon */}
-          <div className="relative" ref={userMenuRef}>
+          <div className="relative cursor-pointer" ref={userMenuRef}>
             <button
               id="user-btn"
               className="flex items-center focus:outline-none"
@@ -178,16 +189,16 @@ const Header: React.FC = () => {
               <ul className="py-2 text-sm text-gray-700">
                 <li className="flex items-center">
                   
-                  <Link href="#" className="block px-4 py-2 w-full hover:bg-gray-100">
+                  <Link href="/login" className="block px-4 py-2 w-full hover:bg-gray-100">
                     Log In
                   </Link>
                 </li>
-                <li className="flex items-center">
+                {/* <li className="flex items-center">
                   
-                  <Link href="#" className="block px-4 py-2 w-full hover:bg-gray-100">
+                  <Link href="/register" className="block px-4 py-2 w-full hover:bg-gray-100">
                     Sign Up
                   </Link>
-                </li>
+                </li> */}
                 <li className="flex items-center">
                   
                   <Link href="#" className="block px-4 py-2 w-full hover:bg-gray-100">
@@ -199,7 +210,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* Heart Icon (Desktop) */}
-          <button className="hidden md:block">
+          <button onClick={goToWishlist} className="hidden md:block cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -217,7 +228,7 @@ const Header: React.FC = () => {
           </button>
 
           {/* Cart Icon (Desktop) */}
-          <button className="hidden md:block">
+          <button onClick={goToCart} className="hidden md:block cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -245,7 +256,7 @@ const Header: React.FC = () => {
               <Link href="/">HOME</Link>
             </li>
             <li className="group">
-              <Link href="#" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
+              <Link href="/rings/category" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
                 RINGS
               </Link>
               <div className="mega-menu hidden group-hover:block absolute left-0 top-full w-full bg-white shadow-lg border-t z-50">
@@ -301,19 +312,19 @@ const Header: React.FC = () => {
             </li>
 
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">NECKLACES</Link>
+              <Link href="/necklaces/category">NECKLACES</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">EARRINGS</Link>
+              <Link href="/earrings/category">EARRINGS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">PENDANTS</Link>
+              <Link href="/pendants/category">PENDANTS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">PINS</Link>
+              <Link href="/pins/category">PINS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">BRACELETS</Link>
+              <Link href="/bracelets/category">BRACELETS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
               <Link href="#">COLLECTIONS</Link>
@@ -363,15 +374,15 @@ const Header: React.FC = () => {
             >
               <ul className="py-2 text-sm text-gray-700">
                 <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
+                  <Link href="/login" className="block px-4 py-2 hover:bg-gray-100">
                     Log In
                   </Link>
                 </li>
-                <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
+                {/* <li>
+                  <Link href="/register" className="block px-4 py-2 hover:bg-gray-100">
                     Register
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </li>

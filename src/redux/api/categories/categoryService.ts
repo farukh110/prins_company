@@ -1,24 +1,41 @@
-import { CategoryResponse } from "@/types/category";
 import { BACKEND } from "@/util/base_url";
 import axios, { AxiosError } from "axios";
+import {
+    CategoryProductsResponse,
+    CategoryResponse,
+} from "@/types/category";
 
-const getAllCategories = async (): Promise<CategoryResponse> => {
-
+export const getAllCategories = async (): Promise<CategoryResponse> => {
+    
     try {
 
-        const response = await axios.get<CategoryResponse>(`${BACKEND}/categories`);
-        return response.data;
+        const { data } = await axios.get<CategoryResponse>(`${BACKEND}/categories`);
+        return data;
 
-    } catch (error: unknown) {
+    } catch (err: unknown) {
 
-        if (error instanceof AxiosError) {
+        const msg = err instanceof AxiosError ? err.message : "Unexpected error";
+        throw new Error(msg);
+    }
+};
 
-            throw new Error(`Error: ${error.message}`);
-        }
-        throw new Error('Error: An unexpected error occurred');
+export const getByCategorySlug = async (slug: string): Promise<CategoryProductsResponse> => {
+    
+    try {
+
+        const { data } = await axios.get<CategoryProductsResponse>(
+            `${BACKEND}/categories/${slug}/products`
+        );
+        return data;
+
+    } catch (err: unknown) {
+
+        const msg = err instanceof AxiosError ? err.message : "Unexpected error";
+        throw new Error(msg);
     }
 };
 
 export const categoryService = {
-    getAllCategories
+    getAllCategories,
+    getByCategorySlug
 };

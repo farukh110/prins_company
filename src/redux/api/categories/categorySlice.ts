@@ -1,43 +1,71 @@
-import { GET_CATEGORIES } from "@/constants";
-import { CategoryResponse, CategoryState } from "@/types/category";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+    CategoryProductsResponse,
+    CategoryResponse,
+    CategoryStoreState,
+} from "@/types/category";
 import { categoryService } from "./categoryService";
+import {
+    GET_BY_CATEGORY_SlUG,
+    GET_CATEGORIES
+} from "@/constants";
 
-const initialState: CategoryState = {
+const initialState: CategoryStoreState = {
     categories: [],
+    selectedCategory: null,
+    products: [],
     loading: false,
-    error: null
+    error: null,
 };
 
 export const getAllCategories = createAsyncThunk<
     CategoryResponse,
     void,
-    { rejectValue: string }>(
-        GET_CATEGORIES,
-        async (_, { rejectWithValue }) => {
-            try {
+    { rejectValue: string }
+>(GET_CATEGORIES, async (_, { rejectWithValue }) => {
 
-                const response = await categoryService.getAllCategories();
-                return response;
+    try {
 
-            } catch (error: unknown) {
+        return await categoryService.getAllCategories()
 
-                if (error instanceof Error) {
+    } catch (e: any) {
 
-                    return rejectWithValue(error.message);
-                }
-                return rejectWithValue('Failed to Get Categories');
-            }
-        });
+        return rejectWithValue(e.message ?? "Failed to load categories");
+    }
+});
 
-const categorySlice = createSlice({
+export const getByCategorySlug = createAsyncThunk<
+    CategoryProductsResponse,
+    { slug: string },
+    { rejectValue: string }
+>(GET_BY_CATEGORY_SlUG, async ({ slug }, { rejectWithValue }) => {
 
-    name: 'category',
+    try {
+
+        return await categoryService.getByCategorySlug(slug);
+
+    } catch (e: any) {
+
+        return rejectWithValue(e.message ?? "Failed to load products");
+    }
+});
+
+const categoryStore = createSlice({
+    name: "category",
     initialState,
     reducers: {
-        reset: (state) => {
+        resetCategories(state) {
             state.categories = [];
             state.loading = false;
+            state.error = null;
+        },
+        resetProducts(state) {
+            state.selectedCategory = null;
+            state.products = [];
+            state.loading = false;
+            state.error = null;
+        },
+        clearError(state) {
             state.error = null;
         },
     },
@@ -53,10 +81,30 @@ const categorySlice = createSlice({
             })
             .addCase(getAllCategories.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload ?? 'unknown error';
+                state.error = action.payload ?? "unknown error";
             });
-    }
+
+        builder
+            .addCase(getByCategorySlug.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getByCategorySlug.fulfilled, (state, action) => {
+                state.loading = false;
+                state.selectedCategory = action.payload.category;
+                state.products = action.payload.products;
+            })
+            .addCase(getByCategorySlug.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload ?? "unknown error";
+            });
+    },
 });
 
-export const { clearError } = categorySlice.actions;
-export default categorySlice.reducer;
+export const {
+    resetCategories,
+    resetProducts,
+    clearError,
+} = categoryStore.actions;
+
+export default categoryStore.reducer;

@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react';
 import { Loader2, ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Login: React.FC = () => {
+
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -12,6 +15,10 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 2000);
   };
+
+  // const createNewAccount = () => {
+  //   router.push('/register');
+  // };
 
   return (
     <div className="flex items-center justify-center bg-gray-50 p-12">
@@ -30,6 +37,7 @@ const Login: React.FC = () => {
                 className="text-[14px] poppins-light cursor-pointer flex items-center whitespace-nowrap hover:text-blue-700 transition-colors"
                 data-trk-type="button"
                 data-trk-title="Create New Account"
+                // onClick={createNewAccount}
               >
                 <span>Create New Account</span>
                 <ArrowRight className="inline-block w-5 h-5 ml-1" />
@@ -85,6 +93,7 @@ const Login: React.FC = () => {
             className="flex items-center cursor-pointer text-[#161618] hover:text-blue-700 transition-colors"
             data-trk-type="button"
             data-trk-title="Register Now"
+            // onClick={createNewAccount}
           >
             <span className='font-semibold poppins-semibold'>Register Now</span>
             <ArrowRight className="inline-block w-5 h-5 ml-1" />

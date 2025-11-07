@@ -1,8 +1,18 @@
+"use client";
+
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import ProductMedia from "@/components/ProductMedia";
 import ProductRightSide from "@/components/ProductRightSide";
+import { useAppDispatch } from "@/hooks/redux";
+import { useParams } from "next/navigation";
 
 const ProductDetail: React.FC = () => {
+
+  const { slug } = useParams<{ slug: string }>();
+  const dispatch = useAppDispatch();
+
+  console.log('product details: ', slug);
+
   return (
     <>
       <Breadcrumb />

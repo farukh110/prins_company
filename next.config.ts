@@ -11,14 +11,30 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'shop.bs2vs.com',
+        port: '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'shop.bs2vs.com',
+        port: '',
+        pathname: '/uploads/**',
+      },
+    ],
+  },
 };
 
-// export default nextConfig;
+export default nextConfig;
 
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {
 //   output: 'export',
-//   basePath: '/prins_company',   
+//   basePath: '/prins_company',
 //   images: {
 //     unoptimized: true,
 //   },

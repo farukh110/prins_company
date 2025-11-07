@@ -8,12 +8,23 @@ import Overview from "@/components/Overview";
 import ProductCard from "@/components/ProductCard";
 import RelatedCategories from "@/components/RelatedCategories";
 import TopCategories from "@/components/TopCategories";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { getByCategorySlug } from "@/redux/api/categories/categorySlice";
 import { HelpCircle, Sliders, SortDesc, X } from "lucide-react";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Category: React.FC = () => {
+
+    const { slug } = useParams<{ slug: string }>();
+    const dispatch = useAppDispatch();
+
+    const { selectedCategory, products, loading, error } = useAppSelector(
+        (state) => state.category
+    );
+
     const [selectedSort, setSelectedSort] = useState("Best Seller");
-    const [isFilterOpen, setIsFilterOpen] = useState(false); // State for mobile drawer
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const sortOptions = [
         "Best Seller",
@@ -23,10 +34,49 @@ const Category: React.FC = () => {
         "Customer Rating",
     ];
 
+    useEffect(() => {
+        if (slug) {
+            dispatch(getByCategorySlug({ slug }));
+        }
+    }, [dispatch, slug]);
+
     const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const option = event.target.value;
         setSelectedSort(option);
         console.log(`Selected sort: ${option}`);
+    };
+
+    if (loading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <p className="text-lg">Loading…</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex min-h-screen items-center justify-center text-red-600">
+                <p>Error: {error}</p>
+            </div>
+        );
+    }
+
+    if (!selectedCategory) {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <p>Category not found.</p>
+            </div>
+        );
+    }
+
+    const getFirstImage = (json: string): string => {
+        try {
+            const arr = JSON.parse(json);
+            return Array.isArray(arr) && arr[0] ? arr[0] : "/images/products/rings/1.webp";
+        } catch {
+            return "/images/products/rings/1.webp";
+        }
     };
 
     return (
@@ -48,7 +98,7 @@ const Category: React.FC = () => {
                                 <div className="flex items-center justify-between gap-1">
                                     <div className="flex items-center gap-1 flex-grow">
                                         <h2 className="flex gap-1 capitalize text-lg md:text-2xl">
-                                            534 Custom Rings
+                                            {products.length} {selectedCategory.name}
                                         </h2>
                                         <span className="relative cursor-pointer group">
                                             <HelpCircle className="inline-block text-xl" />
@@ -128,60 +178,43 @@ const Category: React.FC = () => {
                             </div>
 
                             <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-3 md:gap-3 lg:gap-6 gap-1">
-                                <ProductCard
+
+                                {products.map((p) => {
+                                    const firstImg = getFirstImage(p.image);
+
+                                    return (
+                                        <ProductCard
+                                            key={p.id}
+                                            href={`/product/${p.id}`}
+                                            title={p.name}
+                                            price={`$${p.price}`}
+                                            imageSrc={firstImg}
+                                            hoverImageSrc={firstImg}
+                                            swatches={[
+                                                "#1e40af",
+                                                "#9333ea",
+                                                "#991b1b",
+                                                "#000",
+                                                "#a855f7",
+                                            ]}
+                                        />
+                                    );
+                                })}
+
+                                {/* <ProductCard
                                     href="/p/oval-london-blue-topaz-split-shank-ring"
                                     title="Oval London Blue Topaz Split Shank Ring with Trio Diamonds"
                                     price="$349 - $2,189"
                                     imageSrc="/images/products/rings/1.webp"
                                     hoverImageSrc="/images/products/rings/1_hover.webp"
                                     swatches={['#1e40af', '#9333ea', '#991b1b', '#000', '#a855f7']}
-                                />
-                                <ProductCard
-                                    href="/p/oval-london-blue-topaz-split-shank-ring"
-                                    title="Oval London Blue Topaz Split Shank Ring with Trio Diamonds"
-                                    price="$349 - $2,189"
-                                    imageSrc="/images/products/rings/2.webp"
-                                    hoverImageSrc="/images/products/rings/1_hover.webp"
-                                    swatches={['#1e40af', '#9333ea', '#991b1b', '#000', '#a855f7']}
-                                />
-                                <ProductCard
-                                    href="/p/oval-london-blue-topaz-split-shank-ring"
-                                    title="Oval London Blue Topaz Split Shank Ring with Trio Diamonds"
-                                    price="$349 - $2,189"
-                                    imageSrc="/images/products/rings/3.webp"
-                                    hoverImageSrc="/images/products/rings/1_hover.webp"
-                                    swatches={['#1e40af', '#9333ea', '#991b1b', '#000', '#a855f7']}
-                                />
-                                <ProductCard
-                                    href="/p/oval-london-blue-topaz-split-shank-ring"
-                                    title="Oval London Blue Topaz Split Shank Ring with Trio Diamonds"
-                                    price="$349 - $2,189"
-                                    imageSrc="/images/products/rings/4.webp"
-                                    hoverImageSrc="/images/products/rings/1_hover.webp"
-                                    swatches={['#1e40af', '#9333ea', '#991b1b', '#000', '#a855f7']}
-                                />
-                                <ProductCard
-                                    href="/p/oval-london-blue-topaz-split-shank-ring"
-                                    title="Oval London Blue Topaz Split Shank Ring with Trio Diamonds"
-                                    price="$349 - $2,189"
-                                    imageSrc="/images/products/rings/5.webp"
-                                    hoverImageSrc="/images/products/rings/1_hover.webp"
-                                    swatches={['#1e40af', '#9333ea', '#991b1b', '#000', '#a855f7']}
-                                />
-                                <ProductCard
-                                    href="/p/oval-london-blue-topaz-split-shank-ring"
-                                    title="Oval London Blue Topaz Split Shank Ring with Trio Diamonds"
-                                    price="$349 - $2,189"
-                                    imageSrc="/images/products/rings/6.webp"
-                                    hoverImageSrc="/images/products/rings/1_hover.webp"
-                                    swatches={['#1e40af', '#9333ea', '#991b1b', '#000', '#a855f7']}
-                                />
+                                /> */}
 
                                 <div className="col-span-full text-center mt-8">
-                                    <p className="font-normal text-gray-600">Viewed 33 of 2707</p>
+                                    <p className="font-normal text-gray-600">Viewed {products.length} of {products.length}</p>
                                     <div className="mt-4">
                                         <progress
-                                            value="1.2190616919098634"
+                                            value={(products.length / Math.max(products.length, 1)) * 100}
                                             max="100"
                                             className="w-full max-w-[336px] h-2 rounded-full overflow-hidden bg-gray-200 [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-black [&::-moz-progress-bar]:bg-black"
                                         />
