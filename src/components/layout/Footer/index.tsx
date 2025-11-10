@@ -538,14 +538,14 @@ const Footer: React.FC = () => {
                 Site Map
               </Link>
               <Link
-                href="/b/privacy-and-security"
+                href="/privacy-and-security"
                 target="_blank"
                 className="pr-2 text-sm underline hover:text-blue-600"
               >
                 Privacy Policy
               </Link>
               <Link
-                href="/b/term-of-use"
+                href="/term-of-use"
                 target="_blank"
                 className="pr-2 text-sm underline hover:text-blue-600"
               >
@@ -558,7 +558,6 @@ const Footer: React.FC = () => {
               >
                 Do Not Sell My Personal Information
               </Link>
-              <span className="cursor-pointer">🧑‍🦯</span>
             </li>
           </ul>
         </div>

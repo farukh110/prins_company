@@ -199,7 +199,7 @@ const Header: React.FC = () => {
           <div className="relative cursor-pointer" ref={userMenuRef}>
             <button
               id="user-btn"
-              className="flex items-center gap-2 focus:outline-none"
+              className="flex items-center cursor-pointer gap-2 focus:outline-none"
               onClick={toggleUserMenu}
             >
               {user ? (
@@ -244,11 +244,11 @@ const Header: React.FC = () => {
                         My Account
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/orders" className="block px-4 py-2 hover:bg-gray-100">
                         Orders
                       </Link>
-                    </li>
+                    </li> */}
                     <li>
                       <button
                         onClick={() => {
