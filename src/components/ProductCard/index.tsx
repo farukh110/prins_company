@@ -2,8 +2,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useState } from 'react'
 import { Heart, Eye } from 'lucide-react'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { addWishlistItem } from '@/redux/api/auth/authSlice'
+import { AddWishlistPayload } from '@/types/auth'
+import { useRouter } from 'next/navigation'
 
 type ProductCardProps = {
+  ProductId: string;
   href: string
   title: string
   price: string
@@ -14,6 +19,7 @@ type ProductCardProps = {
 }
 
 const ProductCard: FC<ProductCardProps> = ({
+  ProductId,
   href,
   title,
   price,
@@ -22,11 +28,48 @@ const ProductCard: FC<ProductCardProps> = ({
   alt = '',
   swatches = []
 }) => {
-  const [isHovered, setIsHovered] = useState(false)
+
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { user, loading: AuthLoading, error: AuthError, token } = useAppSelector((s) => s.auth);
+
+  // console.log('user: ', user);
+
+  console.log('ProductId: ', ProductId);
+
+  const addToWishlist = async () => {
+
+    if (!user?.customer_id) {
+      alert('Please log in to add items to your wishlist.');
+      router.push('/login');
+      return;
+    }
+
+    if (isAdding) return;
+
+    const payload: AddWishlistPayload = {
+      customer_id: user.customer_id,
+      product_id: Number(ProductId), 
+    };
+
+    setIsAdding(true);
+    try {
+      await dispatch(addWishlistItem(payload)).unwrap();
+      alert('Added to wishlist!');
+      router.push('/wishlist');
+    } catch (err: any) {
+      alert(err || 'Failed to add to wishlist');
+    } finally {
+      setIsAdding(false);
+    }
+  };
 
   return (
     <article
-      className="pb-2 hover:shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] transition-shadow duration-300 bg-white rounded-lg overflow-hidden min-h-[371px] max-h-[462px]"
+      className="pt-6 pb-2 hover:shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] transition-shadow duration-300 bg-white rounded-lg overflow-hidden min-h-[371px] max-h-[462px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -58,7 +101,8 @@ const ProductCard: FC<ProductCardProps> = ({
 
         <button
           aria-label="wishlist"
-          className="absolute top-2.5 right-2.5 p-1 rounded-full shadow-[0px_1px_10px_0px_rgba(0,0,0,0.05)] bg-white/30 hover:bg-white/70 transition"
+          onClick={addToWishlist}
+          className="absolute top-2.5 cursor-pointer right-2.5 p-1 rounded-full shadow-[0px_1px_10px_0px_rgba(0,0,0,0.05)] bg-white/30 hover:bg-white/70 transition"
         >
           <Heart size={18} strokeWidth={1.5} className="text-gray-800 opacity-70" />
         </button>
@@ -94,4 +138,4 @@ const ProductCard: FC<ProductCardProps> = ({
   )
 }
 
-export default ProductCard
+export default ProductCard;

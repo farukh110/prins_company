@@ -78,7 +78,7 @@ const ReviewSlider: React.FC = () => {
               >
                 <div className="flex flex-col items-center bg-[#FAFAFB] p-4 min-h-[372px]">
                   <a href={`/p/${testimonial.id}`} className="no-underline">
-                    {/* <Image
+                    <Image
                       src={testimonial.image}
                       alt={testimonial.title}
                       width={100}
@@ -86,7 +86,7 @@ const ReviewSlider: React.FC = () => {
                       className="border border-gray-400 object-cover max-[767px]:max-w-full"
                       loading="lazy"
                       sizes="(max-width: 767px) 100vw, 100px"
-                    /> */}
+                    />
                   </a>
                   <a
                     href={`/p/${testimonial.id}`}

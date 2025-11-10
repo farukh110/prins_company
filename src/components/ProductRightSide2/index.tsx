@@ -4,11 +4,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Star, Gift, Info, Heart, Truck, ChevronDown, Mail, Phone, Plus, FileText, Diamond, Gem, Sparkles } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { useAppSelector } from '@/hooks/redux';
 import { selectProduct } from '@/redux/api/products/productSlice';
-import { addItem } from '@/redux/api/cart/cartSlice';
-import { useRouter } from 'next/navigation';
-import { parseProductImages } from '@/types/product';
 
 // Default fallback data (only for UI preview)
 const DEFAULT_METAL_ICONS: Record<string, string> = {
@@ -24,14 +21,10 @@ const DEFAULT_METAL_ICONS: Record<string, string> = {
 const RING_SIZES = Array.from({ length: 22 }, (_, i) => (i + 3) * 0.5).map(v => v.toFixed(1));
 
 const ProductRightSide: React.FC = () => {
-
   const product = useAppSelector(selectProduct);
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
   const [isGemstoneOpen, setIsGemstoneOpen] = useState(false);
   const [isDiamondOpen, setIsDiamondOpen] = useState(false);
-  const router = useRouter();
-
-  const dispatch = useAppDispatch();
 
   if (!product) {
     return (
@@ -94,27 +87,8 @@ const ProductRightSide: React.FC = () => {
   ]) as any[];
 
   const addToCart = () => {
-    
-    if (!product) return;
 
-    const imageUrls = parseProductImages(product.image);
-    const firstImage = imageUrls[0] || '/images/placeholder.jpg';
-
-    const payload = {
-      id: product.id || product.style_no || product.item_no,
-      name: product.name,
-      price: product.price,
-      originalPrice: product.original_price,
-      metal: product.metal,
-      size: product.size,
-      totalCarat: product.total_carat || '4.03',
-      image: firstImage, // ← now a valid URL
-      gemstoneQuality: product.gemstone_quality,
-    };
-
-    dispatch(addItem(payload));
-    alert(`${product.name} added to cart!`);
-    router.push("/cart");
+    console.log("add to cart");
   };
 
   return (
@@ -150,8 +124,60 @@ const ProductRightSide: React.FC = () => {
           <span>Pay as low as <span className="font-medium text-gray-900">${(parseFloat(product.price) / 2).toFixed(2)}/month</span> (0% Interest)</span>
           <span className="underline cursor-pointer">Select Plan</span>
         </div>
-
+        {/* <div className="mt-3 border border-gray-300 rounded-md">
+          <div className="bg-yellow-50 border border-yellow-500 px-3 py-2 flex items-center">
+            <Gift className="text-yellow-600 mr-2" size={18} />
+            <span className="text-sm text-yellow-800">
+              {discount > 0 ? `${discount}% OFF` : 'Special Offer'} + Free Gifts <span className="underline">Applied</span>
+            </span>
+          </div>
+        </div> */}
       </div>
+
+      {/* Gemstone Quality */}
+      {/* <div className="border-t border-gray-200 pb-4 md:pb-2">
+        <div className="flex justify-between items-center py-2">
+          <span className="font-medium text-gray-900">Gemstone Quality</span>
+          <span className="text-gray-600 text-sm">: {gemstoneQuality}</span>
+        </div>
+        <div className="flex overflow-x-auto gap-2 md:gap-3 py-2">
+          {gemstoneOptions.map((option: any) => (
+            <div key={option.id} className="flex-shrink-0 flex flex-col items-center cursor-pointer">
+              <span className={`border-2 ${option.id === 'premium' ? 'border-blue-600' : 'border-transparent'} rounded-full p-1`}>
+                <video
+                  className="w-10 h-10 md:w-12 md:h-12 object-cover rounded-full"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                >
+                  <source src={option.videoSrc} type="video/mp4" />
+                  <Image
+                    src="/images/products/placeholder-fallback.jpg"
+                    alt="Gemstone"
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
+                  />
+                </video>
+              </span>
+              <small className="text-center text-xs text-gray-700 mt-1">{option.title}</small>
+              {option.label && (
+                <span className="mt-1 bg-yellow-100 text-yellow-800 text-xs px-1 rounded flex items-center">
+                  {option.label} <Info className="ml-1" size={12} />
+                </span>
+              )}
+            </div>
+          ))}
+          <div className="flex-shrink-0 ml-4 hidden md:block">
+            <button className="flex flex-col items-center text-gray-600 hover:text-gray-900">
+              <Sparkles size={20} />
+              <span className="text-xs mt-1">Compare</span>
+            </button>
+          </div>
+        </div>
+      </div> */}
 
       {/* Total Carat Weight */}
       <div className="border-t border-gray-200 pb-4 md:pb-2">
@@ -259,6 +285,14 @@ const ProductRightSide: React.FC = () => {
         </Link>
       </div>
 
+      {/* Engraving */}
+      {/* <div>
+        <button className="w-full flex items-center justify-center gap-2 bg-gray-200 border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-900 hover:border-gray-600">
+          <Plus size={20} />
+          <span>Add Free Engraving</span>
+        </button>
+      </div> */}
+
       {/* Accordions */}
       <div className="mt-4 space-y-2">
         {/* Product Overview */}
@@ -285,6 +319,58 @@ const ProductRightSide: React.FC = () => {
           </div>
         </div>
 
+        {/* Gemstone Details */}
+        {/* <div className="border-t border-gray-200">
+          <button
+            className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 text-gray-900 text-sm font-medium hover:bg-gray-200"
+            onClick={() => setIsGemstoneOpen(!isGemstoneOpen)}
+          >
+            Gemstone Details
+            <ChevronDown className={isGemstoneOpen ? 'rotate-180' : ''} size={20} />
+          </button>
+          <div className={`overflow-hidden transition-all duration-300 ${isGemstoneOpen ? 'max-h-[1000px]' : 'max-h-0'}`}>
+            <div className="px-3 py-3 text-sm text-gray-700">
+              <div className="flex justify-between items-center mb-2">
+                <p className="uppercase text-sm">Gemstone Information</p>
+                <button className="text-blue-600 underline text-sm">Know more</button>
+              </div>
+              <div className="grid grid-cols-8 text-xs border border-gray-300">
+                <p className="col-span-5 bg-gray-100 border-r border-b p-2">Total Carat Weight</p>
+                <p className="col-span-3 border-b p-2">{totalCarat}</p>
+                <p className="col-span-5 bg-gray-100 border-r border-b p-2">Quality Grade</p>
+                <p className="col-span-3 border-b p-2">{gemstoneQuality}</p>
+              </div>
+            </div>
+          </div>
+        </div> */}
+
+        {/* {hasDiamonds && (
+          <div className="border-t border-gray-200">
+            <button
+              className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 text-gray-900 text-sm font-medium hover:bg-gray-200"
+              onClick={() => setIsDiamondOpen(!isDiamondOpen)}
+            >
+              Diamond Details
+              <ChevronDown className={isDiamondOpen ? 'rotate-180' : ''} size={20} />
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${isDiamondOpen ? 'max-h-[1000px]' : 'max-h-0'}`}>
+              <div className="px-3 py-3 text-sm text-gray-700">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="uppercase text-sm">Diamond Information</p>
+                  <button className="text-blue-600 underline text-sm">Know more</button>
+                </div>
+                <div className="grid grid-cols-8 text-xs border border-gray-300">
+                  <p className="col-span-5 bg-gray-100 border-r border-b p-2">No. of Diamonds</p>
+                  <p className="col-span-3 border-b p-2">{diamondCount}</p>
+                  <p className="col-span-5 bg-gray-100 border-r border-b p-2">Diamond Total Weight (ct. tw.)</p>
+                  <p className="col-span-3 border-b p-2">{diamondWeight.toFixed(2)}</p>
+                  <p className="col-span-5 bg-gray-100 border-r border-b p-2">Quality Grade</p>
+                  <p className="col-span-3 border-b p-2">{diamondQuality}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )} */}
       </div>
     </div>
   );

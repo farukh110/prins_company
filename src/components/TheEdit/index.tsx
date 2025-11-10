@@ -111,7 +111,7 @@ const TheEditSlider: React.FC = () => {
                                 >
                                     <span className="block relative">
                                         <Image
-                                            src="/images/blogs/5.webp"
+                                            src={post.image}
                                             alt={post.title}
                                             width={370}
                                             height={370}

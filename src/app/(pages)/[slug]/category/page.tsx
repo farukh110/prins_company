@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { getByCategorySlug } from "@/redux/api/categories/categorySlice";
 import { HelpCircle, Sliders, SortDesc, X } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 const Category: React.FC = () => {
 
@@ -25,6 +25,7 @@ const Category: React.FC = () => {
 
     const [selectedSort, setSelectedSort] = useState("Best Seller");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+
 
     const sortOptions = [
         "Best Seller",
@@ -185,6 +186,7 @@ const Category: React.FC = () => {
                                     return (
                                         <ProductCard
                                             key={p.id}
+                                            ProductId={p.id}
                                             href={`/product/${p.id}`}
                                             title={p.name}
                                             price={`$${p.price}`}

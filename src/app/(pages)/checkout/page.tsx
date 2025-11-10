@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import ContactSection from '@/components/checkout/ContactSection';
 import DeliverySection from '@/components/checkout/DeliverySection';
@@ -6,68 +6,132 @@ import ExpressCheckout from '@/components/checkout/ExpressCheckout';
 import OrderStrip from '@/components/checkout/OrderStrip';
 import OrderSummary from '@/components/checkout/OrderSummary';
 import PaymentSection from '@/components/checkout/PaymentSection';
-import { Lock, ChevronLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { cartSlice, selectCartSnapshot } from '@/redux/api/cart/cartSlice';
+import {
+  performCheckout,
+  selectCheckoutSummary,
+  selectCheckoutLoading,
+  selectCheckoutError,
+} from '@/redux/api/checkout/checkoutSlice';
+import { CheckoutForm } from '@/types/checkout';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect, useState, useCallback } from 'react';
 
 const Checkout: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-    const [showOrderDetails, setShowOrderDetails] = useState<boolean>(false);
+  const { items, subtotal } = useAppSelector(selectCartSnapshot);
+  const checkoutSummary = useAppSelector(selectCheckoutSummary);
+  const checkoutLoading = useAppSelector(selectCheckoutLoading);
+  const checkoutError = useAppSelector(selectCheckoutError);
 
-    return (
-        <>
-            <div className="bg-[#F5F5F6]">
-                <h1
-                    className="text-xl md:text-2xl font-bold text-center px-2 py-4 md:px-0 md:py-4 lg:px-4 bg-gray-400 md:bg-transparent mx-auto border-b-2 border-gray-500 md:border-none"
-                    id="checkoutHeading"
-                >
-                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2 md:gap-4 h-full">
+  const [hydrated, setHydrated] = useState(false);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
 
-                        <div className="hidden md:flex text-[12px] items-center justify-start">
-                            <a
-                                href="/my-cart"
-                                aria-label="back"
-                                className="flex items-center text-[#161618] font-medium hover:no-underline"
-                                tabIndex={0}
-                                data-trk-type="link"
-                                data-trk-title="back"
-                                rel="follow"
-                            >
-                                <ChevronLeft className='text-[#161618]' size={24} />
-                                <span className="ml-2 text-[#161618]">Bag</span>
-                            </a>
-                        </div>
+  const [form, setForm] = useState<CheckoutForm>({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    state: '',
+    zipcode: '',
+    country: 'United States',
+  });
 
-                        <div className="flex items-center justify-center gap-2 col-span-3 md:col-span-1">
-                            <Lock size={24} className="mb-1" />
-                            <span className='text-[24px] text-[#161618] poppins-medium'>Secure Checkout</span>
-                        </div>
+  useEffect(() => {
+    const encoded = searchParams.get("cart");
+    if (!encoded) {
+      setHydrated(true);
+      return;
+    }
+    try {
+      const payload = JSON.parse(Buffer.from(encoded, "base64").toString());
+      dispatch(cartSlice.actions.clearCart());
+      payload.items.forEach((item: any) => {
+        for (let i = 0; i < item.quantity; i++) {
+          dispatch(cartSlice.actions.addItem({ ...item, quantity: undefined }));
+        }
+      });
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete("cart");
+      window.history.replaceState({}, "", cleanUrl);
+    } catch (e) {
+      console.error("Failed to restore cart", e);
+    } finally {
+      setHydrated(true);
+    }
+  }, [searchParams, dispatch]);
 
-                        <div className="hidden md:block" />
-                    </div>
-                </h1>
-            </div>
+  useEffect(() => {
+    if (checkoutSummary) {
+      // router.push(`/checkout/success?checkout_id=${checkoutSummary.checkout_id}`);
+    }
+  }, [checkoutSummary, router]);
 
-            <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-0 bg-[#FAFAFB]">
-                <div className="max-w-[1280px] mx-auto">
-                    <div className="flex flex-col lg:flex-row items-start gap-4 lg:gap-10 pt-6 lg:pt-8 pb-14 lg:pb-18">
-                        {/* Left Column */}
-                        <div className="w-full lg:max-w-[732px]">
-                            <OrderStrip total="$1,034" showDetails={showOrderDetails} setShowDetails={setShowOrderDetails} />
-                            <ExpressCheckout />
-                            <ContactSection />
-                            <DeliverySection />
-                            <PaymentSection />
-                        </div>
+  const updateForm = useCallback(<K extends keyof CheckoutForm>(key: K, value: CheckoutForm[K]) => {
+    setForm(prev => ({ ...prev, [key]: value }));
+  }, []);
 
-                        {/* Right Column - Desktop Order Summary */}
-                        <div className="hidden lg:block w-full lg:max-w-[508px] pr-4">
-                            <OrderSummary />
-                        </div>
-                    </div>
+  const handlePay = async () => {
+    if (!items.length) return;
+
+    const payload = {
+      ...form,
+      products: JSON.stringify(items),
+    };
+
+    await dispatch(performCheckout(payload));
+  };
+
+  if (!hydrated) return null;
+  const isEmpty = items.length === 0;
+
+  return (
+    <>
+      <div className="bg-[#F5F5F6]">…</div>
+
+      <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-0 bg-[#FAFAFB]">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="flex flex-col lg:flex-row items-start gap-4 lg:gap-10 pt-6 lg:pt-8 pb-14 lg:pb-18">
+
+            <div className="w-full lg:max-w-[732px] space-y-6">
+              <OrderStrip
+                total={`$${subtotal.toFixed(2)}`}
+                showDetails={showOrderDetails}
+                setShowDetails={setShowOrderDetails}
+                items={items}
+                subtotal={subtotal}
+              />
+              <ExpressCheckout />
+
+              <ContactSection values={form} onChange={updateForm} />
+              <DeliverySection values={form} onChange={updateForm} />
+
+              <PaymentSection
+                onPay={handlePay}
+                disabled={checkoutLoading || isEmpty}
+                loading={checkoutLoading}
+              />
+
+              {checkoutError && (
+                <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
+                  {checkoutError}
                 </div>
+              )}
             </div>
-        </>
-    )
-}
+
+            <div className="hidden lg:block w-full lg:max-w-[508px] pr-4">
+              <OrderSummary />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Checkout;

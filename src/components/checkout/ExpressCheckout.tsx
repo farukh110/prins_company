@@ -18,9 +18,9 @@ const ExpressCheckout = () => {
                     <button className="bg-yellow-400 hover:bg-yellow-500 w-full text-black font-medium py-3 px-6 rounded transition">
                         <Image className="mx-auto" src="/images/payments/paypal.svg" alt="Amazon Pay" width={80} height={20} />
                     </button>
-                    <button className="bg-orange-400 hover:bg-orange-500 w-full text-white font-medium py-3 px-6 rounded transition flex items-center gap-2">
+                    {/* <button className="bg-orange-400 hover:bg-orange-500 w-full text-white font-medium py-3 px-6 rounded transition flex items-center gap-2">
                         <Image className="mx-auto" src="/images/payments/amazon.svg" alt="Amazon Pay" width={80} height={50} />
-                    </button>
+                    </button> */}
                 </div>
             </div>
 

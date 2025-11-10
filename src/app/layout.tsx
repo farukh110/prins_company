@@ -5,6 +5,7 @@ import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Providers } from "@/redux/providers";
+import HydrateAuth from "@/components/HydrateAuth";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} font-sans antialiased`}>
         <Providers>
+          <HydrateAuth />
           <TopBar />
           <Header />
           <main>{children}</main>

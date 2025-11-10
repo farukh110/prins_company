@@ -85,27 +85,34 @@ export interface ProductState {
   loading: boolean;
   error: string | null;
   count: number;
-}
+};
 
-/* Safe image parser – returns string[] always */
-export const parseProductImages = (image: string | null | undefined): string[] => {
+export const parseProductImages = (
+  image: string | string[] | null | undefined
+): string[] => {
+
+  if (Array.isArray(image)) {
+    return image
+      .filter((u): u is string => typeof u === "string")
+      .map(u => u.trim())
+      .filter(u => u && u.startsWith("http"));
+  }
+
   if (!image || image.trim() === "") return [];
 
   try {
     const parsed = JSON.parse(image);
     if (Array.isArray(parsed)) {
       return parsed
-        .filter((url): url is string => typeof url === "string")
-        .map(url => url.trim())
-        .filter(url => url && url.startsWith("http"));
+        .filter((u): u is string => typeof u === "string")
+        .map(u => u.trim())
+        .filter(u => u && u.startsWith("http"));
     }
-  } catch (e) {
-    // JSON failed – fall back to comma split (legacy support)
-    console.warn("Failed to parse product image JSON, falling back to split:", image);
+  } catch {
   }
 
   return image
     .split(",")
     .map(s => s.trim())
-    .filter(url => url && url.startsWith("http"));
+    .filter(u => u && u.startsWith("http"));
 };

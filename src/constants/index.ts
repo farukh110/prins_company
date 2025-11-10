@@ -19,6 +19,7 @@ export const UPDATE_USER = "UPDATE_USER";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const RESET_PASSWORD = "RESET_PASSWORD";
 
+export const CHECKOUT = "CHECKOUT";
 export const CREATE_ORDER = "CREATE_ORDER";
 export const ADD_RATING = "ADD_RATING";
 
