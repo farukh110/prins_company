@@ -3,6 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import './style.css';
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { selectCartTotalQuantity } from "@/redux/api/cart/cartSlice";
+import { getWishlistItems, selectAuthToken, selectCurrentUser, selectWishlistCount } from "@/redux/api/auth/authSlice";
 
 const Header: React.FC = () => {
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
@@ -10,6 +14,20 @@ const Header: React.FC = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectAuthToken);
+  const wishlistCount = useAppSelector(selectWishlistCount);
+  const cartQty = useAppSelector(selectCartTotalQuantity);
+
+  useEffect(() => {
+    if (user?.customer_id && token && wishlistCount === 0) {
+      dispatch(getWishlistItems(user.customer_id));
+    }
+  }, [user?.customer_id, token, wishlistCount, dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -31,10 +49,71 @@ const Header: React.FC = () => {
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
   const toggleProfileMenu = () => setProfileMenuOpen((prev) => !prev);
 
+  const goToCart = () => {
+    router.push('/cart');
+  };
+
+  const goToWishlist = () => {
+    router.push('/wishlist');
+  };
+
+  const CartIcon = ({ className = "" }: { className?: string }) => (
+    <button
+      onClick={goToCart}
+      className={`relative cursor-pointer ${className}`}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="size-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+        />
+      </svg>
+
+      {/* Badge */}
+      {cartQty > 0 && (
+        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-medium text-white">
+          {cartQty}
+        </span>
+      )}
+    </button>
+  );
+
+  const WishlistIcon = ({ className = "" }: { className?: string }) => (
+    <button onClick={goToWishlist} className={`relative cursor-pointer ${className}`}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="size-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+        />
+      </svg>
+      {wishlistCount > 0 && (
+        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-medium text-white">
+          {wishlistCount}
+        </span>
+      )}
+    </button>
+  );
+
   return (
     <header className="border-b">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-        
+
         {/* Customer Support (hidden on mobile) */}
         <div className="hidden md:flex items-center space-x-2 text-sm text-gray-700">
           <span className="poppins-regular text-[13px]">24/7 Customer Support</span>
@@ -47,7 +126,7 @@ const Header: React.FC = () => {
           </Link>
         </div>
 
-        
+
         {/* Logo and Right-Aligned Hamburger for Mobile */}
         <div className="flex items-center w-full md:w-auto">
           <div className="flex-shrink-0">
@@ -56,7 +135,7 @@ const Header: React.FC = () => {
                 className="logo object-contain"
                 src="/images/logo/prins_company_logo.jpg"
                 alt="Prins Company Logo"
-                width={250} 
+                width={250}
                 height={60}
                 sizes="(max-width: 480px) 100px, (min-width: 768px) 200px, 100px"
               />
@@ -64,40 +143,9 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center space-x-4 ml-auto md:hidden">
             {/* Heart Icon */}
-            <button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                />
-              </svg>
-            </button>
-
+            <WishlistIcon />
             {/* Cart Icon */}
-            <button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                />
-              </svg>
-            </button>
+            <CartIcon />
 
             {/* Hamburger Icon */}
             <button
@@ -148,91 +196,87 @@ const Header: React.FC = () => {
           </div>
 
           {/* User Icon */}
-          <div className="relative" ref={userMenuRef}>
+          <div className="relative cursor-pointer" ref={userMenuRef}>
             <button
               id="user-btn"
-              className="flex items-center focus:outline-none"
+              className="flex items-center cursor-pointer gap-2 focus:outline-none"
               onClick={toggleUserMenu}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.5-1.632z"
-                />
-              </svg>
+              {user ? (
+                <>
+                  {/* Optional: Avatar */}
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-medium text-gray-700">
+                    {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                  </div>
+                  <span className="text-sm font-medium text-gray-900 hidden lg:block">
+                    {user.name || user.email?.split("@")[0]}
+                  </span>
+                </>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.118a7.5 7.5 0 0115 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.5-1.632z"
+                  />
+                </svg>
+              )}
             </button>
+
+            {/* Dropdown */}
             <div
               id="user-menu"
-              className={`absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${
-                userMenuOpen ? "block" : "hidden"
-              }`}
+              className={`absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50 ${userMenuOpen ? "block" : "hidden"
+                }`}
             >
               <ul className="py-2 text-sm text-gray-700">
-                <li className="flex items-center">
-                  
-                  <Link href="#" className="block px-4 py-2 w-full hover:bg-gray-100">
-                    Log In
-                  </Link>
-                </li>
-                <li className="flex items-center">
-                  
-                  <Link href="#" className="block px-4 py-2 w-full hover:bg-gray-100">
-                    Sign Up
-                  </Link>
-                </li>
-                <li className="flex items-center">
-                  
-                  <Link href="#" className="block px-4 py-2 w-full hover:bg-gray-100">
-                    My Account
-                  </Link>
-                </li>
+                {user ? (
+                  <>
+                    <li>
+                      <Link href="/customer/account" className="block px-4 py-2 hover:bg-gray-100">
+                        My Account
+                      </Link>
+                    </li>
+                    {/* <li>
+                      <Link href="/orders" className="block px-4 py-2 hover:bg-gray-100">
+                        Orders
+                      </Link>
+                    </li> */}
+                    <li>
+                      <button
+                        onClick={() => {
+                          // dispatch(logout());
+                          router.push("/login");
+                        }}
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      >
+                        Log Out
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <Link href="/login" className="block px-4 py-2 hover:bg-gray-100">
+                      Log In
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
 
           {/* Heart Icon (Desktop) */}
-          <button className="hidden md:block">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
-            </svg>
-          </button>
+          <WishlistIcon />
 
           {/* Cart Icon (Desktop) */}
-          <button className="hidden md:block">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-              />
-            </svg>
-          </button>
+          <CartIcon className="hidden md:block" />
         </div>
       </div>
 
@@ -245,7 +289,7 @@ const Header: React.FC = () => {
               <Link href="/">HOME</Link>
             </li>
             <li className="group">
-              <Link href="#" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
+              <Link href="/rings/category" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
                 RINGS
               </Link>
               <div className="mega-menu hidden group-hover:block absolute left-0 top-full w-full bg-white shadow-lg border-t z-50">
@@ -301,19 +345,19 @@ const Header: React.FC = () => {
             </li>
 
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">NECKLACES</Link>
+              <Link href="/necklaces/category">NECKLACES</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">EARRINGS</Link>
+              <Link href="/earrings/category">EARRINGS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">PENDANTS</Link>
+              <Link href="/pendants/category">PENDANTS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">PINS</Link>
+              <Link href="/pins/category">PINS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">BRACELETS</Link>
+              <Link href="/bracelets/category">BRACELETS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
               <Link href="#">COLLECTIONS</Link>
@@ -323,6 +367,9 @@ const Header: React.FC = () => {
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
               <Link href="#">THE EDIT</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="/contact-us">CONTACT US</Link>
             </li>
           </ul>
         </div>
@@ -357,21 +404,20 @@ const Header: React.FC = () => {
             </button>
             <div
               ref={profileMenuRef}
-              className={`absolute left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${
-                profileMenuOpen ? "block" : "hidden"
-              }`}
+              className={`absolute left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 ${profileMenuOpen ? "block" : "hidden"
+                }`}
             >
               <ul className="py-2 text-sm text-gray-700">
                 <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
+                  <Link href="/login" className="block px-4 py-2 hover:bg-gray-100">
                     Log In
                   </Link>
                 </li>
-                <li>
-                  <Link href="#" className="block px-4 py-2 hover:bg-gray-100">
+                {/* <li>
+                  <Link href="/register" className="block px-4 py-2 hover:bg-gray-100">
                     Register
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </li>

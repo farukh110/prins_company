@@ -1,280 +1,247 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Plus, Minus, Search, X } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { getAllSubCategories } from '@/redux/api/subCategories/subCategorySlice';
+import { clearProductData, getProductTypes } from '@/redux/api/products/productSlice';
 
 interface FilterOption {
     name: string;
-    count: number;
+    count?: number;
     icon?: string;
     type?: 'checkbox' | 'radio';
 }
-
 interface FilterSection {
     title: string;
     options?: FilterOption[];
-    selectedItems?: string[];
     isSingleSelect?: boolean;
 }
-
-const filterSections: FilterSection[] = [
-    {
-        title: 'Metal Type',
-        options: [
-            { name: 'White Gold', count: 2673, icon: '/images/category/rings/white_gold.webp' },
-            { name: 'Yellow Gold', count: 2644, icon: '/images/category/rings/yellow_gold.webp' },
-            { name: 'Rose Gold', count: 2522, icon: '/images/category/rings/rose_gold.webp' },
-            { name: 'Platinum', count: 2057, icon: '/images/category/rings/platinum.webp' },
-            { name: 'Silver', count: 265, icon: '/images/category/rings/silver.webp' },
-        ],
-    },
-    {
-        title: 'Natural Gemstones',
-        options: [
-            { name: 'Diamond', count: 534, icon: '/images/category/rings/diamond.webp' },
-            { name: 'Blue Sapphire', count: 389, icon: '/images/category/rings/sapphire.webp' },
-            { name: 'Emerald', count: 300, icon: '/images/category/rings/emerald.webp' },
-            { name: 'Ruby', count: 254, icon: '/images/category/rings/ruby.webp' },
-            { name: 'Aquamarine', count: 215, icon: '/images/category/rings/aquamarine.webp' },
-        ],
-        selectedItems: ['Diamond'],
-    },
-    {
-        title: 'Lab Grown Gemstones',
-        options: [
-            { name: 'Lab Grown Diamond', count: 444, icon: '/images/category/rings/diamond.webp' },
-            { name: 'Lab Grown Blue Sapphire', count: 206, icon: '/images/category/rings/sapphire.webp' },
-            { name: 'Lab Grown Emerald', count: 198, icon: '/images/category/rings/emerald.webp' },
-            { name: 'Lab Grown Ruby', count: 180, icon: '/images/category/rings/ruby.webp' },
-            { name: 'Lab Grown Alexandrite', count: 95, icon: '/images/category/rings/aquamarine.webp' },
-        ],
-    },
-    {
-        title: 'Gemstone Shape',
-        options: [
-            { name: 'Round', count: 1159 },
-            { name: 'Oval', count: 533 },
-            { name: 'Emerald Cut', count: 222 },
-            { name: 'Cushion', count: 205 },
-            { name: 'Pear', count: 176 },
-        ],
-    },
-    {
-        title: 'Jewelry Styles',
-        options: [
-            { name: 'Classic', count: 1539 },
-            { name: 'Side Stone', count: 914 },
-            { name: 'Solitaire', count: 683 },
-            { name: 'Fashion', count: 653 },
-            { name: 'Halo', count: 552 },
-        ],
-    },
-    {
-        title: 'Carat Weight',
-        options: [
-            { name: 'Over 3.01', count: 1145 },
-            { name: '1.51 - 3.00', count: 1133 },
-            { name: '1.01 - 1.50', count: 930 },
-            { name: '0.51 - 1.00', count: 803 },
-            { name: '0.01 - 0.50', count: 714 },
-        ],
-    },
-    {
-        title: 'Jewelry Types',
-        options: [
-            { name: 'Rings', count: 2707 },
-            { name: 'Pendants', count: 1441 },
-            { name: 'Necklaces', count: 1441 },
-            { name: 'Earrings', count: 833 },
-            { name: 'Bracelets', count: 337 },
-        ],
-        selectedItems: ['Rings'],
-    },
-    {
-        title: 'Price',
-        options: [
-            { name: '$1,000 & Under', count: 643, type: 'radio' },
-            { name: '$1,000 - $2,000', count: 1690, type: 'radio' },
-            { name: '$2,000 - $3,000', count: 1674, type: 'radio' },
-            { name: '$3,000 - $4,000', count: 1347, type: 'radio' },
-            { name: '$4,000 - $5,000', count: 1059, type: 'radio' },
-            { name: '$5,000 & Over', count: 1209, type: 'radio' },
-        ],
-        isSingleSelect: true,
-    },
-    {
-        title: 'Occasion',
-        options: [
-            { name: 'Engagement', count: 1231 },
-            { name: 'Wedding', count: 372 },
-            { name: 'Promise', count: 179 },
-        ],
-    },
-];
-
 interface FiltersProps {
     isOpen?: boolean;
     onClose?: () => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({ isOpen = false, onClose }) => {
-    const [openSections, setOpenSections] = useState<string[]>([]);
-    const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: string[] }>({
-        'Natural Gemstones': ['Diamond'],
-        'Jewelry Types': ['Rings'],
-    });
-    const [searchTerms, setSearchTerms] = useState<{ [key: string]: string }>({});
+    const dispatch = useDispatch<AppDispatch>();
 
-    const toggleSection = (title: string) => {
-        setOpenSections((prev) =>
-            prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+    /* ---------- UI state ---------- */
+    const [openSections, setOpenSections] = useState<string[]>([]);
+    const [selectedFilters, setSelectedFilters] = useState<{ [k: string]: string[] }>({});
+    const [searchTerms, setSearchTerms] = useState<{ [k: string]: string }>({});
+
+    /* ---------- Redux: SSR-SAFE ---------- */
+    const subCategoryState = useSelector((s: RootState) => s.subCategory ?? {});
+    const productState = useSelector((s: RootState) => s.products ?? {}); // <-- products, not product
+
+    const subCategories = subCategoryState.data ?? [];
+    const subCatLoading = subCategoryState.loading ?? false;
+
+    const productResp = productState.data ?? null;
+    const prodLoading = productState.loading ?? false;
+    const prodError = productState.error ?? null;
+
+    /* ---------- Load sub-categories once ---------- */
+    useEffect(() => {
+        if (subCategories.length === 0 && !subCatLoading) {
+            dispatch(getAllSubCategories());
+        }
+    }, [dispatch, subCategories.length, subCatLoading]);
+
+    /* ---------- Stone-Type (dynamic) ---------- */
+    const stoneTypeSection: FilterSection | null = useMemo(() => {
+        const items = subCategories[0]?.stone_types;
+        if (!items?.length) return null;
+        return {
+            title: 'Stone Type',
+            options: items.map((it: any) => ({
+                name: it.name ?? it.title,
+            })),
+        };
+    }, [subCategories]);
+
+    /* ---------- Product-Type (API-driven) ---------- */
+    const productTypeSection: FilterSection | null = useMemo(() => {
+        if (!productResp?.length) return null;
+
+        const map = new Map<string, number>();
+        productResp.forEach((st: any) => {
+            st.productTypes.forEach((pt: any) => {
+                const cur = map.get(pt.name) ?? 0;
+                map.set(pt.name, cur + pt.products.length);
+            });
+        });
+
+        const options: FilterOption[] = Array.from(map.entries()).map(
+            ([name, count]) => ({ name, count })
         );
-    };
+
+        return { title: 'Product Type', options };
+    }, [productResp]);
+
+    /* ---------- Static sections ---------- */
+    const staticSections: FilterSection[] = [
+        {
+            title: 'Price',
+            options: [
+                { name: '$1,000 & Under', count: 643, type: 'radio' },
+                { name: '$1,000 - $2,000', count: 1690, type: 'radio' },
+                { name: '$2,000 - $3,000', count: 1674, type: 'radio' },
+                { name: '$3,000 - $4,000', count: 1347, type: 'radio' },
+                { name: '$4,000 - $5,000', count: 1059, type: 'radio' },
+                { name: '$5,000 & Over', count: 1209, type: 'radio' },
+            ],
+            isSingleSelect: true,
+        },
+        {
+            title: 'Weight',
+            options: [
+                { name: 'Over 3.01', count: 1145 },
+                { name: '1.51 - 3.00', count: 1133 },
+                { name: '1.01 - 1.50', count: 930 },
+                { name: '0.51 - 1.00', count: 803 },
+                { name: '0.01 - 0.50', count: 714 },
+            ],
+        },
+    ];
+
+    /* ---------- Assemble final list ---------- */
+    const filterSections = useMemo(() => {
+        const list = [...staticSections];
+        if (productTypeSection) list.unshift(productTypeSection);
+        if (stoneTypeSection) list.unshift(stoneTypeSection);
+        return list;
+    }, [stoneTypeSection, productTypeSection]);
+
+    /* ---------- Call API when Stone-Type changes ---------- */
+    const selectedStoneTypes = selectedFilters['Stone Type'] ?? [];
+
+    const kebabStoneTypes = selectedStoneTypes.map((name: string) =>
+        name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    );
+
+    useEffect(() => {
+        if (selectedStoneTypes.length === 0) {
+            dispatch(clearProductData());
+            return;
+        }
+        dispatch(getProductTypes({ stoneType: kebabStoneTypes }));
+    }, [dispatch, kebabStoneTypes.join(',')]);
+
+    /* ---------- UI helpers ---------- */
+    const toggleSection = (title: string) =>
+        setOpenSections(p => (p.includes(title) ? p.filter(t => t !== title) : [...p, title]));
 
     const handleFilterSelect = (section: string, item: string) => {
-        setSelectedFilters((prev) => {
-            const current = prev[section] || [];
-            if (filterSections.find((s) => s.title === section)?.isSingleSelect) {
-                return { ...prev, [section]: [item] };
-            }
-            if (current.includes(item)) {
-                return { ...prev, [section]: current.filter((i) => i !== item) };
-            }
-            return { ...prev, [section]: [...current, item] };
+        setSelectedFilters(prev => {
+            const cur = prev[section] ?? [];
+            const sec = filterSections.find(s => s.title === section);
+            if (sec?.isSingleSelect) return { ...prev, [section]: [item] };
+            return cur.includes(item)
+                ? { ...prev, [section]: cur.filter(i => i !== item) }
+                : { ...prev, [section]: [...cur, item] };
         });
     };
 
     const clearAllFilters = () => {
         setSelectedFilters({});
+        dispatch(clearProductData());
     };
 
-    const handleSearchChange = (section: string, value: string) => {
-        setSearchTerms((prev) => ({ ...prev, [section]: value }));
-    };
+    const handleSearchChange = (section: string, value: string) =>
+        setSearchTerms(p => ({ ...p, [section]: value }));
 
     const filteredOptions = (section: FilterSection) => {
         if (!section.options) return [];
-        const searchTerm = searchTerms[section.title]?.toLowerCase() || '';
-        return section.options.filter((option) =>
-            option.name.toLowerCase().includes(searchTerm)
-        );
+        const term = (searchTerms[section.title] ?? '').toLowerCase();
+        return section.options.filter(o => o.name.toLowerCase().includes(term));
     };
 
     return (
         <section
-            data-trk-type="engagement"
-            data-trk-title="Filters"
             className={`
-                ${isOpen 
-                    ? 'block fixed top-0 left-0 z-50 w-4/5 max-w-sm h-full bg-white overflow-y-auto shadow-lg transform transition-transform duration-300 ease-in-out md:hidden' 
+        ${isOpen
+                    ? 'block fixed top-0 left-0 z-50 w-4/5 max-w-sm h-full bg-white overflow-y-auto shadow-lg md:hidden'
                     : 'hidden md:block md:relative md:w-[220px] lg:w-[300px] md:border-r md:border-gray-200'
                 }
-            `}
+      `}
         >
-            {/* Mobile Close Button */}
             {isOpen && (
-                <button
-                    className="absolute top-4 right-4 text-gray-600"
-                    onClick={onClose}
-                    aria-label="Close Filters"
-                >
+                <button className="absolute top-4 right-4 text-gray-600" onClick={onClose}>
                     <X className="h-6 w-6" />
                 </button>
             )}
 
-            <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-3 py-4">
+            <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-3 py-4 border-b">
                 <span className="text-xl font-semibold">Filters</span>
-                <button
-                    className="text-sm text-gray-600 hover:underline"
-                    role="button"
-                    aria-label="Clear All"
-                    onClick={clearAllFilters}
-                >
+                <button className="text-sm text-gray-600 hover:underline" onClick={clearAllFilters}>
                     Clear All
                 </button>
             </div>
+
             <div className="space-y-2 px-3 py-2">
-                {filterSections.map((section) => (
-                    <div key={section.title} className="border-b border-gray-300 pb-2">
+                {filterSections.map(section => (
+                    <div key={section.title} className="border-b border-gray-200 pb-3">
                         <div
-                            className="flex cursor-pointer items-center justify-between py-2"
-                            role="button"
-                            tabIndex={0}
+                            className="flex items-center justify-between py-2 cursor-pointer"
                             onClick={() => toggleSection(section.title)}
-                            onKeyDown={(e) => e.key === 'Enter' && toggleSection(section.title)}
                         >
-                            <span className="text-base font-medium capitalize">{section.title}</span>
+                            <span className="text-base font-medium">{section.title}</span>
                             {openSections.includes(section.title) ? (
-                                <Minus className="h-5 w-5 text-gray-600" />
+                                <Minus className="h-5 w-5" />
                             ) : (
-                                <Plus className="h-5 w-5 text-gray-600" />
+                                <Plus className="h-5 w-5" />
                             )}
                         </div>
-                        {section.selectedItems && (
-                            <div className="mt-2 space-y-1">
-                                {section.selectedItems.map((item) => (
-                                    <div key={item} className="flex items-center text-sm text-gray-600">
-                                        {item}
-                                        <button
-                                            data-trk-type="button"
-                                            data-trk-title={item}
-                                            data-trk-extra='{"action":"removed"}'
-                                            className="ml-2 text-gray-400 hover:text-gray-600"
-                                            role="button"
-                                            aria-label="Remove"
-                                            onClick={() => handleFilterSelect(section.title, item)}
-                                        >
-                                            <svg
-                                                width="1em"
-                                                height="1em"
-                                                stroke="transparent"
-                                                className="text-base"
-                                            >
-                                                <use xlinkHref="/assets/updated-icons.svg#close" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                        {section.options && openSections.includes(section.title) && (
-                            <div className="mt-2">
-                                <div className="relative mb-2">
+
+                        {openSections.includes(section.title) && section.options && (
+                            <div className="mt-3">
+                                <div className="relative mb-3">
                                     <input
                                         type="text"
                                         placeholder={`Search ${section.title}`}
-                                        className="w-full rounded border border-gray-300 px-3 py-1 pl-8 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-400"
-                                        value={searchTerms[section.title] || ''}
-                                        onChange={(e) => handleSearchChange(section.title, e.target.value)}
+                                        className="w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                        value={searchTerms[section.title] ?? ''}
+                                        onChange={e => handleSearchChange(section.title, e.target.value)}
                                     />
-                                    <Search className="absolute left-2 top-1.5 h-4 w-4 text-gray-400" />
+                                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                                 </div>
-                                <div className="max-h-40 overflow-y-auto">
-                                    {filteredOptions(section).map((option) => (
-                                        <label
-                                            key={option.name}
-                                            className="flex items-center py-1 text-sm text-gray-600 hover:bg-gray-50"
-                                        >
-                                            <input
-                                                type={option.type || section.isSingleSelect ? 'radio' : 'checkbox'}
-                                                className="h-4 w-4 text-gray-600 focus:ring-gray-400"
-                                                checked={
-                                                    section.isSingleSelect
-                                                        ? selectedFilters[section.title]?.[0] === option.name
-                                                        : selectedFilters[section.title]?.includes(option.name) || false
-                                                }
-                                                onChange={() => handleFilterSelect(section.title, option.name)}
-                                            />
-                                            {option.icon && (
-                                                <img
-                                                    src={option.icon}
-                                                    alt={`${option.name} icon`}
-                                                    className="ml-2 mr-2 h-5 w-5 object-contain"
+
+                                <div className="max-h-48 overflow-y-auto space-y-1">
+                                    {prodLoading && section.title === 'Product Type' ? (
+                                        <p className="text-sm text-gray-500 py-1">Loading product types…</p>
+                                    ) : prodError && section.title === 'Product Type' ? (
+                                        <p className="text-sm text-red-600 py-1">{prodError}</p>
+                                    ) : (
+                                        filteredOptions(section).map(opt => (
+                                            <label
+                                                key={opt.name}
+                                                className="flex items-center py-1.5 hover:bg-gray-50 cursor-pointer"
+                                            >
+                                                <input
+                                                    type={section.isSingleSelect ? 'radio' : 'checkbox'}
+                                                    name={section.isSingleSelect ? section.title : undefined}
+                                                    className="mr-3 h-4 w-4 text-black focus:ring-black"
+                                                    checked={
+                                                        section.isSingleSelect
+                                                            ? selectedFilters[section.title]?.[0] === opt.name
+                                                            : selectedFilters[section.title]?.includes(opt.name)
+                                                    }
+                                                    onChange={() => handleFilterSelect(section.title, opt.name)}
                                                 />
-                                            )}
-                                            <span className='ml-2'>{option.name} ({option.count})</span>
-                                        </label>
-                                    ))}
+                                                {opt.icon && (
+                                                    <img src={opt.icon} alt={opt.name} className="w-6 h-6 mr-2 object-contain" />
+                                                )}
+                                                <span className="text-sm">
+                                                    {opt.name}
+                                                    {opt.count !== undefined && (
+                                                        <span className="ml-1 text-xs text-gray-500">({opt.count})</span>
+                                                    )}
+                                                </span>
+                                            </label>
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         )}

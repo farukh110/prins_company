@@ -3,8 +3,10 @@
 import { FC, useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Pause, ZoomIn } from "lucide-react";
+import { ParsedProduct } from "@/types/product";
 
 interface ProductMediaProps {
+  product: ParsedProduct;
   className?: string;
 }
 
@@ -14,10 +16,7 @@ interface MediaItem {
   label?: string;
   isLabGrown?: boolean;
   isVideo?: boolean;
-  skinToneOverlay?: {
-    light: string;
-    dark: string;
-  };
+  skinToneOverlay?: { light: string; dark: string };
 }
 
 interface CustomerImage {
@@ -30,64 +29,43 @@ interface SkinToneImageProps {
   item: MediaItem;
 }
 
-const ProductMedia: FC<ProductMediaProps> = ({ className }) => {
-  const productImages: MediaItem[] = [
-    {
-      src: "/images/products/rings/1.webp",
-      alt: "10x8mm AAAA Princess Diana Inspired Blue Sapphire Ring with Diamond Halo in Yellow Gold",
-      label: "Premium | 4.03 ct.tw | 14K Yellow Gold",
-      isLabGrown: true,
-    },
-    {
-      src: "/images/products/rings/1.webp",
-      alt: "10x8mm AAAA Princess Diana Inspired Blue Sapphire Ring with Diamond Halo in Yellow Gold - body_hand",
-      skinToneOverlay: {
-        light: "/images/products/detail/body_hand_light.webp",
-        dark: "/images/products/detail/body_hand_dark.webp",
-      },
-    },
-    {
-      src: "/videos/product-detail/1.mp4",
-      alt: "Silent Product Video",
-      label: "Shown Here: Premium | 4.03 ct.tw | 14K Yellow Gold",
-      isVideo: true,
-    },
-    {
-      src: "/images/products/rings/1.webp",
-      alt: "Side View 3",
-    },
-    {
-      src: "/images/products/rings/1.webp",
-      alt: "Side View 4",
-    },
-    {
-      src: "/images/products/rings/1.webp",
-      alt: "Ruler Comparison",
-    },
-    {
-      src: "/images/products/rings/1.webp",
-      alt: "Gift Box",
-    },
-  ];
+const ProductMedia: FC<ProductMediaProps> = ({ product, className }) => {
 
-  const customerImages: CustomerImage[] = [
-    {
-      src: "/images/reviews/1.webp",
-      alt: "Beautiful Lab Grown Sapphire and Custom Bands",
-    },
-    {
-      src: "/images/reviews/2.webp",
-      alt: "Beautiful Lab Grown Sapphire and Custom Bands",
-    },
-    {
-      src: "/images/reviews/3.webp",
-      alt: "Proposal Ring",
-    },
-    {
-      src: "/images/reviews/1.webp",
-      alt: "So in love",
-      overlayText: "View all 143 images",
-    },
+  const mediaItems: MediaItem[] = [];
+
+  product.image.forEach((src, i) => {
+    mediaItems.push({
+      src,
+      alt: `${product.name} – view ${i + 1}`,
+    });
+  });
+
+  if (product.video) {
+    mediaItems.push({
+      src: product.video,
+      alt: `${product.name} – video`,
+      isVideo: true,
+      label: `Shown in ${product.metal}`,
+    });
+  }
+
+  if (product.skinToneHand) {
+    mediaItems.push({
+      src: product.image[0] || "",
+      alt: `${product.name} – skin tone comparison`,
+      skinToneOverlay: product.skinToneHand,
+    });
+  }
+
+  if (product.isLabGrown && mediaItems.length > 0) {
+    mediaItems[0].isLabGrown = true;
+  }
+
+  const customerImages = product.customerImages ?? [
+    { src: "/placeholder/customer1.webp", alt: "Customer 1" },
+    { src: "/placeholder/customer2.webp", alt: "Customer 2" },
+    { src: "/placeholder/customer3.webp", alt: "Customer 3" },
+    { src: "/placeholder/customer4.webp", alt: "Customer 4", overlayText: "View all images" },
   ];
 
   return (
@@ -101,85 +79,27 @@ const ProductMedia: FC<ProductMediaProps> = ({ className }) => {
           data-trk-title="Media"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-4">
-            {productImages.map((item, index) => (
-              <div key={index}>
-                <div
-                  className="relative w-full overflow-hidden bg-gray-300 rounded-lg shadow-md"
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Product Image"
-                  data-trk-type="button"
-                  data-trk-title={item.alt}
-                >
-                  {item.isLabGrown && (
-                    <div className="absolute top-3 left-3 z-30 flex items-center justify-center">
-                      <span className="px-2 py-1 bg-blue-600 text-white text-sm font-semibold rounded">
-                        LAB GROWN
-                      </span>
-                    </div>
-                  )}
+            {mediaItems.map((item, i) => (
+              <div key={i} className="relative overflow-hidden bg-gray-300 rounded-lg shadow-md">
+                {item.isLabGrown && (
+                  <div className="absolute top-3 left-3 z-30">
+                    <span className="px-2 py-1 bg-blue-600 text-white text-sm font-semibold rounded">
+                      LAB GROWN
+                    </span>
+                  </div>
+                )}
 
-                  {item.isVideo ? (
-                    <div className="relative w-full h-full flex items-center justify-center">
-                      <video
-                        muted
-                        autoPlay
-                        loop
-                        playsInline
-                        preload="none"
-                        aria-hidden="true"
-                        aria-label="Silent Product Video"
-                        className="absolute inset-0 object-cover h-full bg-gray-100 rounded-lg"
-                      >
-                        <source src={item.src} type="video/mp4" />
-                      </video>
-                      <span className="absolute bottom-6 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          className="w-12 h-12 bg-black/30 flex items-center justify-center rounded-full mb-3 hover:bg-black/50 transition"
-                          aria-label="Pause video"
-                        >
-                          <Pause className="text-white" strokeWidth={1.5} />
-                        </button>
-                        <button
-                          className="w-12 h-12 bg-black/30 flex items-center justify-center rounded-full hover:bg-black/50 transition"
-                          data-trk-type="button"
-                          data-trk-title="Expand video"
-                          aria-label="Expand video"
-                        >
-                          <ZoomIn className="text-white" strokeWidth={1.5} />
-                        </button>
-                      </span>
-                      {item.label && (
-                        <div className="absolute bottom-3 inset-x-3 bg-white/70 z-30 py-1.5 px-3 text-center text-gray-900 text-sm font-medium rounded-b-lg">
-                          {item.label}
-                        </div>
-                      )}
-                    </div>
-                  ) : item.skinToneOverlay ? (
-                    <SkinToneImage item={item} />
-                  ) : (
-                    <div className="relative w-full h-full rounded-lg overflow-hidden">
-                      <Image
-                        src={item.src}
-                        alt={item.alt}
-                        width={464}
-                        height={464}
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 bg-gray-300"
-                        priority
-                        onError={() => console.error(`Failed to load image: ${item.src}`)}
-                      />
-                      {item.label && (
-                        <div className="absolute bottom-2 inset-x-2 z-30 py-1 px-2 text-center text-gray-800 text-sm font-medium bg-white/70 rounded-b-lg">
-                          Selected: {item.label}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+                {item.isVideo ? (
+                  <VideoItem item={item} />
+                ) : item.skinToneOverlay ? (
+                  <SkinToneImage item={item} />
+                ) : (
+                  <ImageItem item={item} />
+                )}
               </div>
             ))}
 
-            <div
+            {/* <div
               className="w-full bg-gray-300 mt-6 sm:col-span-2"
               data-trk-type="engagement"
               data-trk-title="Customer Images"
@@ -213,13 +133,51 @@ const ProductMedia: FC<ProductMediaProps> = ({ className }) => {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+const ImageItem: FC<{ item: MediaItem }> = ({ item }) => (
+  <div className="relative w-full h-full">
+    <Image
+      src={item.src}
+      alt={item.alt}
+      width={464}
+      height={464}
+      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+    />
+    {item.label && (
+      <div className="absolute bottom-2 left-2 right-2 bg-white/70 py-1 px-2 text-center text-sm font-medium rounded-b-lg">
+        {item.label}
+      </div>
+    )}
+  </div>
+);
+
+const VideoItem: FC<{ item: MediaItem }> = ({ item }) => (
+  <div className="relative w-full h-full flex items-center justify-center">
+    <video muted autoPlay loop playsInline className="w-full h-full object-cover rounded-lg">
+      <source src={item.src} type="video/mp4" />
+    </video>
+    <div className="absolute bottom-6 right-3 opacity-0 group-hover:opacity-100 transition-opacity space-y-2">
+      <button className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50">
+        <Pause className="text-white" />
+      </button>
+      <button className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center hover:bg-black/50">
+        <ZoomIn className="text-white" />
+      </button>
+    </div>
+    {item.label && (
+      <div className="absolute bottom-3 left-3 right-3 bg-white/70 py-1.5 px-3 text-center text-sm font-medium rounded-b-lg">
+        {item.label}
+      </div>
+    )}
+  </div>
+);
 
 const SkinToneImage: FC<SkinToneImageProps> = ({ item }) => {
   const [tone, setTone] = useState(0.5); // Start at middle for better testing
