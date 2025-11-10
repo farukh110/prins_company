@@ -68,6 +68,12 @@ export interface ProductApiResponse {
   data: StoneType[];
 }
 
+export interface ProductsApiResponse {
+  status: boolean;
+  count: number;
+  data: Product[];
+}
+
 export interface GetProductTypePayload {
   stoneType: string[];
 }
@@ -78,9 +84,24 @@ export interface SingleProductResponse {
   data: Product;
 }
 
+export interface GetProductsPayload {
+  stoneType: string[];
+  productType: string[],
+  minPrice: number,
+  maxPrice: number,
+  minWeight: number,
+  maxWeight: number,
+  sortColumn: string,
+  sortDir: string;
+}
+
 /* Redux state */
 export interface ProductState {
+  products: Product[] | null;
+  productsCount: number;
   data: StoneType[] | null;
+  stoneTypes: StoneType[] | null;
+  stoneTypesCount: number;
   single: ParsedProduct | null;
   loading: boolean;
   error: string | null;

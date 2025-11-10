@@ -1,3 +1,4 @@
+import { GetMyOrders } from "./order";
 import { WishlistItem } from "./wishlist";
 
 export interface Register {
@@ -53,6 +54,10 @@ export interface AuthState {
   wishlist: WishlistItem[];
   wishlistLoading: boolean;
   wishlistError: string | null;
+
+  orders: GetMyOrders[];
+  ordersLoading: boolean;
+  ordersError: string | null;
   
 };
 

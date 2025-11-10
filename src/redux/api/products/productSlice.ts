@@ -12,13 +12,21 @@ import {
   parseProductImages,
   GetProductTypePayload,
   ParsedProduct,
+  ProductsApiResponse,
+  GetProductsPayload,
+  Product,
 } from "@/types/product";
 
-import { GET_PRODUCT, GET_PRODUCT_TYPE } from "@/constants";
+import { GET_ALL_PRODUCTS, GET_PRODUCT, GET_PRODUCT_TYPE } from "@/constants";
 import type { RootState } from "@/redux/store";
 
 const initialState: ProductState = {
+
   data: null,
+  products: null,
+  productsCount: 0,
+  stoneTypes: null,
+  stoneTypesCount: 0,
   single: null,
   loading: false,
   error: null,
@@ -49,6 +57,23 @@ export const getProductById = createAsyncThunk<
   }
 });
 
+export const getProducts = createAsyncThunk<
+  ProductsApiResponse,
+  GetProductsPayload,
+  { rejectValue: string }
+>(GET_ALL_PRODUCTS, async (payload, { rejectWithValue }) => {
+  try {
+    return await productService.getProducts(payload);
+  } catch (err: unknown) {
+
+    if (err instanceof Error) {
+      return rejectWithValue(err.message);
+    }
+
+    return rejectWithValue("Failed to fetch products");
+  }
+});
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -58,10 +83,15 @@ const productSlice = createSlice({
       state.single = null;
       state.error = null;
       state.count = 0;
+      state.products = null;
     },
     /** Optional – clear only the single product (keeps the list) */
     clearSingleProduct: (state) => {
       state.single = null;
+    },
+    clearProducts: (state) => {
+      state.products = null;
+      state.count = 0;
     },
   },
   extraReducers: (builder) =>
@@ -117,10 +147,29 @@ const productSlice = createSlice({
       .addCase(getProductById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Unknown error";
-      }),
+      })
+      .addCase(getProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProducts.fulfilled, (state, action: PayloadAction<ProductsApiResponse>) => {
+        state.loading = false;
+        state.error = null;
+
+        state.products = action.payload.data.map((product) => ({
+          ...product,
+          image: parseProductImages(product.image),
+        }));
+
+        state.count = action.payload.count;
+      })
+      .addCase(getProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Failed to load products";
+      })
 });
 
-export const { clearProductData, clearSingleProduct } = productSlice.actions;
+export const { clearProductData, clearSingleProduct, clearProducts } = productSlice.actions;
 
 const selectProductState = (state: RootState) => state.products;
 
@@ -129,9 +178,29 @@ export const selectProduct = createSelector(
   (s): ParsedProduct | null => s.single
 );
 
+export const selectProducts = createSelector(
+  selectProductState,
+  (s): (Product & { image: string[] })[] | null => s.products
+);
+
+export const selectProductsCount = createSelector(
+  selectProductState,
+  (s) => s.count
+);
+
 export const selectProductLoading = createSelector(
   selectProductState,
   (s) => s.loading
+);
+
+// export const selectProductsLoading = createSelector(
+//   selectProductState,
+//   (s) => s.loading
+// );
+
+export const selectProductsLoading = createSelector(
+  (state: RootState) => state.products,
+  (p) => p.loading
 );
 
 export const selectProductError = createSelector(
@@ -139,9 +208,34 @@ export const selectProductError = createSelector(
   (s) => s.error
 );
 
+// export const selectProductsError = createSelector(
+//   selectProductState,
+//   (s) => s.error
+// );
+
+export const selectProductsError = createSelector(
+  (state: RootState) => state.products,
+  (p) => p.error
+);
+
 export const selectProductCount = createSelector(
   selectProductState,
   (s) => s.count
+);
+
+export const selectFilteredProducts = createSelector(
+  (s: RootState) => s.products,
+  (p) => p.products ?? []
+);
+
+// export const selectFilteredProductsCount = createSelector(
+//   (s: RootState) => s.products,
+//   (p) => p.productsCount ?? 0
+// );
+
+export const selectFilteredProductsCount = createSelector(
+  (state: RootState) => state.products,
+  (p) => p.productsCount ?? 0
 );
 
 export default productSlice.reducer;

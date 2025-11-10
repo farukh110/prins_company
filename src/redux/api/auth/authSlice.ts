@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { REGISTER_USER, LOGIN_USER, ADD_TO_WISHLIST, USER_WISHLIST } from "@/constants";
+import { REGISTER_USER, LOGIN_USER, ADD_TO_WISHLIST, USER_WISHLIST, GET_USER_ORDERS } from "@/constants";
 import { AddWishlistPayload, AddWishlistResponse, AuthState, LoginPayload, LoginResponse, PersistedAuth, Register } from "@/types/auth";
 import { authService } from "./authService";
 import { AxiosError } from "axios";
@@ -7,6 +7,7 @@ import { AUTH_STORAGE_KEY } from "@/util/storage";
 import { ValidationError } from "next/dist/compiled/amphtml-validator";
 import { WishlistItem } from "@/types/wishlist";
 import { RootState } from "@/redux/store";
+import { GetMyOrders } from "@/types/order";
 
 const loadPersistedAuth = (): PersistedAuth | null => {
   try {
@@ -29,6 +30,11 @@ const initialState: AuthState = {
   wishlist: [],
   wishlistLoading: false,
   wishlistError: null,
+
+  orders: [],
+  ordersLoading: false,
+  ordersError: null,
+
 };
 
 export const registerUser = createAsyncThunk(
@@ -118,6 +124,29 @@ export const getWishlistItems = createAsyncThunk<
   }
 );
 
+export const getOrdersCustomerId = createAsyncThunk<
+  GetMyOrders[],
+  string,
+  { rejectValue: string }
+>(
+  GET_USER_ORDERS,
+  async (userId, { rejectWithValue }) => {
+
+    try {
+
+      const res = await authService.getOrderCustomerId(userId);
+      return res.data.data;
+
+    } catch (error) {
+
+      const err = error as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        err.response?.data?.message ?? "Failed to fetch my orders"
+      );
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -194,6 +223,18 @@ const authSlice = createSlice({
     builder.addCase(getWishlistItems.rejected, (state, action) => {
       state.wishlistLoading = false;
       state.wishlistError = (action.payload as string) ?? "Wishlist error";
+    })
+    builder.addCase(getOrdersCustomerId.pending, (state) => {
+      state.ordersLoading = true;
+      state.ordersError = null;
+    });
+    builder.addCase(getOrdersCustomerId.fulfilled, (state, action: PayloadAction<GetMyOrders[]>) => {
+      state.ordersLoading = false;
+      state.orders = action.payload;
+    });
+    builder.addCase(getOrdersCustomerId.rejected, (state, action) => {
+      state.ordersLoading = false;
+      state.ordersError = action.payload ?? "Failed to load orders";
     });
   },
 });
@@ -215,6 +256,21 @@ export const selectCurrentUser = createSelector(
 export const selectAuthToken = createSelector(
   (state: RootState) => state.auth,
   (auth) => auth.token
+);
+
+export const selectOrders = createSelector(
+  selectAuthState,
+  (auth) => auth.orders
+);
+
+export const selectOrdersLoading = createSelector(
+  selectAuthState,
+  (auth) => auth.ordersLoading
+);
+
+export const selectOrdersError = createSelector(
+  selectAuthState,
+  (auth) => auth.ordersError
 );
 
 export default authSlice.reducer;

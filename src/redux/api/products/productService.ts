@@ -1,4 +1,4 @@
-import { GetProductTypePayload, ProductApiResponse, SingleProductResponse } from "@/types/product";
+import { GetProductsPayload, GetProductTypePayload, ProductApiResponse, ProductsApiResponse, SingleProductResponse } from "@/types/product";
 import { BACKEND } from "@/util/base_url";
 import axios, { AxiosError } from "axios";
 
@@ -24,14 +24,14 @@ const getProductType = async (payload: GetProductTypePayload): Promise<ProductAp
 export const getProductById = async (
     productId: string
 ): Promise<SingleProductResponse> => {
-    
+
     try {
 
         const { data } = await axios.get<SingleProductResponse>(
             `${BACKEND}/product/${productId}`
         );
 
-        return data; 
+        return data;
 
     } catch (error: unknown) {
         const msg =
@@ -43,7 +43,25 @@ export const getProductById = async (
     }
 };
 
+const getProducts = async (payload: GetProductsPayload): Promise<ProductsApiResponse> => {
+
+    try {
+
+        const response = await axios.post<ProductsApiResponse>(`${BACKEND}/products`, payload);
+        return response.data;
+
+    } catch (error: unknown) {
+
+        if (axios.isAxiosError(error)) {
+            throw new Error(`API Error: ${error.response?.data?.message || error.message}`);
+        }
+        
+        throw new Error("An unexpected error occurred");
+    }
+};
+
 export const productService = {
     getProductType,
-    getProductById
+    getProductById,
+    getProducts
 };
