@@ -224,8 +224,8 @@ export const selectProductCount = createSelector(
 );
 
 export const selectFilteredProducts = createSelector(
-  (s: RootState) => s.products,
-  (p) => p.products ?? []
+  (state: RootState) => state.products,
+  (p) => p.products ?? []               
 );
 
 // export const selectFilteredProductsCount = createSelector(
@@ -235,7 +235,7 @@ export const selectFilteredProducts = createSelector(
 
 export const selectFilteredProductsCount = createSelector(
   (state: RootState) => state.products,
-  (p) => p.productsCount ?? 0
+  (p) => p.count ?? 0                  
 );
 
 export default productSlice.reducer;
