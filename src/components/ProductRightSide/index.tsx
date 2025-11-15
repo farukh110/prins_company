@@ -1,4 +1,3 @@
-// src/components/ProductRightSide/index.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -25,10 +24,8 @@ import { selectProduct } from "@/redux/api/products/productSlice";
 import { addItem } from "@/redux/api/cart/cartSlice";
 import { useRouter } from "next/navigation";
 import { parseProductImages } from "@/types/product";
+import { toast } from "sonner";
 
-/* ------------------------------------------------------------------ */
-/*  Default icons – keep them in case the API does not return them    */
-/* ------------------------------------------------------------------ */
 const DEFAULT_METAL_ICONS: Record<string, string> = {
   "14k white gold": "/images/products/type/1.webp",
   "14k yellow gold": "/images/products/type/2.webp",
@@ -39,16 +36,10 @@ const DEFAULT_METAL_ICONS: Record<string, string> = {
   platinum: "/images/products/type/7.webp",
 };
 
-/* ------------------------------------------------------------------ */
-/*  Ring sizes – 3 → 13.5 (0.5 increments)                           */
-/* ------------------------------------------------------------------ */
 const RING_SIZES = Array.from({ length: 22 }, (_, i) => (i + 3) * 0.5).map((v) =>
   v.toFixed(1)
 );
 
-/* ------------------------------------------------------------------ */
-/*  Helper – safe string lower-case & replace spaces with “+”          */
-/* ------------------------------------------------------------------ */
 const normaliseMetal = (metal: string | null | undefined): string => {
   if (!metal) return "";
   return metal.toLowerCase().replace(/\s+/g, "+");
@@ -63,9 +54,6 @@ const ProductRightSide: React.FC = () => {
   const [isGemstoneOpen, setIsGemstoneOpen] = useState(false);
   const [isDiamondOpen, setIsDiamondOpen] = useState(false);
 
-  /* -------------------------------------------------------------- */
-  /*  Early-return when the product is still loading               */
-  /* -------------------------------------------------------------- */
   if (!product) {
     return (
       <div className="p-4 text-center text-gray-500">
@@ -74,9 +62,6 @@ const ProductRightSide: React.FC = () => {
     );
   }
 
-  /* -------------------------------------------------------------- */
-  /*  Core product data – with **safe defaults**                    */
-  /* -------------------------------------------------------------- */
   const title = product.name ?? "Unnamed Product";
 
   const priceNum = parseFloat(product.price ?? "0");
@@ -102,9 +87,6 @@ const ProductRightSide: React.FC = () => {
   const gemstoneQuality = product.gemstone_quality ?? "Premium";
   const totalCarat = product.total_carat ?? "4.03";
 
-  /* -------------------------------------------------------------- */
-  /*  Diamond details – safe parsing                                 */
-  /* -------------------------------------------------------------- */
   const dia1Pcs = parseInt(product.dia_1_pcs ?? "0", 10) || 0;
   const dia2Pcs = parseInt(product.dia_2_pcs ?? "0", 10) || 0;
   const diamondCount = dia1Pcs + dia2Pcs;
@@ -115,9 +97,6 @@ const ProductRightSide: React.FC = () => {
 
   const diamondQuality = product.diamond_quality ?? "F-G VS";
 
-  /* -------------------------------------------------------------- */
-  /*  Options that can come from the API – fallback to defaults      */
-  /* -------------------------------------------------------------- */
   const gemstoneOptions = (product.gemstone_videos ?? [
     {
       id: "premium",
@@ -199,9 +178,6 @@ const ProductRightSide: React.FC = () => {
     },
   ]) as any[];
 
-  /* -------------------------------------------------------------- */
-  /*  Add-to-cart handler                                            */
-  /* -------------------------------------------------------------- */
   const addToCart = () => {
     const imageUrls = parseProductImages(product.image ?? "");
     const firstImage = imageUrls[0] ?? "/images/placeholder.jpg";
@@ -219,13 +195,11 @@ const ProductRightSide: React.FC = () => {
     };
 
     dispatch(addItem(payload));
-    alert(`${product.name} added to cart!`);
+    // alert(`${product.name} added to cart!`);
+    toast.success(`${product.name} added to cart!`);
     router.push("/cart");
   };
 
-  /* -------------------------------------------------------------- */
-  /*  Render                                                         */
-  /* -------------------------------------------------------------- */
   return (
     <div className="sticky top-0 pt-4 md:pt-6 bg-white p-4 w-full">
       {/* ---------- Title ---------- */}
