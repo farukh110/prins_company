@@ -14,7 +14,6 @@ const checkout = async (payload: CheckoutPayload): Promise<CheckoutApiResponse> 
         if (error instanceof AxiosError) {
 
             throw new Error(`API Error: ${error.response?.data?.message || error.message}`);
-
         }
 
         throw new Error('An unexpected error occurred');
