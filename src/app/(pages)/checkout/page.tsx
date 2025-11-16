@@ -92,7 +92,7 @@ const Checkout: React.FC = () => {
 
   return (
     <>
-      <div className="bg-[#F5F5F6]">…</div>
+      <div className="bg-[#F5F5F6]"></div>
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-0 bg-[#FAFAFB]">
         <div className="max-w-[1280px] mx-auto">
@@ -111,11 +111,12 @@ const Checkout: React.FC = () => {
               <ContactSection values={form} onChange={updateForm} />
               <DeliverySection values={form} onChange={updateForm} />
 
-              <PaymentSection
+              {/* <PaymentSection
                 onPay={handlePay}
                 disabled={checkoutLoading || isEmpty}
                 loading={checkoutLoading}
-              />
+              /> */}
+              <PaymentSection />   {/* That's it! */}
 
               {checkoutError && (
                 <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">

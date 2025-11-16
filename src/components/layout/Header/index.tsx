@@ -288,88 +288,43 @@ const Header: React.FC = () => {
             <li className="group whitespace-nowrap px-2 py-1">
               <Link href="/">HOME</Link>
             </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="/about-us">ABOUT US</Link>
+            </li>
             <li className="group">
-              <Link href="/rings/category" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
-                RINGS
+              <Link href="#" className="mega-menu-trigger whitespace-nowrap px-2 py-1">
+                JEWELLERY
               </Link>
               <div className="mega-menu hidden group-hover:block absolute left-0 top-full w-full bg-white shadow-lg border-t z-50">
                 <div className="max-w-7xl mx-auto grid grid-cols-4 gap-8 p-8 text-gray-700 text-sm">
                   <div>
-                    <h3 className="font-bold mb-2">Natural Gemstone Rings</h3>
+                    <h3 className="font-bold mb-2">Jewellery Subcategories</h3>
                     <ul className="space-y-2">
-                      <li><Link href="#">Emerald Rings</Link></li>
-                      <li><Link href="#">Blue Sapphire Rings</Link></li>
-                      <li><Link href="#">Ruby Rings</Link></li>
-                      <li><Link href="#">Amethyst Rings</Link></li>
-                      <li><Link href="#">Opal Rings</Link></li>
-                      <li><Link href="#">Aquamarine Rings</Link></li>
-                      <li><Link href="#">Swiss Blue Topaz Rings</Link></li>
-                      <li><Link href="#">Garnet Rings</Link></li>
-                      <li><Link href="#">Tanzanite Rings</Link></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">Natural Diamond Rings</h3>
-                    <ul className="space-y-2">
-                      <li><Link href="#">Diamond Rings</Link></li>
-                      <li><Link href="#">Colored Diamond Rings</Link></li>
-                    </ul>
-                    <h3 className="font-bold mt-4 mb-2">Lab-Grown Rings</h3>
-                    <ul className="space-y-2">
-                      <li><Link href="#">Lab Diamond Rings</Link></li>
-                      <li><Link href="#">Lab Colored Diamond Rings</Link></li>
-                      <li><Link href="#">Lab Emerald Rings</Link></li>
-                      <li><Link href="#">Lab Blue Sapphire Rings</Link></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">Rings by Metal</h3>
-                    <ul className="space-y-2">
-                      <li><Link href="#">Platinum Rings</Link></li>
-                      <li><Link href="#">Yellow Gold Rings</Link></li>
-                      <li><Link href="#">Rose Gold Rings</Link></li>
-                      <li><Link href="#">White Gold Rings</Link></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2">Featured</h3>
-                    <ul className="space-y-2">
-                      <li><Link href="#">Best Selling Rings</Link></li>
-                      <li><Link href="#">GIA Certified Rings</Link></li>
-                      <li><Link href="#">Initial Rings</Link></li>
-                      <li><Link href="#">Anniversary Gifts</Link></li>
+                      <li><Link href="/rings/category">Rings</Link></li>
+                      <li><Link href="/necklaces/category">Necklaces</Link></li>
+                      <li><Link href="/earrings/category">Earrings</Link></li>
+                      <li><Link href="/bracelets/category">Bracelets</Link></li>
+                      <li><Link href="/pendants/category">Pendants</Link></li>
+                      <li><Link href="#">On Sale</Link></li>
                     </ul>
                   </div>
                 </div>
               </div>
             </li>
-
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="/necklaces/category">NECKLACES</Link>
+              <Link href="/new-product">NEW PRODUCTS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="/earrings/category">EARRINGS</Link>
+              <Link href="/sale">ON SALE</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="/pendants/category">PENDANTS</Link>
-            </li>
-            <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="/pins/category">PINS</Link>
-            </li>
-            <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="/bracelets/category">BRACELETS</Link>
-            </li>
-            <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">COLLECTIONS</Link>
-            </li>
-            <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">GIFTS</Link>
-            </li>
-            <li className="group whitespace-nowrap px-2 py-1">
-              <Link href="#">THE EDIT</Link>
+              <Link href="/customer-reviews">CUSTOMER REVIEWS</Link>
             </li>
             <li className="group whitespace-nowrap px-2 py-1">
               <Link href="/contact-us">CONTACT US</Link>
+            </li>
+            <li className="group whitespace-nowrap px-2 py-1">
+              <Link href="/partner-with-us">PARTNER WITH US</Link>
             </li>
           </ul>
         </div>
@@ -413,24 +368,23 @@ const Header: React.FC = () => {
                     Log In
                   </Link>
                 </li>
-                {/* <li>
-                  <Link href="/register" className="block px-4 py-2 hover:bg-gray-100">
-                    Register
-                  </Link>
-                </li> */}
               </ul>
             </div>
           </li>
           <li><Link href="/">HOME</Link></li>
-          <li><Link href="#">RINGS</Link></li>
-          <li><Link href="#">NECKLACES</Link></li>
-          <li><Link href="#">EARRINGS</Link></li>
-          <li><Link href="#">ENGAGEMENT RINGS</Link></li>
-          <li><Link href="#">WEDDING RINGS</Link></li>
-          <li><Link href="#">BRACELETS</Link></li>
-          <li><Link href="#">COLLECTIONS</Link></li>
-          <li><Link href="#">GIFTS</Link></li>
-          <li><Link href="#">THE EDIT</Link></li>
+          <li><Link href="/about-us">ABOUT US</Link></li>
+          <li><Link href="#">JEWELLERY</Link></li>
+          <li><Link href="/rings/category">Rings</Link></li>
+          <li><Link href="/necklaces/category">Necklaces</Link></li>
+          <li><Link href="/earrings/category">Earrings</Link></li>
+          <li><Link href="/bracelets/category">Bracelets</Link></li>
+          <li><Link href="/pendants/category">Pendants</Link></li>
+          <li><Link href="#">On Sale</Link></li>
+          <li><Link href="/new-product">NEW PRODUCTS</Link></li>
+          <li><Link href="/sale">ON SALE</Link></li>
+          <li><Link href="/customer-reviews">CUSTOMER REVIEWS</Link></li>
+          <li><Link href="/contact-us">CONTACT US</Link></li>
+          <li><Link href="/partner-with-us">PARTNER WITH US</Link></li>
         </ul>
       </div>
     </header>

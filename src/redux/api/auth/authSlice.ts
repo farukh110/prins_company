@@ -156,6 +156,7 @@ const authSlice = createSlice({
       state.token = null;
       state.error = null;
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      localStorage.removeItem("rememberedCustomer");
     },
     resetError: (state) => {
       state.error = null;
