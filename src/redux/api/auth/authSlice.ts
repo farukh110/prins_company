@@ -147,6 +147,23 @@ export const getOrdersCustomerId = createAsyncThunk<
   }
 );
 
+export const removeWishlistItem = createAsyncThunk<
+  { product_id: number },
+  { customer_id: string; product_id: number },
+  { rejectValue: string }
+>(
+  "auth/removeWishlistItem",
+  async (payload, { rejectWithValue }) => {
+    try {
+      await authService.removeWishlist(payload);
+      return { product_id: payload.product_id };
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      return rejectWithValue(err.response?.data?.message ?? "Failed to remove item");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -225,6 +242,22 @@ const authSlice = createSlice({
       state.wishlistLoading = false;
       state.wishlistError = (action.payload as string) ?? "Wishlist error";
     })
+    // Add these cases (you probably missed them!)
+    builder
+      .addCase(removeWishlistItem.pending, (state) => {
+        state.wishlistLoading = true;
+        state.wishlistError = null;
+      })
+      .addCase(removeWishlistItem.fulfilled, (state, action) => {
+        state.wishlistLoading = false;
+        state.wishlist = state.wishlist.filter(
+          (item) => item.product_id !== action.payload.product_id
+        );
+      })
+      .addCase(removeWishlistItem.rejected, (state, action) => {
+        state.wishlistLoading = false;
+        state.wishlistError = action.payload ?? "Failed to remove item from wishlist";
+      })
     builder.addCase(getOrdersCustomerId.pending, (state) => {
       state.ordersLoading = true;
       state.ordersError = null;

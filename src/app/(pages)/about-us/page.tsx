@@ -10,7 +10,7 @@ const AboutUS: React.FC = () => {
     <>
       <VideoBanner />
       <OurStory />
-      <section className="mb-12 lg:mb-14">
+      {/* <section className="mb-12 lg:mb-14">
         <div className="relative">
           <Link href="/c/lab+grown-jewelry" aria-label="Lab Grown Jewelry" className="block relative">
             <span className="relative block w-full overflow-hidden pt-[29.6875%]">
@@ -44,11 +44,10 @@ const AboutUS: React.FC = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <div className="flex flex-col lg:flex-row-reverse gap-6 lg:gap-7 mx-4 lg:mx-14 mb-6 lg:mb-16 items-center">
+      {/* <div className="flex flex-col lg:flex-row-reverse gap-6 lg:gap-7 mx-4 lg:mx-14 mb-6 lg:mb-16 items-center">
         <div className="w-full md:px-8 lg:px-0 lg:w-[44.7%]">
-          {/* Desktop Image */}
           <div className="hidden lg:block">
             <Image
               alt="Prins Company Gemstone Jewelry"
@@ -63,7 +62,6 @@ const AboutUS: React.FC = () => {
               }}
             />
           </div>
-          {/* Tablet Image */}
           <div className="hidden md:block lg:hidden">
             <Image
               alt="Prins Company Gemstone Jewelry"
@@ -78,7 +76,6 @@ const AboutUS: React.FC = () => {
               }}
             />
           </div>
-          {/* Mobile Image */}
           <div className="block md:hidden">
             <Image
               alt="Prins Company Gemstone Jewelry"
@@ -93,7 +90,7 @@ const AboutUS: React.FC = () => {
               }}
             />
           </div>
-        </div>
+        </div> 
         <div className="w-full lg:w-[55.3%] px-8 lg:px-0 md:pb-8 pt-4 text-justify">
           <p className="mb-4">
             At Prins Company, we craft jewelry from the heart of the earth. As a vertically-integrated brand, we oversee every step of the process, ensuring unparalleled quality and care. We sustainably source our gemstones, cutting and polishing them with precision to honor their natural beauty, formed over millions of years. Each piece is handcrafted to reflect your unique vision.
@@ -130,8 +127,8 @@ const AboutUS: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> 
+      </div>*/}
     </>
   );
 };
