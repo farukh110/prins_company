@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import { Providers } from "@/redux/providers";
 import HydrateAuth from "@/components/HydrateAuth";
 import ClientCleanup from "./ClientCleanup";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -35,7 +36,9 @@ export default function RootLayout({
           <HydrateAuth />
           <TopBar />
           <Header />
-          <main>{children}</main>
+          <main>{children}
+            <Toaster position="top-right" />
+          </main>
           <Footer />
         </Providers>
       </body>

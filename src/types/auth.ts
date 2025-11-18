@@ -4,12 +4,14 @@ import { WishlistItem } from "./wishlist";
 export interface Register {
     business_name: string;
     contact_name: string;
+    name?: string; 
     email: string;
     customer_id: string;
     phone: string;
     address: string;
     zipcode: string;
 };
+
 
 export interface RegisterState {
   data: Register;

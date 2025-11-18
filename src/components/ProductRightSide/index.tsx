@@ -1,4 +1,3 @@
-// src/components/ProductRightSide/index.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -6,17 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Star,
-  Gift,
-  Info,
   Heart,
   Truck,
   ChevronDown,
   Mail,
   Phone,
-  Plus,
   FileText,
-  Diamond,
-  Gem,
   Sparkles,
 } from "lucide-react";
 
@@ -25,10 +19,8 @@ import { selectProduct } from "@/redux/api/products/productSlice";
 import { addItem } from "@/redux/api/cart/cartSlice";
 import { useRouter } from "next/navigation";
 import { parseProductImages } from "@/types/product";
+import { toast } from "sonner";
 
-/* ------------------------------------------------------------------ */
-/*  Default icons – keep them in case the API does not return them    */
-/* ------------------------------------------------------------------ */
 const DEFAULT_METAL_ICONS: Record<string, string> = {
   "14k white gold": "/images/products/type/1.webp",
   "14k yellow gold": "/images/products/type/2.webp",
@@ -39,16 +31,10 @@ const DEFAULT_METAL_ICONS: Record<string, string> = {
   platinum: "/images/products/type/7.webp",
 };
 
-/* ------------------------------------------------------------------ */
-/*  Ring sizes – 3 → 13.5 (0.5 increments)                           */
-/* ------------------------------------------------------------------ */
 const RING_SIZES = Array.from({ length: 22 }, (_, i) => (i + 3) * 0.5).map((v) =>
   v.toFixed(1)
 );
 
-/* ------------------------------------------------------------------ */
-/*  Helper – safe string lower-case & replace spaces with “+”          */
-/* ------------------------------------------------------------------ */
 const normaliseMetal = (metal: string | null | undefined): string => {
   if (!metal) return "";
   return metal.toLowerCase().replace(/\s+/g, "+");
@@ -60,12 +46,7 @@ const ProductRightSide: React.FC = () => {
   const router = useRouter();
 
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
-  const [isGemstoneOpen, setIsGemstoneOpen] = useState(false);
-  const [isDiamondOpen, setIsDiamondOpen] = useState(false);
 
-  /* -------------------------------------------------------------- */
-  /*  Early-return when the product is still loading               */
-  /* -------------------------------------------------------------- */
   if (!product) {
     return (
       <div className="p-4 text-center text-gray-500">
@@ -74,20 +55,16 @@ const ProductRightSide: React.FC = () => {
     );
   }
 
-  /* -------------------------------------------------------------- */
-  /*  Core product data – with **safe defaults**                    */
-  /* -------------------------------------------------------------- */
   const title = product.name ?? "Unnamed Product";
 
-  const priceNum = parseFloat(product.price ?? "0");
+  const priceNum = parseFloat(product.price);
   const price = `$${priceNum.toLocaleString()}`;
 
   const originalPriceNum = product.original_price
     ? parseFloat(product.original_price)
     : null;
-  const originalPrice = originalPriceNum
-    ? `$${originalPriceNum.toLocaleString()}`
-    : null;
+
+  const originalPrice = originalPriceNum ? `$${originalPriceNum.toLocaleString()}` : null;
 
   const discount = originalPriceNum
     ? Math.round((1 - priceNum / originalPriceNum) * 100)
@@ -99,57 +76,51 @@ const ProductRightSide: React.FC = () => {
   const size = product.size ?? "—";
   const description = product.description ?? "No description available.";
 
-  const gemstoneQuality = product.gemstone_quality ?? "Premium";
+  // const gemstoneQuality = product.gemstone_quality ?? "Premium";
   const totalCarat = product.total_carat ?? "4.03";
 
-  /* -------------------------------------------------------------- */
-  /*  Diamond details – safe parsing                                 */
-  /* -------------------------------------------------------------- */
-  const dia1Pcs = parseInt(product.dia_1_pcs ?? "0", 10) || 0;
-  const dia2Pcs = parseInt(product.dia_2_pcs ?? "0", 10) || 0;
-  const diamondCount = dia1Pcs + dia2Pcs;
+  // const dia1Pcs = parseInt(product.dia_1_pcs ?? "0", 10) || 0;
+  // const dia2Pcs = parseInt(product.dia_2_pcs ?? "0", 10) || 0;
+  // const diamondCount = dia1Pcs + dia2Pcs;
 
-  const dia1Wt = parseFloat(product.dia_1_wt ?? "0") || 0;
-  const dia2Wt = parseFloat(product.dia_2_wt ?? "0") || 0;
-  const diamondWeight = dia1Wt + dia2Wt;
+  // const dia1Wt = parseFloat(product.dia_1_wt ?? "0") || 0;
+  // const dia2Wt = parseFloat(product.dia_2_wt ?? "0") || 0;
+  // const diamondWeight = dia1Wt + dia2Wt;
 
-  const diamondQuality = product.diamond_quality ?? "F-G VS";
+  // const diamondQuality = product.diamond_quality ?? "F-G VS";
 
-  /* -------------------------------------------------------------- */
-  /*  Options that can come from the API – fallback to defaults      */
-  /* -------------------------------------------------------------- */
-  const gemstoneOptions = (product.gemstone_videos ?? [
-    {
-      id: "premium",
-      title: "Premium",
-      videoSrc: "/videos/product-detail/oval.mp4",
-      label: "Lab Grown",
-    },
-    {
-      id: "good",
-      title: "Good(A)",
-      videoSrc: "/videos/product-detail/oval-good.mp4",
-      label: "Natural",
-    },
-    {
-      id: "better",
-      title: "Better(AA)",
-      videoSrc: "/videos/product-detail/oval-better.mp4",
-      label: "Natural",
-    },
-    {
-      id: "best",
-      title: "Best(AAA)",
-      videoSrc: "/videos/product-detail/oval-best.mp4",
-      label: "Natural",
-    },
-    {
-      id: "heirloom",
-      title: "Heirloom(AAAA)",
-      videoSrc: "/videos/product-detail/oval-heirloom.mp4",
-      label: "Natural",
-    },
-  ]) as any[];
+  // const gemstoneOptions = (product.gemstone_videos ?? [
+  //   {
+  //     id: "premium",
+  //     title: "Premium",
+  //     videoSrc: "/videos/product-detail/oval.mp4",
+  //     label: "Lab Grown",
+  //   },
+  //   {
+  //     id: "good",
+  //     title: "Good(A)",
+  //     videoSrc: "/videos/product-detail/oval-good.mp4",
+  //     label: "Natural",
+  //   },
+  //   {
+  //     id: "better",
+  //     title: "Better(AA)",
+  //     videoSrc: "/videos/product-detail/oval-better.mp4",
+  //     label: "Natural",
+  //   },
+  //   {
+  //     id: "best",
+  //     title: "Best(AAA)",
+  //     videoSrc: "/videos/product-detail/oval-best.mp4",
+  //     label: "Natural",
+  //   },
+  //   {
+  //     id: "heirloom",
+  //     title: "Heirloom(AAAA)",
+  //     videoSrc: "/videos/product-detail/oval-heirloom.mp4",
+  //     label: "Natural",
+  //   },
+  // ]) as any[];
 
   const caratOptions = (product.carat_options ?? [
     { id: "6x4mm", title: "0.80 Carat", value: "0.80" },
@@ -199,9 +170,6 @@ const ProductRightSide: React.FC = () => {
     },
   ]) as any[];
 
-  /* -------------------------------------------------------------- */
-  /*  Add-to-cart handler                                            */
-  /* -------------------------------------------------------------- */
   const addToCart = () => {
     const imageUrls = parseProductImages(product.image ?? "");
     const firstImage = imageUrls[0] ?? "/images/placeholder.jpg";
@@ -219,13 +187,11 @@ const ProductRightSide: React.FC = () => {
     };
 
     dispatch(addItem(payload));
-    alert(`${product.name} added to cart!`);
+    // alert(`${product.name} added to cart!`);
+    toast.success(`${product.name} added to cart!`);
     router.push("/cart");
   };
 
-  /* -------------------------------------------------------------- */
-  /*  Render                                                         */
-  /* -------------------------------------------------------------- */
   return (
     <div className="sticky top-0 pt-4 md:pt-6 bg-white p-4 w-full">
       {/* ---------- Title ---------- */}
@@ -290,9 +256,8 @@ const ProductRightSide: React.FC = () => {
               className="flex-shrink-0 flex flex-col items-center cursor-pointer"
             >
               <span
-                className={`border-2 ${
-                  opt.id === "10x8mm" ? "border-blue-600" : "border-gray-300"
-                } rounded-full p-1`}
+                className={`border-2 ${opt.id === "10x8mm" ? "border-blue-600" : "border-gray-300"
+                  } rounded-full p-1`}
               >
                 <span className="text-sm text-gray-900 w-10 h-10 flex items-center justify-center">
                   {opt.value}
@@ -329,11 +294,10 @@ const ProductRightSide: React.FC = () => {
                 className="flex-shrink-0 flex flex-col items-center cursor-pointer"
               >
                 <span
-                  className={`border-2 ${
-                    normalizedOption.includes(normalizedCurrent)
+                  className={`border-2 ${normalizedOption.includes(normalizedCurrent)
                       ? "border-blue-600"
                       : "border-transparent"
-                  } rounded-full p-1`}
+                    } rounded-full p-1`}
                 >
                   <Image
                     src={opt.icon}
@@ -370,9 +334,8 @@ const ProductRightSide: React.FC = () => {
           {RING_SIZES.map((s) => (
             <button
               key={s}
-              className={`flex-shrink-0 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center bg-gray-200 border ${
-                s === size ? "border-blue-600" : "border-gray-300"
-              } rounded-full hover:border-gray-600 text-sm text-gray-900`}
+              className={`flex-shrink-0 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center bg-gray-200 border ${s === size ? "border-blue-600" : "border-gray-300"
+                } rounded-full hover:border-gray-600 text-sm text-gray-900`}
             >
               {s}
             </button>
@@ -463,9 +426,8 @@ const ProductRightSide: React.FC = () => {
             />
           </button>
           <div
-            className={`overflow-hidden transition-all duration-300 ${
-              isOverviewOpen ? "max-h-[1000px]" : "max-h-0"
-            }`}
+            className={`overflow-hidden transition-all duration-300 ${isOverviewOpen ? "max-h-[1000px]" : "max-h-0"
+              }`}
           >
             <div className="px-3 py-3 text-sm text-gray-700">
               <p className="uppercase mb-2">About ring</p>

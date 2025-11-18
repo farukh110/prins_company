@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useEffect, useRef } from "react";
+import { FC, useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Pause, ZoomIn } from "lucide-react";
 import { ParsedProduct } from "@/types/product";
@@ -17,12 +17,6 @@ interface MediaItem {
   isLabGrown?: boolean;
   isVideo?: boolean;
   skinToneOverlay?: { light: string; dark: string };
-}
-
-interface CustomerImage {
-  src: string;
-  alt: string;
-  overlayText?: string;
 }
 
 interface SkinToneImageProps {
@@ -60,13 +54,6 @@ const ProductMedia: FC<ProductMediaProps> = ({ product, className }) => {
   if (product.isLabGrown && mediaItems.length > 0) {
     mediaItems[0].isLabGrown = true;
   }
-
-  const customerImages = product.customerImages ?? [
-    { src: "/placeholder/customer1.webp", alt: "Customer 1" },
-    { src: "/placeholder/customer2.webp", alt: "Customer 2" },
-    { src: "/placeholder/customer3.webp", alt: "Customer 3" },
-    { src: "/placeholder/customer4.webp", alt: "Customer 4", overlayText: "View all images" },
-  ];
 
   return (
     <div
@@ -180,49 +167,49 @@ const VideoItem: FC<{ item: MediaItem }> = ({ item }) => (
 );
 
 const SkinToneImage: FC<SkinToneImageProps> = ({ item }) => {
-  const [tone, setTone] = useState(0.5); // Start at middle for better testing
+  const [tone, setTone] = useState(0.5);
   const [imageError, setImageError] = useState({ light: false, dark: false, ring: false });
   const sliderRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
-  const handleToneChange = (clientY: number) => {
-    if (sliderRef.current) {
-      const rect = sliderRef.current.getBoundingClientRect();
-      const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
-      const newTone = 1 - y / rect.height; // 0 at bottom (light), 1 at top (dark)
-      setTone(newTone);
+  const handleToneChange = useCallback((clientY: number) => {
+    if (!sliderRef.current) return;
+    const rect = sliderRef.current.getBoundingClientRect();
+    const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+    const newTone = 1 - y / rect.height;
+    setTone(newTone);
+  }, []);
+
+  // These are stable across renders → safe to put in deps
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (isDragging.current) {
+      requestAnimationFrame(() => handleToneChange(e.clientY));
     }
-  };
+  }, [handleToneChange]);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (isDragging.current) {
+      e.preventDefault();
+      requestAnimationFrame(() => handleToneChange(e.touches[0].clientY));
+    }
+  }, [handleToneChange]);
+
+  const handleMouseUp = useCallback(() => {
+    isDragging.current = false;
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    isDragging.current = false;
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     isDragging.current = true;
     handleToneChange(e.clientY);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging.current) {
-      requestAnimationFrame(() => handleToneChange(e.clientY));
-    }
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
-
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     isDragging.current = true;
     handleToneChange(e.touches[0].clientY);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (isDragging.current) {
-      e.preventDefault(); // Prevent scrolling
-      requestAnimationFrame(() => handleToneChange(e.touches[0].clientY));
-    }
-  };
-
-  const handleTouchEnd = () => {
-    isDragging.current = false;
   };
 
   useEffect(() => {
@@ -237,7 +224,7 @@ const SkinToneImage: FC<SkinToneImageProps> = ({ item }) => {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
     };
-  }, []);
+  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
   return (
     <div className="relative w-full aspect-square overflow-hidden rounded-lg group">

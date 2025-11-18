@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { REGISTER_USER, LOGIN_USER, ADD_TO_WISHLIST, USER_WISHLIST, GET_USER_ORDERS } from "@/constants";
-import { AddWishlistPayload, AddWishlistResponse, AuthState, LoginPayload, LoginResponse, PersistedAuth, Register } from "@/types/auth";
+import { LOGIN_USER, ADD_TO_WISHLIST, USER_WISHLIST, GET_USER_ORDERS } from "@/constants";
+import { AddWishlistPayload, AddWishlistResponse, AuthState, LoginPayload, LoginResponse, PersistedAuth } from "@/types/auth";
 import { authService } from "./authService";
 import { AxiosError } from "axios";
 import { AUTH_STORAGE_KEY } from "@/util/storage";
@@ -37,21 +37,21 @@ const initialState: AuthState = {
 
 };
 
-export const registerUser = createAsyncThunk(
-  REGISTER_USER,
-  async (registerData: Register, { rejectWithValue }) => {
+// export const registerUser = createAsyncThunk(
+//   REGISTER_USER,
+//   async (registerData: Register, { rejectWithValue }) => {
 
-    try {
+//     try {
 
-      const response = await authService.register(registerData);
-      return response;
+//       const response = await authService.register(registerData);
+//       return response;
 
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      return rejectWithValue(err.response?.data?.message ?? "Registration failed");
-    }
-  }
-);
+//     } catch (error) {
+//       const err = error as AxiosError<{ message: string }>;
+//       return rejectWithValue(err.response?.data?.message ?? "Registration failed");
+//     }
+//   }
+// );
 
 export const loginUser = createAsyncThunk<
   LoginResponse,
@@ -147,6 +147,23 @@ export const getOrdersCustomerId = createAsyncThunk<
   }
 );
 
+export const removeWishlistItem = createAsyncThunk<
+  { product_id: number },
+  { customer_id: string; product_id: number },
+  { rejectValue: string }
+>(
+  "auth/removeWishlistItem",
+  async (payload, { rejectWithValue }) => {
+    try {
+      await authService.removeWishlist(payload);
+      return { product_id: payload.product_id };
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      return rejectWithValue(err.response?.data?.message ?? "Failed to remove item");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -156,6 +173,7 @@ const authSlice = createSlice({
       state.token = null;
       state.error = null;
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      localStorage.removeItem("rememberedCustomer");
     },
     resetError: (state) => {
       state.error = null;
@@ -170,20 +188,20 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
 
-    builder.addCase(registerUser.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(registerUser.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
-      state.loading = false;
-      state.user = action.payload.data;
-      state.token = action.payload.token;
-      persistAuth({ token: action.payload.token, user: action.payload.data });
-    });
-    builder.addCase(registerUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload ?? "Registration failed";
-    });
+    // builder.addCase(registerUser.pending, (state) => {
+    //   state.loading = true;
+    //   state.error = null;
+    // });
+    // builder.addCase(registerUser.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+    //   state.loading = false;
+    //   state.user = action.payload.data;
+    //   state.token = action.payload.token;
+    //   persistAuth({ token: action.payload.token, user: action.payload.data });
+    // });
+    // builder.addCase(registerUser.rejected, (state, action) => {
+    //   state.loading = false;
+    //   state.error = action.payload ?? "Registration failed";
+    // });
 
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
@@ -224,6 +242,26 @@ const authSlice = createSlice({
       state.wishlistLoading = false;
       state.wishlistError = (action.payload as string) ?? "Wishlist error";
     })
+    // Add these cases (you probably missed them!)
+    builder
+      .addCase(removeWishlistItem.pending, (state) => {
+        state.wishlistLoading = true;
+        state.wishlistError = null;
+      })
+      .addCase(
+        removeWishlistItem.fulfilled,
+        (state, action: PayloadAction<{ product_id: number }>) => {
+          state.wishlistLoading = false;
+          state.wishlist = state.wishlist.filter(
+            (item) => item.id !== String(action.payload.product_id)
+          );
+        }
+      )
+      .addCase(removeWishlistItem.rejected, (state, action) => {
+        state.wishlistLoading = false;
+        state.wishlistError =
+          (action.payload as string) ?? "Failed to remove item from wishlist";
+      });
     builder.addCase(getOrdersCustomerId.pending, (state) => {
       state.ordersLoading = true;
       state.ordersError = null;

@@ -82,7 +82,7 @@ const ProductDetail: React.FC = () => {
 
         <div className="md:w-[330px] lg:w-[500px] lg:pr-12 lg:sticky lg:min-w-[500px] top-[80px] mb-10">
 
-          <ProductRightSide product={product} />
+          <ProductRightSide />
 
         </div>
 

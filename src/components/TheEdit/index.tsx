@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { BlogPost } from '@/types/blogPost';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useSelector } from 'react-redux';

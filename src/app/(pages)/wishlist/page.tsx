@@ -2,17 +2,20 @@
 
 import WishlistItem from "@/components/WishlistItem";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { getWishlistItems } from "@/redux/api/auth/authSlice";
+import {
+  getWishlistItems,
+  removeWishlistItem,
+} from "@/redux/api/auth/authSlice";
 import { mapWishlistApiToProps } from "@/types/wishlist";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const Wishlist: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { user, token, wishlistLoading, wishlistError, wishlist } = useAppSelector(
-    (s) => s.auth
-  );
+  const { user, token, wishlistLoading, wishlistError, wishlist } =
+    useAppSelector((s) => s.auth);
 
   const customerId = user?.customer_id;
 
@@ -22,7 +25,26 @@ const Wishlist: React.FC = () => {
     }
   }, [dispatch, token, customerId]);
 
-  if (wishlistLoading) {
+  const handleRemove = async (productId: string) => {
+    if (!customerId) return;
+
+    try {
+      await dispatch(
+        removeWishlistItem({
+          customer_id: customerId,
+          product_id: Number(productId), 
+        })
+      ).unwrap();
+
+      toast.success("Removed from wishlist");
+      dispatch(getWishlistItems(customerId));
+    } catch (error) {
+      toast.error("Failed to remove item");
+      console.log(error);
+    }
+  };
+
+  if (wishlistLoading && wishlist.length === 0) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
@@ -66,15 +88,12 @@ const Wishlist: React.FC = () => {
         </h1>
       </div>
 
-      {/* Grid – Use mapped uiItems */}
       <div className="grid gap-4 p-4 md:grid-cols-2 md:gap-6 md:p-6 lg:grid-cols-3 lg:gap-5 xl:grid-cols-4 2xl:grid-cols-5">
         {uiItems.map((item) => (
           <WishlistItem
             key={item.id}
             {...item}
-            onRemove={(id) => {
-              console.log("Remove item:", id);
-            }}
+            onRemove={handleRemove}
           />
         ))}
       </div>

@@ -149,7 +149,7 @@ const Login: React.FC = () => {
         </div>
 
         <div className="bg-[#DDDDDD] text-center py-3 text-base flex flex-wrap justify-center items-center gap-1">
-          <span className="poppins-light text-[16px]">Don't have an account?</span>
+          <span className="poppins-light text-[16px]">Don&apos;t have an account?</span>
           <button
             type="button"
             onClick={() => router.push('/register')}

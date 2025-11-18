@@ -1,14 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useState } from 'react'
-import { Heart, Eye } from 'lucide-react'
+import { Heart, Eye, Lock } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { addWishlistItem } from '@/redux/api/auth/authSlice'
 import { AddWishlistPayload } from '@/types/auth'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner';
 
 type ProductCardProps = {
-  ProductId: string;
+  ProductId: string
   href: string
   title: string
   price: string
@@ -28,48 +29,66 @@ const ProductCard: FC<ProductCardProps> = ({
   alt = '',
   swatches = []
 }) => {
+  const [isHovered, setIsHovered] = useState<boolean>(false)
+  const [isAdding, setIsAdding] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isAdding, setIsAdding] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const { user, loading: AuthLoading, error: AuthError, token } = useAppSelector((s) => s.auth);
-
-  // console.log('user: ', user);
-
-  console.log('ProductId: ', ProductId);
+  const { user } = useAppSelector((s) => s.auth)
+  const isLoggedIn = !!user?.customer_id
 
   const addToWishlist = async () => {
-
-    if (!user?.customer_id) {
-      alert('Please log in to add items to your wishlist.');
-      router.push('/login');
-      return;
+    if (!isLoggedIn) {
+      toast.error('Please log in to add items to your wishlist', {
+        action: {
+          label: 'Login',
+          onClick: () => router.push('/login')
+        }
+      })
+      return
     }
 
-    if (isAdding) return;
+    if (isAdding) return
 
     const payload: AddWishlistPayload = {
-      customer_id: user.customer_id,
-      product_id: Number(ProductId), 
-    };
-
-    setIsAdding(true);
-    try {
-      await dispatch(addWishlistItem(payload)).unwrap();
-      alert('Added to wishlist!');
-      router.push('/wishlist');
-    } catch (err: any) {
-      alert(err || 'Failed to add to wishlist');
-    } finally {
-      setIsAdding(false);
+      customer_id: user!.customer_id,
+      product_id: Number(ProductId)
     }
-  };
+
+    setIsAdding(true)
+
+    try {
+      const promise = dispatch(addWishlistItem(payload)).unwrap()
+
+      await toast.promise(promise, {
+        loading: 'Adding to wishlist...',
+        success: () => {
+          router.push('/wishlist')
+          return 'Added to wishlist!'
+        },
+        error: (err: any) => err?.message || 'Failed to add to wishlist'
+      })
+    } catch {
+      
+    } finally {
+      setIsAdding(false)
+    }
+  }
+
+
+  const handleViewPriceClick = () => {
+    toast.info('Log in to view pricing', {
+      description: 'Exclusive prices for members only',
+      action: {
+        label: 'Log In',
+        onClick: () => router.push('/login')
+      }
+    })
+  }
 
   return (
     <article
-      className="pt-6 pb-2 hover:shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] transition-shadow duration-300 bg-white rounded-lg overflow-hidden min-h-[371px] max-h-[462px]"
+      className="group pt-6 pb-2 hover:shadow-[0px_8px_18px_0px_rgba(22,22,24,0.08)] transition-all duration-300 bg-white rounded-lg overflow-hidden min-h-[371px] max-h-[462px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -82,60 +101,78 @@ const ProductCard: FC<ProductCardProps> = ({
               fill
               priority
               sizes="(max-width: 640px) 250px, (max-width: 1024px) 480px, 828px"
-              className="object-contain transition-transform duration-500 ease-out"
+              className="object-contain transition-transform duration-500 ease-out group-hover:scale-105"
             />
           </div>
         </Link>
 
-        <div className="group absolute bottom-14 right-2.5 flex items-center shadow-[0px_1px_10px_0px_rgba(0,0,0,0.05)] bg-white/30 backdrop-blur-sm rounded-full p-1 cursor-pointer">
+        {/* Quick View */}
+        <div className="absolute bottom-14 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
-            aria-label="View Similar"
-            className="p-1 rounded-full bg-white/60 hover:bg-white flex items-center justify-center"
+            aria-label="Quick view"
+            className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition"
           >
-            <Eye size={18} strokeWidth={1.5} className="text-gray-800 opacity-80" />
+            <Eye size={18} className="text-gray-700" />
           </button>
-          {/* <div className="hidden md:inline-block px-1 max-w-0 group-hover:max-w-[120px] group-hover:opacity-100 transition-all duration-300 ease-out opacity-0 whitespace-nowrap text-sm">
-            View Similar
-          </div> */}
         </div>
 
+        {/* Wishlist Button */}
         <button
-          aria-label="wishlist"
           onClick={addToWishlist}
-          className="absolute top-2.5 cursor-pointer right-2.5 p-1 rounded-full shadow-[0px_1px_10px_0px_rgba(0,0,0,0.05)] bg-white/30 hover:bg-white/70 transition"
+          disabled={isAdding}
+          aria-label="Add to wishlist"
+          className="absolute top-3 right-3 p-2 rounded-full bg-white shadow-md hover:shadow-lg transition disabled:opacity-50"
         >
-          <Heart size={18} strokeWidth={1.5} className="text-gray-800 opacity-70" />
+          <Heart
+            size={18}
+            className={`text-gray-700 ${isAdding ? 'fill-rose-500 text-rose-500' : ''}`}
+          />
         </button>
 
-        <div className="flex justify-center items-center gap-2 absolute bottom-0 left-1/2 -translate-x-1/2 pb-2 z-40">
-          {swatches.slice(0, 4).map((color, i) => (
-            <span
-              key={color + i}
-              className="cursor-pointer border rounded-full w-7 h-7 flex justify-center items-center"
-            >
-              <svg width="16" height="16" className="w-[18px] h-[18px]" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" fill={color || '#e5e7eb'} />
-              </svg>
-            </span>
-          ))}
-          {swatches.length > 4 && (
-            <span className="flex justify-center items-center text-sm px-1 h-[28px] bg-gray-200 text-gray-800 rounded-md cursor-pointer hover:bg-gray-800 hover:text-white transition">
-              +{swatches.length - 4}
-            </span>
-          )}
-        </div>
+        {/* Color Swatches */}
+        {swatches.length > 0 && (
+          <div className="flex justify-center items-center gap-2 absolute bottom-3 left-1/2 -translate-x-1/2 z-10">
+            {swatches.slice(0, 4).map((color, i) => (
+              <span
+                key={i}
+                className="w-8 h-8 rounded-full border-2 border-white shadow-sm ring-1 ring-gray-200 overflow-hidden"
+                style={{ backgroundColor: color }}
+              />
+            ))}
+            {swatches.length > 4 && (
+              <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+                +{swatches.length - 4}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
-      <h3 className="mt-3 px-3 text-gray-700 text-sm line-clamp-2 hover:text-gray-900">
-        <Link href={href} className="hover:no-underline">
+      {/* Title */}
+      <h3 className="mt-4 px-3 text-sm text-gray-700 line-clamp-2">
+        <Link href={href} className="hover:text-gray-900 transition">
           {title}
         </Link>
       </h3>
-      <Link href={href} className="hover:no-underline">
-        <div className="px-3 pt-1.5 text-gray-700 text-sm">{price}</div>
-      </Link>
+
+      {/* Price or View Price Button */}
+      <div className="px-3 pt-2 pb-4">
+        {isLoggedIn ? (
+          <Link href={href} className="block">
+            <p className="text-lg font-semibold text-gray-900">{price}</p>
+          </Link>
+        ) : (
+          <button
+            onClick={handleViewPriceClick}
+            className="flex items-center cursor-pointer gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <Lock size={16} className="text-gray-500" />
+            View Price
+          </button>
+        )}
+      </div>
     </article>
   )
 }
 
-export default ProductCard;
+export default ProductCard

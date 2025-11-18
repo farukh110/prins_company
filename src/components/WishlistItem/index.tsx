@@ -13,13 +13,12 @@ const WishlistItem: React.FC<WishlistItemProps> = ({
   originalPrice,
   discount,
   gemstoneQuality,
-  stoneSize,
   onRemove,
 }) => {
   return (
     <div className="group relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <button
-        onClick={() => onRemove?.(id)}
+        onClick={() => onRemove?.(String(id))}
         aria-label="Remove from wishlist"
         className="cursor-pointer absolute top-2 right-2 z-10 p-1.5 bg-white/80 backdrop-blur-sm rounded-full hover:bg-red-50 transition-colors"
       >

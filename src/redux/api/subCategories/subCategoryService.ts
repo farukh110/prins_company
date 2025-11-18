@@ -1,4 +1,3 @@
-import { CategoryResponse } from "@/types/category";
 import { SubCategoryResponse } from "@/types/subCategory";
 import { BACKEND } from "@/util/base_url";
 import axios, { AxiosError } from "axios";

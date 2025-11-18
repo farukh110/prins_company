@@ -85,6 +85,7 @@ const ContactUsComponent: React.FC = () => {
       setTouched({ name: false, email: false, phone: false, subject: false, message: false });
     } catch (err) {
       setError('Failed to send your message. Please try again later.');
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -114,7 +115,7 @@ const ContactUsComponent: React.FC = () => {
             </div>
 
             <p className="mt-2 text-sm text-gray-600 poppins-light">
-              We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
             </p>
 
             <form noValidate onSubmit={handleSubmit} className="mt-6 space-y-5">
