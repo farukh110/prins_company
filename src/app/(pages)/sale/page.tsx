@@ -2,15 +2,10 @@
 
 import SaleGrid from "@/components/SaleGrid";
 import SaleProducts from "@/components/SaleProducts";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const Sale: React.FC = () => {
-
-    const router = useRouter();
-    const dispatch = useAppDispatch();
 
     return (
         <>

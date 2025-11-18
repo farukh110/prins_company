@@ -40,6 +40,7 @@ const Wishlist: React.FC = () => {
       dispatch(getWishlistItems(customerId)); 
     } catch (error) {
       toast.error("Failed to remove item");
+      console.log(error);
     }
   };
 

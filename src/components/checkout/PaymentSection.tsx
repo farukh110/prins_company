@@ -29,7 +29,7 @@ const PaymentSection = () => {
         </div>
         <h2 className="text-2xl font-bold text-[#161618] mb-3">Payment Successful!</h2>
         <p className="text-gray-600 mb-4">
-          Thank you for your order. We'll send a confirmation to your email shortly.
+          Thank you for your order. We`&apos;ll send a confirmation to your email shortly.
         </p>
         <p className="text-sm text-gray-500">
           Order ID: <span className="font-mono font-bold">{orderId}</span>
@@ -87,6 +87,7 @@ const PaymentSection = () => {
                 console.log("Payment completed!", order);
               } catch (err) {
                 setPaymentStatus('error');
+                console.log('error: ', err);
                 alert("Payment failed. Please try again.");
               }
             }}

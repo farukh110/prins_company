@@ -13,7 +13,6 @@ const WishlistItem: React.FC<WishlistItemProps> = ({
   originalPrice,
   discount,
   gemstoneQuality,
-  stoneSize,
   onRemove,
 }) => {
   return (

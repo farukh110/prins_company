@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { getByCategorySlug } from "@/redux/api/categories/categorySlice";
 import { HelpCircle, Sliders, SortDesc, X } from "lucide-react";
 import { useParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Category: React.FC = () => {
 

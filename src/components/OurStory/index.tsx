@@ -38,7 +38,7 @@ const OurStory: React.FC = () => {
                 {/* Text Content */}
                 <div className="px-8 lg:px-0 lg:w-[55.3%] poppins-light text-[#161618] text-[15px] leading-relaxed text-justify">
                     <h1 className="text-[26px] md:text-[28px] poppins-semibold leading-tight lg:leading-[48px] mb-8 text-[#1a1a1a]">
-                        From Passion to Pieces You'll Love
+                        From Passion to Pieces You&apos;ll Love
                     </h1>
                     <p className="mb-5">
                         What started as a shared passion between a husband-and-wife duo has grown into a brand built on style, substance, and everyday elegance. They began their journey in the jewelry world by sourcing and selling handpicked pieces to retail stores. But after years of listening closely to what customers truly wanted—timeless design, effortless wearability, and just the right touch of sophistication—they took a bold step.

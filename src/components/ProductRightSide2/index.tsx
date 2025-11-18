@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, Gift, Info, Heart, Truck, ChevronDown, Mail, Phone, Plus, FileText, Diamond, Gem, Sparkles } from 'lucide-react';
+import { Star, Heart, Truck, ChevronDown, Mail, Phone, FileText, Sparkles } from 'lucide-react';
 import { useAppSelector } from '@/hooks/redux';
 import { selectProduct } from '@/redux/api/products/productSlice';
 
@@ -23,9 +23,7 @@ const RING_SIZES = Array.from({ length: 22 }, (_, i) => (i + 3) * 0.5).map(v => 
 const ProductRightSide: React.FC = () => {
   const product = useAppSelector(selectProduct);
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
-  const [isGemstoneOpen, setIsGemstoneOpen] = useState(false);
-  const [isDiamondOpen, setIsDiamondOpen] = useState(false);
-
+  
   if (!product) {
     return (
       <div className="p-4 text-center text-gray-500">
@@ -42,27 +40,27 @@ const ProductRightSide: React.FC = () => {
   const sku = product.style_no || product.item_no;
   const metal = product.metal;
   const weight = product.weight;
-  const size = product.size;
+  // const size = product.size;
   const description = product.description;
 
   // Gemstone quality (mocked – extend API to include this)
-  const gemstoneQuality = product.gemstone_quality || 'Premium';
+  // const gemstoneQuality = product.gemstone_quality || 'Premium';
   const totalCarat = product.total_carat || '4.03';
 
   // Diamond details
-  const hasDiamonds = product.dia_1_pcs || product.dia_2_pcs;
-  const diamondCount = (parseInt(product.dia_1_pcs || '0') || 0) + (parseInt(product.dia_2_pcs || '0') || 0);
-  const diamondWeight = (parseFloat(product.dia_1_wt || '0') || 0) + (parseFloat(product.dia_2_wt || '0') || 0);
-  const diamondQuality = product.diamond_quality || 'F-G VS';
+  // const hasDiamonds = product.dia_1_pcs || product.dia_2_pcs;
+  // const diamondCount = (parseInt(product.dia_1_pcs || '0') || 0) + (parseInt(product.dia_2_pcs || '0') || 0);
+  // const diamondWeight = (parseFloat(product.dia_1_wt || '0') || 0) + (parseFloat(product.dia_2_wt || '0') || 0);
+  // const diamondQuality = product.diamond_quality || 'F-G VS';
 
   // Gemstone video options (mocked – extend API)
-  const gemstoneOptions = (product.gemstone_videos || [
-    { id: 'premium', title: 'Premium', videoSrc: '/videos/product-detail/oval.mp4', label: 'Lab Grown' },
-    { id: 'good', title: 'Good(A)', videoSrc: '/videos/product-detail/oval-good.mp4', label: 'Natural' },
-    { id: 'better', title: 'Better(AA)', videoSrc: '/videos/product-detail/oval-better.mp4', label: 'Natural' },
-    { id: 'best', title: 'Best(AAA)', videoSrc: '/videos/product-detail/oval-best.mp4', label: 'Natural' },
-    { id: 'heirloom', title: 'Heirloom(AAAA)', videoSrc: '/videos/product-detail/oval-heirloom.mp4', label: 'Natural' },
-  ]) as any[];
+  // const gemstoneOptions = (product.gemstone_videos || [
+  //   { id: 'premium', title: 'Premium', videoSrc: '/videos/product-detail/oval.mp4', label: 'Lab Grown' },
+  //   { id: 'good', title: 'Good(A)', videoSrc: '/videos/product-detail/oval-good.mp4', label: 'Natural' },
+  //   { id: 'better', title: 'Better(AA)', videoSrc: '/videos/product-detail/oval-better.mp4', label: 'Natural' },
+  //   { id: 'best', title: 'Best(AAA)', videoSrc: '/videos/product-detail/oval-best.mp4', label: 'Natural' },
+  //   { id: 'heirloom', title: 'Heirloom(AAAA)', videoSrc: '/videos/product-detail/oval-heirloom.mp4', label: 'Natural' },
+  // ]) as any[];
 
   // Carat options (mocked – extend API)
   const caratOptions = (product.carat_options || [

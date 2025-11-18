@@ -38,7 +38,7 @@ const TopCategories: FC = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                         <p className="text-ellipsis">
                             Make a statement wherever you go with handcrafted rings from
-                            Angara. From 'love' tokens to outfit pick-me-ups, we've got them
+                            Angara. From &apos;love&apos; tokens to outfit pick-me-ups, we&apos;ve got them
                             all. Get exploring.
                         </p>
                         <button

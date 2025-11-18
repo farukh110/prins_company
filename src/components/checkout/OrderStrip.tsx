@@ -2,13 +2,13 @@
 
 import { ChevronsDown } from 'lucide-react';
 import Image from 'next/image';
-import { Product } from '@/types/product';
+import { CartItem } from '@/types/cart';  // ← Import your real CartItem
 
 interface OrderStripProps {
   total: string;
   showDetails: boolean;
   setShowDetails: (value: boolean) => void;
-  items: Product[];
+  items: CartItem[];        // ← Changed from Product[] to CartItem[]
   subtotal: number;
 }
 
@@ -36,9 +36,12 @@ const OrderStrip = ({ total, showDetails, setShowDetails, items, subtotal }: Ord
   );
 };
 
-function MobileOrderDetails({ items, subtotal }: { items: Product[]; subtotal: number }) {
-
-  const savings = items.reduce((acc, p) => acc + (p.originalPrice || 0) - p.price, 0);
+function MobileOrderDetails({ items, subtotal }: { items: CartItem[]; subtotal: number }) {
+  const savings = items.reduce((acc, item) => {
+    const original = parseFloat(item.originalPrice || '0');
+    const current = parseFloat(item.price);
+    return acc + (original - current) * item.quantity;
+  }, 0);
 
   return (
     <div className="p-4">
@@ -52,35 +55,45 @@ function MobileOrderDetails({ items, subtotal }: { items: Product[]; subtotal: n
                 fill
                 className="object-cover"
               />
-              {item.isFree && (
-                <span className="absolute top-2 left-[-24px] -rotate-45 bg-red-500 text-white text-xs px-4 py-0.5">FREE</span>
-              )}
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium line-clamp-2">{item.name}</p>
               <p className="text-xs text-gray-600">QTY: {item.quantity}</p>
-              <p className="text-right">
+              <div className="text-right mt-1">
                 {item.originalPrice && (
-                  <span className="line-through text-gray-500 text-xs">${item.originalPrice}</span>
-                )}{' '}
-                <span className="text-sm">${item.price}</span>
-              </p>
+                  <span className="line-through text-gray-500 text-xs mr-2">
+                    ${item.originalPrice}
+                  </span>
+                )}
+                <span className="text-sm font-semibold">${item.price}</span>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
       <div className="mt-4 space-y-3 text-sm">
-        <div className="flex justify-between"><span>Subtotal</span> <span>${subtotal.toFixed(2)}</span></div>
+        <div className="flex justify-between">
+          <span>Subtotal</span>
+          <span>${subtotal.toFixed(2)}</span>
+        </div>
         {savings > 0 && (
           <div className="flex justify-between text-green-600">
-            <span>Promotional Savings</span> <span>-${savings.toFixed(2)}</span>
+            <span>Promotional Savings</span>
+            <span>-${savings.toFixed(2)}</span>
           </div>
         )}
-        <div className="flex justify-between text-green-600"><span>Express Shipping</span> <span>FREE</span></div>
-        <div className="flex justify-between"><span>Sales Tax</span> <span>TBD</span></div>
+        <div className="flex justify-between text-green-600">
+          <span>Express Shipping</span>
+          <span>FREE</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Sales Tax</span>
+          <span>TBD</span>
+        </div>
         <div className="border-t pt-3 font-bold text-lg flex justify-between">
-          <span>Order Total (before tax)</span> <span>${total}</span>
+          <span>Order Total (before tax)</span>
+          <span>${total}</span>
         </div>
       </div>
     </div>

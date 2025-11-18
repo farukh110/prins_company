@@ -5,17 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Star,
-  Gift,
-  Info,
   Heart,
   Truck,
   ChevronDown,
   Mail,
   Phone,
-  Plus,
   FileText,
-  Diamond,
-  Gem,
   Sparkles,
 } from "lucide-react";
 
@@ -51,9 +46,7 @@ const ProductRightSide: React.FC = () => {
   const router = useRouter();
 
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
-  const [isGemstoneOpen, setIsGemstoneOpen] = useState(false);
-  const [isDiamondOpen, setIsDiamondOpen] = useState(false);
-
+  
   if (!product) {
     return (
       <div className="p-4 text-center text-gray-500">
@@ -84,51 +77,51 @@ const ProductRightSide: React.FC = () => {
   const size = product.size ?? "—";
   const description = product.description ?? "No description available.";
 
-  const gemstoneQuality = product.gemstone_quality ?? "Premium";
+  // const gemstoneQuality = product.gemstone_quality ?? "Premium";
   const totalCarat = product.total_carat ?? "4.03";
 
-  const dia1Pcs = parseInt(product.dia_1_pcs ?? "0", 10) || 0;
-  const dia2Pcs = parseInt(product.dia_2_pcs ?? "0", 10) || 0;
-  const diamondCount = dia1Pcs + dia2Pcs;
+  // const dia1Pcs = parseInt(product.dia_1_pcs ?? "0", 10) || 0;
+  // const dia2Pcs = parseInt(product.dia_2_pcs ?? "0", 10) || 0;
+  // const diamondCount = dia1Pcs + dia2Pcs;
 
-  const dia1Wt = parseFloat(product.dia_1_wt ?? "0") || 0;
-  const dia2Wt = parseFloat(product.dia_2_wt ?? "0") || 0;
-  const diamondWeight = dia1Wt + dia2Wt;
+  // const dia1Wt = parseFloat(product.dia_1_wt ?? "0") || 0;
+  // const dia2Wt = parseFloat(product.dia_2_wt ?? "0") || 0;
+  // const diamondWeight = dia1Wt + dia2Wt;
 
-  const diamondQuality = product.diamond_quality ?? "F-G VS";
+  // const diamondQuality = product.diamond_quality ?? "F-G VS";
 
-  const gemstoneOptions = (product.gemstone_videos ?? [
-    {
-      id: "premium",
-      title: "Premium",
-      videoSrc: "/videos/product-detail/oval.mp4",
-      label: "Lab Grown",
-    },
-    {
-      id: "good",
-      title: "Good(A)",
-      videoSrc: "/videos/product-detail/oval-good.mp4",
-      label: "Natural",
-    },
-    {
-      id: "better",
-      title: "Better(AA)",
-      videoSrc: "/videos/product-detail/oval-better.mp4",
-      label: "Natural",
-    },
-    {
-      id: "best",
-      title: "Best(AAA)",
-      videoSrc: "/videos/product-detail/oval-best.mp4",
-      label: "Natural",
-    },
-    {
-      id: "heirloom",
-      title: "Heirloom(AAAA)",
-      videoSrc: "/videos/product-detail/oval-heirloom.mp4",
-      label: "Natural",
-    },
-  ]) as any[];
+  // const gemstoneOptions = (product.gemstone_videos ?? [
+  //   {
+  //     id: "premium",
+  //     title: "Premium",
+  //     videoSrc: "/videos/product-detail/oval.mp4",
+  //     label: "Lab Grown",
+  //   },
+  //   {
+  //     id: "good",
+  //     title: "Good(A)",
+  //     videoSrc: "/videos/product-detail/oval-good.mp4",
+  //     label: "Natural",
+  //   },
+  //   {
+  //     id: "better",
+  //     title: "Better(AA)",
+  //     videoSrc: "/videos/product-detail/oval-better.mp4",
+  //     label: "Natural",
+  //   },
+  //   {
+  //     id: "best",
+  //     title: "Best(AAA)",
+  //     videoSrc: "/videos/product-detail/oval-best.mp4",
+  //     label: "Natural",
+  //   },
+  //   {
+  //     id: "heirloom",
+  //     title: "Heirloom(AAAA)",
+  //     videoSrc: "/videos/product-detail/oval-heirloom.mp4",
+  //     label: "Natural",
+  //   },
+  // ]) as any[];
 
   const caratOptions = (product.carat_options ?? [
     { id: "6x4mm", title: "0.80 Carat", value: "0.80" },

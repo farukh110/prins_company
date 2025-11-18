@@ -5,8 +5,8 @@ import CustomerFavorites from "@/components/CustomerFavorites";
 import NewArrivals from "@/components/NewArrivals";
 import OfferCode from "@/components/OfferCode";
 import OrderSummary from "@/components/OrderSummary";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { selectCartItems, selectCartSnapshot } from "@/redux/api/cart/cartSlice";
+import { useAppSelector } from "@/hooks/redux";
+import { selectCartSnapshot } from "@/redux/api/cart/cartSlice";
 import { ChevronRight, Lock, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 const Cart: React.FC = () => {
 
     const router = useRouter();
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
     const [hydrated, setHydrated] = useState<boolean>(false);
 
     const { items, subtotal, saved } = useAppSelector(selectCartSnapshot);

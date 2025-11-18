@@ -160,52 +160,52 @@ const Overview: React.FC = () => {
                   Discover Gorgeous Rings for Every Occasion
                 </h2>
                 <p>
-                  Amp up your style quotient with Angara's gorgeous collection of rings. From chic stackables to pieces in classic and modern styles, we've got plenty of exciting options for you!
+                  Amp up your style quotient with Angara&apos;s gorgeous collection of rings. From chic stackables to pieces in classic and modern styles, we&apos;ve got plenty of exciting options for you!
                 </p>
                 <p>
-                  While diamond and pearl rings are perfect for a glam and sophisticated look, you can always throw on designs with colored gemstones for a mood-boosting twist. Whatever ring ideas or style you've come looking for, the collection at Angara won't disappoint.
+                  While diamond and pearl rings are perfect for a glam and sophisticated look, you can always throw on designs with colored gemstones for a mood-boosting twist. Whatever ring ideas or style you&apos;ve come looking for, the collection at Angara won&apos;t disappoint.
                 </p>
                 <p>
-                  Trust us, you'll find our exquisite diamond rings hard to resist. Adorned with fine, conflict-free diamonds, these beauties will sparkle up your days and nights. And if you're a pearl girl, we've got options for you in freshwater, South Sea, Japanese Akoya and Tahitian pearls too.
+                  Trust us, you&apos;ll find our exquisite diamond rings hard to resist. Adorned with fine, conflict-free diamonds, these beauties will sparkle up your days and nights. And if you&apos;re a pearl girl, we&apos;ve got options for you in freshwater, South Sea, Japanese Akoya and Tahitian pearls too.
                 </p>
                 <p>
-                  Now if something spectacular and beautiful is what you're eyeing, we have two words for you: think color! From bright blues and lush greens to fiery reds, yellows and more, our collection includes gemstone rings in every hue you could possibly imagine.
+                  Now if something spectacular and beautiful is what you&apos;re eyeing, we have two words for you: think color! From bright blues and lush greens to fiery reds, yellows and more, our collection includes gemstone rings in every hue you could possibly imagine.
                 </p>
                 <p>
-                  For those who adore regal hues, our sapphire rings are a must-see. Inspired by the beauty of nature? In that case, our stunning emerald rings are perfect for you. We also have gorgeous ruby rings that're a great blend of passion and sophistication. That's not all; our collection of designer rings for women features an array of other gems such as aquamarines, morganites, tanzanites, garnets and more.
+                  For those who adore regal hues, our sapphire rings are a must-see. Inspired by the beauty of nature? In that case, our stunning emerald rings are perfect for you. We also have gorgeous ruby rings that&apos;re a great blend of passion and sophistication. That&apos;s not all; our collection of designer rings for women features an array of other gems such as aquamarines, morganites, tanzanites, garnets and more.
                 </p>
                 <p>
-                  Wish to own brilliant rings without exceeding your budget? Our lab-grown pieces are the perfect solution! You can dazzle up your ensembles with our lab-grown diamond rings. Or add a vibrant pop of color to your OOTD with our lab-grown blue sapphire rings. If you love a hint of romance, our lab-grown ruby rings will certainly capture your heart. And for those who can't get enough of rich green hues, our lab-grown rings are your best bet.
+                  Wish to own brilliant rings without exceeding your budget? Our lab-grown pieces are the perfect solution! You can dazzle up your ensembles with our lab-grown diamond rings. Or add a vibrant pop of color to your OOTD with our lab-grown blue sapphire rings. If you love a hint of romance, our lab-grown ruby rings will certainly capture your heart. And for those who can&apos;t get enough of rich green hues, our lab-grown rings are your best bet.
                 </p>
                 <h3 className="text-xl font-semibold">
                   Rings for Her in a Variety of Styles
                 </h3>
                 <p>
-                  In our collection, you'll find several ring designs for women, from sleek and modern stackables to statement-making cocktail rings. There are sparkly solitaires, meaningful two-stone designs, chic initial rings and so much more. In short – you name it, we have it.
+                  In our collection, you&apos;ll find several ring designs for women, from sleek and modern stackables to statement-making cocktail rings. There are sparkly solitaires, meaningful two-stone designs, chic initial rings and so much more. In short you name it, we have it.
                 </p>
                 <p>
                   Our halo rings are perfect for the days when you want to be the center of attention. Want something elegant to elevate your everyday style? Our stackables rings will instantly take your look from zero to 100. Check out our fashion rings if your inner diva needs a wardrobe upgrade. Wish to treat yourself or a loved one with something thoughtful? Our three-stone rings promise triple the sparkle and a touch of meaningful symbolism.
                 </p>
                 <p>
-                  Want to tell her that she means the world to you? Our promise rings will do the job for you, without having to say a word. Additionally, we've got unique ring designs for your lady love such as Celtic knot, twisted rope, leaf motifs, criss-cross, floral and more to choose from.
+                  Want to tell her that she means the world to you? Our promise rings will do the job for you, without having to say a word. Additionally, we&apos;ve got unique ring designs for your lady love such as Celtic knot, twisted rope, leaf motifs, criss-cross, floral and more to choose from.
                 </p>
                 <p>
-                  If you're planning to pop the forever question, the engagement rings in our selection are all you need to get those happy tears flowing. But, that's not all, we also have exquisite wedding rings for the most special day of your life.
+                  If you&apos;re planning to pop the forever question, the engagement rings in our selection are all you need to get those happy tears flowing. But, that&apos;s not all, we also have exquisite wedding rings for the most special day of your life.
                 </p>
                 <p>
-                  Talking of shapes, we've got emerald-cut, pear, heart, square, trillion, round rings and more.
+                  Talking of shapes, we&apos;ve got emerald-cut, pear, heart, square, trillion, round rings and more.
                 </p>
                 <h3 className="text-xl font-semibold">
                   Customize the Perfect Ring for You
                 </h3>
                 <p>
-                  In the past only the elite had access to custom jewelry. But that's not how it is anymore. At Angara, you can be the hero of your jewelry saga and create for yourself a ring in the gemstone quality, carat weight and metal you like. To make your piece even more special, we suggest you get a little engraving done, too!
+                  In the past only the elite had access to custom jewelry. But that&apos;s not how it is anymore. At Angara, you can be the hero of your jewelry saga and create for yourself a ring in the gemstone quality, carat weight and metal you like. To make your piece even more special, we suggest you get a little engraving done, too!
                 </p>
                 <p>
                   When it comes to metals, we offer a variety of options to match every style and preference. If you like the cool tones, pick silver, platinum or white gold rings. Choose our yellow gold rings if you prefer warm tones. And if you want something unique and dreamy, opt for our rose gold rings. You can also get 14k and 18k gold rings for women.
                 </p>
                 <p>
-                  From affordable rings under $1,000 to statement pieces over $5,000, we've something for every budget. Our ring size options start at 3 and go up to 14.
+                  From affordable rings under $1,000 to statement pieces over $5,000, we&apos;ve something for every budget. Our ring size options start at 3 and go up to 14.
                 </p>
                 <p>
                   So, why keep waiting? Explore our collection of unique rings for women now and pick the pieces you love. Also, join our mailing list to get notified about Angara ring discounts, new launches and more!
@@ -231,7 +231,7 @@ const Overview: React.FC = () => {
                     2. Can you mix and match metal rings?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Of course, you can! Current trends favor mixing different metal rings to create trendy stacks that'll help you stand out.
+                    Of course, you can! Current trends favor mixing different metal rings to create trendy stacks that&apos;ll help you stand out.
                   </p>
                 </div>
 
@@ -240,7 +240,7 @@ const Overview: React.FC = () => {
                     3. How do you find out your ring size?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-2 text-gray-600 tracking-wider">
-                    That's easy! You can measure by matching an existing ring or follow these simple steps:
+                    That&apos;s easy! You can measure by matching an existing ring or follow these simple steps:
                   </p>
                   <ul className="list-disc pl-5 space-y-1 text-xs font-normal leading-6 text-gray-600 tracking-wider">
                     <li>Wrap a piece of string around your finger.</li>
@@ -261,7 +261,7 @@ const Overview: React.FC = () => {
                     4. How do you stack rings?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Solo finger bling is old news, and stacking rings is in. Take care while stacking, as it's easy to slip from perfect to 'too much.' Layer rings across four fingers and stick to two metal hues. Keep a similar color palette and leave at least one finger bare, i.e., the thumb or pinky.
+                    Solo finger bling is old news, and stacking rings is in. Take care while stacking, as it&apos;s easy to slip from perfect to &apos;too much.&apos; Layer rings across four fingers and stick to two metal hues. Keep a similar color palette and leave at least one finger bare, i.e., the thumb or pinky.
                   </p>
                 </div>
 
@@ -270,34 +270,34 @@ const Overview: React.FC = () => {
                     5. Can I personalize gemstone rings with engravings?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Yes, Angara allows you to add custom engravings to your gemstone rings. Whether it's a date, initials or a heartfelt message, this subtle detail transforms your ring into a cherished keepsake that carries your story and sentiment forever.
+                    Yes, Prins allows you to add custom engravings to your gemstone rings. Whether it&apos;s a date, initials or a heartfelt message, this subtle detail transforms your ring into a cherished keepsake that carries your story and sentiment forever.
                   </p>
                 </div>
 
                 <div className="mb-6">
                   <h3 className="text-xs md:text-sm font-normal leading-6 mb-2 text-gray-800 tracking-wide">
-                    6. Does Angara offer free ring sizing when I order a gemstone ring for women?
+                    6. Does Prins offer free ring sizing when I order a gemstone ring for women?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Yes, at Angara, we offer free ring sizing with every gemstone ring for women. This ensures a perfect fit, so your ring feels comfortable and secure from day one.
+                    Yes, at Prins, we offer free ring sizing with every gemstone ring for women. This ensures a perfect fit, so your ring feels comfortable and secure from day one.
                   </p>
                 </div>
 
                 <div className="mb-6">
                   <h3 className="text-xs md:text-sm font-normal leading-6 mb-2 text-gray-800 tracking-wide">
-                    7. Does Angara offer financing or monthly payment plans for gemstone rings?
+                    7. Does Prins offer financing or monthly payment plans for gemstone rings?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Yes, Angara offers flexible financing options, including Easy Pay Installments that let you split your purchase into 2 to 3 monthly payments without interest or hidden fees. This makes owning your dream gemstone ring more convenient.
+                    Yes, Prins offers flexible financing options, including Easy Pay Installments that let you split your purchase into 2 to 3 monthly payments without interest or hidden fees. This makes owning your dream gemstone ring more convenient.
                   </p>
                 </div>
 
                 <div className="mb-6">
                   <h3 className="text-xs md:text-sm font-normal leading-6 mb-2 text-gray-800 tracking-wide">
-                    8. What are the top-selling gemstone shapes and cuts available for women's rings?
+                    8. What are the top-selling gemstone shapes and cuts available for women&apos;s rings?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Angara's collection of women's rings showcases gemstone rings in a variety of shapes and cuts, with popular favorites like round, oval, cushion, pear and emerald cut. These timeless shapes are loved for their elegance and for the way they enhance each gemstone's color and brilliance.
+                    Prins collection of women&apos;s rings showcases gemstone rings in a variety of shapes and cuts, with popular favorites like round, oval, cushion, pear and emerald cut. These timeless shapes are loved for their elegance and for the way they enhance each gemstone&apos;s color and brilliance.
                   </p>
                 </div>
 
@@ -306,16 +306,16 @@ const Overview: React.FC = () => {
                     9. Can a gemstone ring be a suitable choice for a non-traditional engagement ring?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Absolutely! A gemstone ring makes a stunning choice for a non-traditional engagement ring. Its unique colors and vibrant sparkle let you celebrate your love in a personal way. For an added touch, you can pick your partner's birthstone or a gem that carries special meaning for both of you.
+                    Absolutely! A gemstone ring makes a stunning choice for a non-traditional engagement ring. Its unique colors and vibrant sparkle let you celebrate your love in a personal way. For an added touch, you can pick your partner&apos;s birthstone or a gem that carries special meaning for both of you.
                   </p>
                 </div>
 
                 <div className="mb-6">
                   <h3 className="text-xs md:text-sm font-normal leading-6 mb-2 text-gray-800 tracking-wide">
-                    10. Does Angara offer certified natural gemstone rings for women, and what certifications are available?
+                    10. Does Prins offer certified natural gemstone rings for women, and what certifications are available?
                   </h3>
                   <p className="text-xs font-normal leading-6 mb-4 text-gray-600 tracking-wider">
-                    Yes, Angara's natural gemstone rings for women come with a Certificate of Authenticity detailing the gemstone's quality grade, carat weight, dimensions and other key information. This ensures complete confidence in your purchase. You can also find GIA Certified rings at Angara.
+                    Yes, Prins natural gemstone rings for women come with a Certificate of Authenticity detailing the gemstone&apos;s quality grade, carat weight, dimensions and other key information. This ensures complete confidence in your purchase. You can also find GIA Certified rings at Prins.
                   </p>
                 </div>
               </section>

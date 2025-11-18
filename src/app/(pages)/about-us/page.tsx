@@ -2,8 +2,6 @@
 
 import OurStory from "@/components/OurStory";
 import VideoBanner from "@/components/VideoBanner";
-import Image from "next/image";
-import Link from "next/link";
 
 const AboutUS: React.FC = () => {
   return (

@@ -9,9 +9,7 @@ import PaymentSection from '@/components/checkout/PaymentSection';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { cartSlice, selectCartSnapshot } from '@/redux/api/cart/cartSlice';
 import {
-  performCheckout,
   selectCheckoutSummary,
-  selectCheckoutLoading,
   selectCheckoutError,
 } from '@/redux/api/checkout/checkoutSlice';
 import { CheckoutForm } from '@/types/checkout';
@@ -25,7 +23,7 @@ const Checkout: React.FC = () => {
 
   const { items, subtotal } = useAppSelector(selectCartSnapshot);
   const checkoutSummary = useAppSelector(selectCheckoutSummary);
-  const checkoutLoading = useAppSelector(selectCheckoutLoading);
+  // const checkoutLoading = useAppSelector(selectCheckoutLoading);
   const checkoutError = useAppSelector(selectCheckoutError);
 
   const [hydrated, setHydrated] = useState(false);
@@ -76,19 +74,19 @@ const Checkout: React.FC = () => {
     setForm(prev => ({ ...prev, [key]: value }));
   }, []);
 
-  const handlePay = async () => {
-    if (!items.length) return;
+  // const handlePay = async () => {
+  //   if (!items.length) return;
 
-    const payload = {
-      ...form,
-      products: JSON.stringify(items),
-    };
+  //   const payload = {
+  //     ...form,
+  //     products: JSON.stringify(items),
+  //   };
 
-    await dispatch(performCheckout(payload));
-  };
+  //   await dispatch(performCheckout(payload));
+  // };
 
   if (!hydrated) return null;
-  const isEmpty = items.length === 0;
+  // const isEmpty = items.length === 0;
 
   return (
     <>
