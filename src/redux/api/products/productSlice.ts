@@ -14,7 +14,7 @@ import {
   ParsedProduct,
   ProductsApiResponse,
   GetProductsPayload,
-  Product,
+  ParsedProductListItem,
 } from "@/types/product";
 
 import { GET_ALL_PRODUCTS, GET_PRODUCT, GET_PRODUCT_TYPE } from "@/constants";
@@ -137,7 +137,6 @@ const productSlice = createSlice({
           dia_2_pcs: raw.dia_2_pcs ?? null,
           dia_2_wt: raw.dia_2_wt ?? null,
           total_dia_wt: raw.total_dia_wt ?? null,
-
           _rawImage: raw.image,
         };
 
@@ -158,7 +157,7 @@ const productSlice = createSlice({
 
         state.products = action.payload.data.map((product) => ({
           ...product,
-          image: parseProductImages(product.image),
+          image: parseProductImages(product.image), // now returns string[]
         }));
 
         state.count = action.payload.count;
@@ -178,9 +177,14 @@ export const selectProduct = createSelector(
   (s): ParsedProduct | null => s.single
 );
 
+// export const selectProducts = createSelector(
+//   selectProductState,
+//   (s): (Product & { image: string[] })[] | null => s.products
+// );
+
 export const selectProducts = createSelector(
   selectProductState,
-  (s): (Product & { image: string[] })[] | null => s.products
+  (s): ParsedProductListItem[] | null => s.products
 );
 
 export const selectProductsCount = createSelector(
@@ -225,7 +229,7 @@ export const selectProductCount = createSelector(
 
 export const selectFilteredProducts = createSelector(
   (state: RootState) => state.products,
-  (p) => p.products ?? []               
+  (p) => p.products ?? []
 );
 
 // export const selectFilteredProductsCount = createSelector(
@@ -235,7 +239,7 @@ export const selectFilteredProducts = createSelector(
 
 export const selectFilteredProductsCount = createSelector(
   (state: RootState) => state.products,
-  (p) => p.count ?? 0                  
+  (p) => p.count ?? 0
 );
 
 export default productSlice.reducer;

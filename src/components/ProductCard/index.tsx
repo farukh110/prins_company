@@ -56,16 +56,25 @@ const ProductCard: FC<ProductCardProps> = ({
     }
 
     setIsAdding(true)
-    toast.promise(dispatch(addWishlistItem(payload)).unwrap(), {
-      loading: 'Adding to wishlist...',
-      success: () => {
-        router.push('/wishlist')
-        return 'Added to wishlist!'
-      },
-      error: (err: any) => err?.message || 'Failed to add to wishlist'
-    })
-    .finally(() => setIsAdding(false))
+
+    try {
+      const promise = dispatch(addWishlistItem(payload)).unwrap()
+
+      await toast.promise(promise, {
+        loading: 'Adding to wishlist...',
+        success: () => {
+          router.push('/wishlist')
+          return 'Added to wishlist!'
+        },
+        error: (err: any) => err?.message || 'Failed to add to wishlist'
+      })
+    } catch {
+      
+    } finally {
+      setIsAdding(false)
+    }
   }
+
 
   const handleViewPriceClick = () => {
     toast.info('Log in to view pricing', {

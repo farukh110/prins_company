@@ -14,16 +14,18 @@ import {
 } from '@/redux/api/checkout/checkoutSlice';
 import { CheckoutForm } from '@/types/checkout';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect, useState, useCallback } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 
-const Checkout: React.FC = () => {
+// ──────────────────────────────────────────────────────────────
+// This component contains useSearchParams → must be inside Suspense
+// ──────────────────────────────────────────────────────────────
+function CheckoutContent() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const { items, subtotal } = useAppSelector(selectCartSnapshot);
   const checkoutSummary = useAppSelector(selectCheckoutSummary);
-  // const checkoutLoading = useAppSelector(selectCheckoutLoading);
   const checkoutError = useAppSelector(selectCheckoutError);
 
   const [hydrated, setHydrated] = useState(false);
@@ -74,19 +76,7 @@ const Checkout: React.FC = () => {
     setForm(prev => ({ ...prev, [key]: value }));
   }, []);
 
-  // const handlePay = async () => {
-  //   if (!items.length) return;
-
-  //   const payload = {
-  //     ...form,
-  //     products: JSON.stringify(items),
-  //   };
-
-  //   await dispatch(performCheckout(payload));
-  // };
-
   if (!hydrated) return null;
-  // const isEmpty = items.length === 0;
 
   return (
     <>
@@ -109,12 +99,7 @@ const Checkout: React.FC = () => {
               <ContactSection values={form} onChange={updateForm} />
               <DeliverySection values={form} onChange={updateForm} />
 
-              {/* <PaymentSection
-                onPay={handlePay}
-                disabled={checkoutLoading || isEmpty}
-                loading={checkoutLoading}
-              /> */}
-              <PaymentSection />   {/* That's it! */}
+              <PaymentSection />
 
               {checkoutError && (
                 <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
@@ -131,6 +116,15 @@ const Checkout: React.FC = () => {
       </div>
     </>
   );
-};
+}
 
-export default Checkout;
+// ──────────────────────────────────────────────────────────────
+// The actual page — wraps the content in Suspense (required!)
+// ──────────────────────────────────────────────────────────────
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-lg">Loading checkout...</div>}>
+      <CheckoutContent />
+    </Suspense>
+  );
+}

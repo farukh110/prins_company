@@ -67,14 +67,19 @@ const PaymentSection = () => {
 
             createOrder={(data, actions) => {
               return actions.order.create({
-                purchase_units: [{
-                  description: "Prins Company Order",
-                  amount: {
-                    currency_code: "USD",
-                    value: subtotal.toFixed(2),
+                intent: "CAPTURE",
+                purchase_units: [
+                  {
+                    description: "Prins Company Order",
+                    amount: {
+                      currency_code: "USD",
+                      value: subtotal.toFixed(2),
+                    },
                   },
-                }],
-                application_context: { shipping_preference: "NO_SHIPPING" },
+                ],
+                application_context: {
+                  shipping_preference: "NO_SHIPPING",
+                },
               });
             }}
 
@@ -82,7 +87,7 @@ const PaymentSection = () => {
               setPaymentStatus('processing');
               try {
                 const order = await actions.order!.capture();
-                setOrderId(order.id);
+                setOrderId(order.id ?? null);
                 setPaymentStatus('success');
                 console.log("Payment completed!", order);
               } catch (err) {

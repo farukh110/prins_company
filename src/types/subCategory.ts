@@ -7,6 +7,10 @@ export interface SubCategory {
     description?: string;
     slug?: string;
     products?: Product[]; 
+    stone_types?: {
+        name: string;
+        [key: string]: any;   
+    }[];
 };
 
 export interface SubCategoryResponse {

@@ -46,7 +46,7 @@ const ProductRightSide: React.FC = () => {
   const router = useRouter();
 
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
-  
+
   if (!product) {
     return (
       <div className="p-4 text-center text-gray-500">
@@ -57,15 +57,14 @@ const ProductRightSide: React.FC = () => {
 
   const title = product.name ?? "Unnamed Product";
 
-  const priceNum = parseFloat(product.price ?? "0");
+  const priceNum = parseFloat(product.price);
   const price = `$${priceNum.toLocaleString()}`;
 
   const originalPriceNum = product.original_price
     ? parseFloat(product.original_price)
     : null;
-  const originalPrice = originalPriceNum
-    ? `$${originalPriceNum.toLocaleString()}`
-    : null;
+
+  const originalPrice = originalPriceNum ? `$${originalPriceNum.toLocaleString()}` : null;
 
   const discount = originalPriceNum
     ? Math.round((1 - priceNum / originalPriceNum) * 100)
@@ -257,9 +256,8 @@ const ProductRightSide: React.FC = () => {
               className="flex-shrink-0 flex flex-col items-center cursor-pointer"
             >
               <span
-                className={`border-2 ${
-                  opt.id === "10x8mm" ? "border-blue-600" : "border-gray-300"
-                } rounded-full p-1`}
+                className={`border-2 ${opt.id === "10x8mm" ? "border-blue-600" : "border-gray-300"
+                  } rounded-full p-1`}
               >
                 <span className="text-sm text-gray-900 w-10 h-10 flex items-center justify-center">
                   {opt.value}
@@ -296,11 +294,10 @@ const ProductRightSide: React.FC = () => {
                 className="flex-shrink-0 flex flex-col items-center cursor-pointer"
               >
                 <span
-                  className={`border-2 ${
-                    normalizedOption.includes(normalizedCurrent)
+                  className={`border-2 ${normalizedOption.includes(normalizedCurrent)
                       ? "border-blue-600"
                       : "border-transparent"
-                  } rounded-full p-1`}
+                    } rounded-full p-1`}
                 >
                   <Image
                     src={opt.icon}
@@ -337,9 +334,8 @@ const ProductRightSide: React.FC = () => {
           {RING_SIZES.map((s) => (
             <button
               key={s}
-              className={`flex-shrink-0 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center bg-gray-200 border ${
-                s === size ? "border-blue-600" : "border-gray-300"
-              } rounded-full hover:border-gray-600 text-sm text-gray-900`}
+              className={`flex-shrink-0 w-10 h-10 md:w-11 md:h-11 flex items-center justify-center bg-gray-200 border ${s === size ? "border-blue-600" : "border-gray-300"
+                } rounded-full hover:border-gray-600 text-sm text-gray-900`}
             >
               {s}
             </button>
@@ -430,9 +426,8 @@ const ProductRightSide: React.FC = () => {
             />
           </button>
           <div
-            className={`overflow-hidden transition-all duration-300 ${
-              isOverviewOpen ? "max-h-[1000px]" : "max-h-0"
-            }`}
+            className={`overflow-hidden transition-all duration-300 ${isOverviewOpen ? "max-h-[1000px]" : "max-h-0"
+              }`}
           >
             <div className="px-3 py-3 text-sm text-gray-700">
               <p className="uppercase mb-2">About ring</p>

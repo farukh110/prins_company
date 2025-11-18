@@ -25,19 +25,19 @@ const Wishlist: React.FC = () => {
     }
   }, [dispatch, token, customerId]);
 
-  const handleRemove = async (productId: number) => {
+  const handleRemove = async (productId: string) => {
     if (!customerId) return;
 
     try {
       await dispatch(
         removeWishlistItem({
           customer_id: customerId,
-          product_id: productId,
+          product_id: Number(productId), 
         })
       ).unwrap();
 
       toast.success("Removed from wishlist");
-      dispatch(getWishlistItems(customerId)); 
+      dispatch(getWishlistItems(customerId));
     } catch (error) {
       toast.error("Failed to remove item");
       console.log(error);

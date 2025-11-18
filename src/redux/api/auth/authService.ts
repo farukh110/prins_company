@@ -4,23 +4,23 @@ import { GetWishlistResponse } from "@/types/wishlist";
 import { BACKEND } from "@/util/base_url";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-const register = async (data: unknown) => {
+// const register = async (data: unknown) => {
 
-  try {
+//   try {
 
-    const response = await axios.post(`${BACKEND}/user/register`, data);
-    return response.data;
+//     const response = await axios.post(`${BACKEND}/user/register`, data);
+//     return response.data;
 
-  } catch (error: unknown) {
+//   } catch (error: unknown) {
 
-    if (error instanceof AxiosError) {
+//     if (error instanceof AxiosError) {
 
-      throw new Error(`Error: ${error.message}`);
-    }
+//       throw new Error(`Error: ${error.message}`);
+//     }
 
-    throw new Error('Error: An unexpected error occurred');
-  }
-};
+//     throw new Error('Error: An unexpected error occurred');
+//   }
+// };
 
 const login = async (data: LoginPayload): Promise<LoginResponse> => {
 
@@ -113,7 +113,7 @@ export const getOrderCustomerId = async (
 };
 
 export const authService = {
-  register,
+  // register,
   login,
   addWishlist,
   getWishlist,

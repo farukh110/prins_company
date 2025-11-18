@@ -37,7 +37,10 @@ const Filters: React.FC<FiltersProps> = ({ isOpen = false, onClose }) => {
     const subCategoryState = useSelector((s: RootState) => s.subCategory ?? {});
     const productState = useSelector((s: RootState) => s.products ?? {});
 
-    const subCategories = subCategoryState.data ?? [];
+    const subCategories = useMemo(() => subCategoryState.data ?? [], [
+        subCategoryState.data
+    ]);
+
     const subCatLoading = subCategoryState.loading ?? false;
 
     const productResp = productState.data ?? null;
@@ -47,7 +50,7 @@ const Filters: React.FC<FiltersProps> = ({ isOpen = false, onClose }) => {
     /* ---------- Stable Derived Data (Fixes useMemo warnings) ---------- */
     const firstSubCategoryStoneTypes = useMemo(() => {
         return subCategories[0]?.stone_types ?? [];
-        
+
     }, [subCategories]); // Fixed: depend on full array, not just subCategories[0]
 
     const productTypesData = useMemo(() => {
@@ -102,7 +105,7 @@ const Filters: React.FC<FiltersProps> = ({ isOpen = false, onClose }) => {
     }, [productTypesData]);
 
     /* ---------- Static Filter Sections ---------- */
-    const staticSections: FilterSection[] = [
+    const staticSections = useMemo<FilterSection[]>(() => [
         {
             title: 'Price',
             options: [
@@ -125,7 +128,7 @@ const Filters: React.FC<FiltersProps> = ({ isOpen = false, onClose }) => {
                 { name: '0.01 - 0.50 ct', count: 714 },
             ],
         },
-    ];
+    ], []);
 
     /* ---------- Final Filter Sections List ---------- */
     const filterSections = useMemo(() => {
@@ -136,7 +139,10 @@ const Filters: React.FC<FiltersProps> = ({ isOpen = false, onClose }) => {
     }, [stoneTypeSection, productTypeSection, staticSections]); // Add staticSections
 
     /* ---------- Trigger Product Types API when Stone Type changes ---------- */
-    const selectedStoneTypes = selectedFilters['Stone Type'] ?? [];
+    const selectedStoneTypes = useMemo(() => {
+        return selectedFilters['Stone Type'] ?? [];
+    }, [selectedFilters]);
+
 
     const kebabStoneTypes = useMemo(() => {
         return selectedStoneTypes.map((name: string) =>

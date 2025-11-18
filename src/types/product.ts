@@ -9,6 +9,7 @@ export interface Product {
   weight: string;
   name: string;
   price: string;
+  original_price?: string;
   category: string;
   quantity: string | null;
   status: string;
@@ -16,10 +17,10 @@ export interface Product {
   created_at: string;
   updated_at: string;
   product_type: string;
-  image: string;
+  image: string; // ← this is raw from API (string)
   sub_categories: string;
 
-  // Diamond fields
+  total_carat?: string;
   dia_1_shape?: string | null;
   dia_1_pcs?: string | null;
   dia_1_wt?: string | null;
@@ -28,23 +29,42 @@ export interface Product {
   dia_2_wt?: string | null;
   total_dia_wt?: string | null;
 
-  // Optional media fields
   video?: string;
   is_lab_grown?: boolean;
   skin_tone_hand?: { light: string; dark: string };
   customer_images?: { src: string; alt: string; overlayText?: string }[];
 }
 
-/* Parsed version – used in Redux state & UI */
-export interface ParsedProduct extends Omit<Product, "image"> {
-  image: string[]; // parsed array
+export type ParsedProductListItem = Omit<Product, "image"> & { image: string[] };
+
+export interface ParsedProduct extends Omit<
+  Product,
+  "image" | "video" | "is_lab_grown" | "skin_tone_hand" | "customer_images"
+> {
+  image: string[];
   video: string | null;
   isLabGrown: boolean;
   skinToneHand: { light: string; dark: string } | null;
   customerImages: { src: string; alt: string; overlayText?: string }[] | null;
+
+  original_price?: string;
+  total_carat?: string;
+  dia_1_shape?: string | null;
+  dia_1_pcs?: string | null;
+  dia_1_wt?: string | null;
+  dia_2_shape?: string | null;
+  dia_2_pcs?: string | null;
+  dia_2_wt?: string | null;
+  total_dia_wt?: string | null;
+
+  carat_options?: Array<{ id: string; title: string; value: string }>;
+  metal_options?: Array<{ id: string; title: string; icon: string }>;
+  gemstone_videos?: any[];
+  gemstone_quality?: string;
+  _rawImage?: string;
 }
 
-/* Product type hierarchy */
+/* Rest of your types (unchanged) */
 export interface ProductType {
   id: string;
   name: string;
@@ -61,7 +81,6 @@ export interface StoneType {
   productTypes: ProductType[];
 }
 
-/* API responses */
 export interface ProductApiResponse {
   status: boolean;
   count: number;
@@ -74,44 +93,42 @@ export interface ProductsApiResponse {
   data: Product[];
 }
 
-export interface GetProductTypePayload {
-  stoneType: string[];
-}
-
 export interface SingleProductResponse {
   status: boolean;
   message: string;
   data: Product;
 }
 
+export interface GetProductTypePayload {
+  stoneType: string[];
+}
+
 export interface GetProductsPayload {
   stoneType: string[];
-  productType: string[],
-  minPrice: number,
-  maxPrice: number,
-  minWeight: number,
-  maxWeight: number,
-  sortColumn: string,
+  productType: string[];
+  minPrice: number;
+  maxPrice: number;
+  minWeight: number;
+  maxWeight: number;
+  sortColumn: string;
   sortDir: string;
 }
 
-/* Redux state */
 export interface ProductState {
-  products: Product[] | null;
-  productsCount: number;
   data: StoneType[] | null;
+  products: ParsedProductListItem[] | null;   // ← Fixed!
+  productsCount: number;
   stoneTypes: StoneType[] | null;
   stoneTypesCount: number;
   single: ParsedProduct | null;
   loading: boolean;
   error: string | null;
   count: number;
-};
+}
 
 export const parseProductImages = (
   image: string | string[] | null | undefined
 ): string[] => {
-
   if (Array.isArray(image)) {
     return image
       .filter((u): u is string => typeof u === "string")
@@ -130,6 +147,7 @@ export const parseProductImages = (
         .filter(u => u && u.startsWith("http"));
     }
   } catch {
+    // ignore
   }
 
   return image
